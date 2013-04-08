@@ -25,6 +25,24 @@ A cloned repository, by default, has its original as a remote labeled "origin".
 If you want, list Yingxue's repository (and others) as seperate remotes as well.
 
 To commit/push these changes, first use the "rescan" button so the repository can find changes in its contents.
-Select the changed files you want to stage (commit) inside Git Gui.  Then select the "Stage Change
+Check that all the changes you want made are there, then press "Stage Changes".  The files will be moved from the "Unstaged Changes" bar to the "Staged (will Commit)".
+Add a comment about the changes you made (you will get an error otherwise), then press "Commit".  The repository will be changed to contain these changed files.
+Press "Push" to push your commited changes to a remote: by default the "origin" of a cloned repository.  Press "Okay" in the pop-up window unless you want a different remote or branch.
+You will have to supply your GitHub name and password to succeed.
+NOTE: you will only be able to push changes to your own GitHub repository, not to Yingxue's or anyone else.  I'll get to pull requests later
+
+C.  Fetching/Pulling from other repositories
+This allows you to stay synched with other repositories.  
+DO THIS BEFORE PUSH REQUESTS to ensure that you do not get file conflicts: these are confusing situations where Git can't merge different files.
+Remote->Fetch from...->origin or All.
+You can then rescan your local repository and examine the changes, then commit them normally.
+You'll sometimes see "pull" in Git language: that's a command where fetching and merging/commiting changes is done simultaneously.  Git Gui doesn't support that on its own.
+
+4.  Pull Requests
+You cannot change the repositories of other users.  However, you can request that they do.
+Inside github.com, go to your forked repository.  Select the "Pull Request" button near the top of the screen.  
+By default, it should have the correct branches: your master branch requesting from the branch it was forked from.
+Add a comment about your changes, and a title (you won't be able to send the request otherwise), then press "submit".
+The other user will be able to view and accept/deny the pull request.
 
 

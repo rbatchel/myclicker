@@ -1,0 +1,130 @@
+<html>
+<head>Test website</head>
+<title>Testing</title>
+<style type="text/css">
+body
+{
+	background-color:F0F8FF;
+}
+#tableHeader
+{
+	font-weight: bold;
+	text-align:center;
+}
+#reset
+{
+	position:absolute;
+	bottom:0;
+	margin: 10px;
+}
+</style>
+<body>
+<h1>myClicker test website to see if we can send and receive from our server</h1>
+<p>The test is simple, send a simple query to a server (by means of a text input and submit button) and list the query strings</p>
+
+<div id="input query line">
+<input type="text" id="txt1" />
+<button onclick="Submit();">Submit query</button>
+<button onclick="Clear();">Clear input</button>
+</div>
+
+<br /><br />
+
+<table border='1'>
+<tr id="tableHeader" width="15px"><td>Submit button hit</td><td>Response received</td></tr>
+</table>
+<table border='1' id="tableRows">
+</table>
+
+
+<br /><br />
+<!-- This is wrong, doesn't follow if the page extends down -->
+<button id="reset" onclick="Reset()">Reset database</button>
+
+<script type="text/javascript">
+function Submit() {
+var http;
+  if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  http=new XMLHttpRequest();
+  }
+  else
+  {// code for IE6, IE5
+  http=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  var url = "update.xml" + "?t=" + Math.random();
+  url = url + "&action=submit&str=" + document.getElementById("txt1").value;
+  var params = ""; //"action=submit&str=testing";
+
+  http.open("GET", url, true);
+  
+
+   http.setRequestHeader("X_REQUESTED_WITH", "XMLHttpRequest");
+   
+   http.onreadystatechange = function() {
+      if(http.readyState == 4 && http.status == 200) {
+  Update(http);
+  }
+  }
+  http.send();  //(params);
+
+
+Clear();
+}
+
+function Clear() {
+//clears input box only
+var e = document.getElementById("txt1");
+	e.value = "";
+}
+
+function Reset() {
+var http;
+  if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  http=new XMLHttpRequest();
+  }
+  else
+  {// code for IE6, IE5
+  http=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  var url = "update.xml" + "?t=" + Math.random();
+  url = url + "&action=clear&str=" + document.getElementById("txt1").value;
+  var params = ""; //"action=submit&str=testing";
+
+  http.open("GET", url, true);
+  
+   http.setRequestHeader("X_REQUESTED_WITH", "XMLHttpRequest");
+   
+   http.onreadystatechange = function() {
+      if(http.readyState == 4 && http.status == 200) {
+         //success
+         Update(http)
+  }
+  }
+  http.send();  //(params);
+
+    }
+
+    function Update(http) {
+    var xmlDoc = http.responseXML;
+    var x = xmlDoc.getElementsByTagName("field");
+                                 //   alert("fields length: " + x.length);
+    var string = "";
+    for (var i=0; i < x.length ; i++)
+    {
+      var out = x[i].childNodes[0].nodeValue;
+	    string = string + "<tr><td>"+i+"</td><td>"+out+"</td></tr>";
+    }
+
+    document.getElementById("tableRows").innerHTML=string;
+
+  }
+
+    </script>
+
+
+</body>
+</html>
