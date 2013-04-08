@@ -26,4 +26,6 @@ If you want, list Yingxue's repository (and others) as seperate remotes as well.
 
 To commit/push these changes, first use the "rescan" button so the repository can find changes in its contents.
 Select the changed files you want to stage (commit)
+"Git Gui" is the name of the interface application for git.  Usually this appears as a program in the computer's start menu.
+If that doesn't work, type "git gui" into any command prompt to start the application.
 
