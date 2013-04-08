@@ -10,7 +10,7 @@ This link provides a download that works for Windows.  You can install using the
 
 2.  Using the interface
 "Git Gui" is the name of a graphic interface application for git.  Usually this appears as a program in the computer's start menu.
-If that doesn't work, type "git gui" into any command prompt to start the application.
+If that doesn't work, type "git gui" into the bash script (described below) to start the application.
 Alternatively, the git bash script file can be launched to use a command prompt for using git (this is located directly inside th folder where Git was installed)
 The tutorials on GitHub (found on the home page) can be used to learn how to use this interface.  The rest of this document will focus on git gui.
 
