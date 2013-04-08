@@ -1,10 +1,19 @@
 How to use GitHub:
 
+0.  Have your own fork of the myclicker project.
+At Yingxue's repository, choose to fork the myclicker project: this will create a duplicate of the project with your user id.
+You will be able to update this repository at will, 
+
 1.  Have Git installed on your computer.  
 http://code.google.com/p/msysgit/downloads/detail?name=Git-1.8.1.2-preview20130201.exe&can=2&q=label%3AFeatured
 This link provides a download that works for Windows.  You can install using the default methods.
 
 2.  Using the interface
-"Git Gui" is the name of the interface application for git.  Usually this appears as a program in the computer's start menu.
+"Git Gui" is the name of a graphic interface application for git.  Usually this appears as a program in the computer's start menu.
 If that doesn't work, type "git gui" into any command prompt to start the application.
+Alternatively, the git bash script file can be launched to use a command prompt for using git (this is located directly inside th folder where Git was installed)
+The tutorials on GitHub (found on the home page) can be used to learn how to use this interface.  The rest of this document will focus on git gui.
+
+Editing files occurs normally outside of the git gui or command prompt.  Git is used for the following actions:
+Creating, cloning, or opening a repository (.git file)
 
