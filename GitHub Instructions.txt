@@ -1,0 +1,10 @@
+How to use GitHub:
+
+1.  Have Git installed on your computer.  
+http://code.google.com/p/msysgit/downloads/detail?name=Git-1.8.1.2-preview20130201.exe&can=2&q=label%3AFeatured
+This link provides a download that works for Windows.  You can install using the default methods.
+
+2.  Using the interface
+"Git Gui" is the name of the interface application for git.  Usually this appears as a program in the computer's start menu.
+If that doesn't work, type "git gui" into any command prompt to start the application.
+
