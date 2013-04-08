@@ -24,5 +24,6 @@ After changing the contents of any repository, you can "push" these changes to a
 A cloned repository, by default, has its original as a remote labeled "origin".
 If you want, list Yingxue's repository (and others) as seperate remotes as well.
 
-To commit/push these changes, first use the "rescan" button so the repository can find changes in its contents.  
+To commit/push these changes, first use the "rescan" button so the repository can find changes in its contents.
+Select the changed files you want to stage (commit)
 
