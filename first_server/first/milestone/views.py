@@ -99,6 +99,8 @@ def update_xml(request):
 				data = serializers.serialize('xml', models.Course.objects.filter(pk=c_id))
 			if (action == 'get_question' or action == 'set_open' or action == 'set_hidden'):
 				data = serializers.serialize('xml', models.Question.objects.filter(c_id=c_id).filter(pk=q_id))
+			if action == 'get_all_questions':
+				data = serializers.serialize('xml', models.Question.objects.filter(c_id=c_id))
 			print data
 			
 			#send xml response
