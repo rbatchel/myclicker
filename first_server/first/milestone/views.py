@@ -9,7 +9,7 @@ from milestone import util, models
 from django.core import serializers
 
 def login(request):
-	print "student request"
+	#print "student request"
 	fp = open('./milestone/templates/login.html')
 	t = template.Template(fp.read())
 	fp.close()
@@ -19,7 +19,7 @@ def login(request):
 
 
 def student(request):
-	print "student request"
+	#print "student request"
 	fp = open('./milestone/templates/student.html')
 	t = template.Template(fp.read())
 	fp.close()
@@ -28,7 +28,7 @@ def student(request):
 	return HttpResponse(html)
 
 def student_base(request):
-	print file
+	#print file
 	fp = open('./milestone/templates/stylesheets/base.css')
 	t = template.Template(fp.read())
 	fp.close()
@@ -37,7 +37,7 @@ def student_base(request):
 	return HttpResponse(html)
 
 def student_layout(request):
-	print file
+	#print file
 	fp = open('./milestone/templates/stylesheets/layout.css')
 	t = template.Template(fp.read())
 	fp.close()
@@ -46,7 +46,7 @@ def student_layout(request):
 	return HttpResponse(html)
 
 def student_skeleton(request):
-	print file
+	#print file
 	fp = open('./milestone/templates/stylesheets/skeleton.css')
 	t = template.Template(fp.read())
 	fp.close()
@@ -63,7 +63,7 @@ def professor(request):
 	return HttpResponse(html)
 
 def professor_base(request):
-	print file
+	#print file
 	fp = open('./milestone/templates/stylesheets/base.css')
 	t = template.Template(fp.read())
 	fp.close()
@@ -73,7 +73,7 @@ def professor_base(request):
 	return HttpResponse(html)
 
 def professor_layout(request):
-	print file
+	#print file
 	fp = open('./milestone/templates/stylesheets/layout.css')
 	t = template.Template(fp.read())
 	fp.close()
@@ -82,7 +82,7 @@ def professor_layout(request):
 	return HttpResponse(html)
 
 def professor_skeleton(request):
-	print file
+	#print file
 	fp = open('./milestone/templates/stylesheets/skeleton.css')
 	t = template.Template(fp.read())
 	fp.close()
@@ -91,7 +91,7 @@ def professor_skeleton(request):
 	return HttpResponse(html)
 
 def professor_icon(request):
-	print file
+	#print file
 	fp = open('./milestone/templates/images/favicon.ico')
 	t = template.Template(fp.read())
 	fp.close()
@@ -119,11 +119,11 @@ def noxml(request):
 	return HttpResponse(html)
 
 def xml(request):
-	print "request called"
+	#print "request called"
 	#if request.method == 'POST':
 	#	print "POST called"
 	if request.is_ajax():
-		print "is ajax"
+		#print "is ajax"
 		#handle AJAX request here
 		#parse input commands
 #		inputParam = request.POST
@@ -150,15 +150,15 @@ def xml(request):
 
 
 def update_xml(request):
-	print "update_xml called"
+	#print "update_xml called"
 	#for field in request.META:
 	#	print field
-	for object in request.GET:
-		print object
+	#for object in request.GET:
+		#print object
 	if request.is_ajax():
-		print "ajax method found"
+		#print "ajax method found"
 		if request.method == 'GET':
-			print "ajax method called"
+			#print "ajax method called"
 			#handle AJAX request here
 			#parse input commands
 
@@ -190,10 +190,10 @@ def update_xml(request):
 				data = serializers.serialize('xml', models.Course.objects.filter(pk=c_id))
 			if (action == 'get_question' or action == 'set_open' or action == 'set_hidden'):
 				data = serializers.serialize('xml', models.Question.objects.filter(c_id=c_id).filter(pk=q_id))
-			print data
+			#print data
 			
 			#send xml response
-			print "returning an xml"
+			#print "returning an xml"
 		
 		#	return HttpResponse(data)
 			return HttpResponse(data, content_type='application/xml')
@@ -208,11 +208,11 @@ def update_xml(request):
 
 #create url that only displays contents of database
 def database(request):
-	print "database request made"
+	#print "database request made"
 	if request.is_ajax():
-		print "ajax request made"
+		#print "ajax request made"
 		data = serializers.serialize('xml', models.Response.objects.all())
-		print data
+		#print data
 		return HttpResponse(output)
 	fp = open('./milestone/templates/withXML.html')
 	t = template.Template(fp.read())
