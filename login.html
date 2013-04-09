@@ -55,10 +55,41 @@
             <ul id="login-button-box">
 				<li><h2> Student Sign-in </h2></li>
 				<li id="login-button-table">
-					<table><tr>
-						<td id="new-student-user-drop"><a class="remove-bottom button" onClick="studentLoginMenu1();"> New User </a></td>
-						<td id="old-student-user-drop"><a class="remove-bottom button" onClick="studentLoginMenu2();"> Existing User </a></td>
-					</tr></table>
+					
+						<table><tr>
+		<td id="login-button-td-input"><label for="Username">  Username: </label><input type="text" id="username-student-input" /></td>
+		</tr><tr>
+		<td id="login-button-td-input"><label for="Password">  Password: </label><input type="text" id="password-student-input" /></td>
+		</tr><tr>
+		<td id="login-button-td-input"><label for="Confirm Password"> Confirm Password: </label><input type="text" id="con-password-student-input" /></td>
+		<td id="login-button-td-button"><br \><a class="remove-bottom button" onClick="studentNewUser();"> Submit </a></td>
+	</tr></table>
+						
+						
+					<!--	<td id="new-student-user-drop"><a class="remove-bottom button" onClick="studentLoginMenu1();"> New User </a></td>
+						<td id="old-student-user-drop"><a class="remove-bottom button" onClick="studentLoginMenu2();"> Existing User </a></td> -->
+				</li>
+				<li id="student-login-form"></li>
+            </ul>
+        </div>
+		
+		<div id="login-button-div" class="eight columns"  align=center>
+            <ul id="login-button-box">
+				<li><h2> Old Student Sign-in </h2></li>
+				<li id="login-button-table">
+					
+						<table><tr>
+		<td id="login-button-td-input"><label for="Username">  Username: </label><input type="text" id="username-student-input" /></td>
+		</tr><tr>
+		<td id="login-button-td-input"><label for="Password">  Password: </label><input type="text" id="password-student-input" /></td>
+		<td id="login-button-td-button"><br \><a class="remove-bottom button" onClick="studentLogin();"> Login </a></td>
+		</tr><tr>
+		<td><a onClick="lol();"> Forgot your password? </a></td>
+	</tr></table>
+						
+						
+					<!--	<td id="new-student-user-drop"><a class="remove-bottom button" onClick="studentLoginMenu1();"> New User </a></td>
+						<td id="old-student-user-drop"><a class="remove-bottom button" onClick="studentLoginMenu2();"> Existing User </a></td> -->
 				</li>
 				<li id="student-login-form"></li>
             </ul>
