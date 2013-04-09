@@ -28,6 +28,6 @@ To commit/push these changes, first use the "rescan" button so the repository ca
 Check that all the changes you want made are there, then press "Stage Chthe request otherwise), then press "submit".
 The other user will be able to view and accept/deny the pull request.
 
-(excuse me I'm trying to see if this stuff actually works)
+(excuse me I'm trying to see if this stuff actually works...again)
 
 
