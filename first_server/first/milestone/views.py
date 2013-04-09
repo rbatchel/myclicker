@@ -8,6 +8,16 @@ from django import template
 from milestone import util, models
 from django.core import serializers
 
+def login(request):
+	print "student request"
+	fp = open('./milestone/templates/login.html')
+	t = template.Template(fp.read())
+	fp.close()
+	c = template.Context()
+	html = t.render(c)
+	return HttpResponse(html)
+
+
 def student(request):
 	print "student request"
 	fp = open('./milestone/templates/student.html')

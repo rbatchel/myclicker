@@ -3,6 +3,7 @@ from django.conf.urls import patterns, url
 from milestone import views
 
 urlpatterns = patterns('',
+	('^login/$', views.login),
 	('^student/$', views.student),
 #	(r'^student/stylesheets/base.css$', views.student_base),
 #	(r'^student/stylesheets/skeleton.css$', views.student_skeleton),
