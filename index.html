@@ -5,7 +5,7 @@
 <!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
 <head>
 
-  <!-- Basic Page Needs
+	<!-- Basic Page Needs
   ================================================== -->
 	<meta charset="utf-8">
 	<title>Login Page</title>
@@ -54,7 +54,12 @@
         <div id="login-button-div" class="eight columns" align=center>
             <ul id="login-button-box">
 				<li><h2> Student Sign-in </h2></li>
-				<li id="login-button"><a class="remove-bottom button" onClick="window.location.href='student.html'">Login as Student</a></li>
+				<li id="login-button">
+					<tr>
+						<td><label for="regularInput">Regular Input</label> <form>Ue:<input type="text" id="username-input" /></td></form>
+						<td><a class="remove-bottom button" onClick="window.location.href='student.html'">Login as Student</a></td>
+					</tr>
+				</li>
             </ul>
         </div>
 		
@@ -125,12 +130,19 @@
 {
 	padding-top: 10px;
 	padding-left: 175px;
+	/*width: 300px;
+	*/
 }
 
 #login-button-div
 {
 	text-align: center;
 	padding-bottom: 50px;
+}
+
+#username-input
+{
+	max-width: 20%;
 }
 
 #page_header
