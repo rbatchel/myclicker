@@ -1,0 +1,131 @@
+<html>
+<head>Test website</head>
+<title>Testing</title>
+<style type="text/css">
+body
+{
+	background-color:F0F8FF;
+}
+#tableHeader
+{
+	font-weight: bold;
+	text-align:center;
+}
+#reset
+{
+	position:absolute;
+	bottom:0;
+	margin: 10px;
+}
+</style>
+<body>
+<h1>myClicker test website to see if we can send and receive from our server</h1>
+<p>The test is simple, send a simple query to a server (by means of a text input and submit button) and list the query strings</p>
+
+<div id="input query line">
+<input type="text" id="txt1" />
+<button onclick="Submit();">Submit query</button>
+<button onclick="Clear();">Clear input</button>
+</div>
+
+<br /><br />
+
+<table border='1'>
+<tr id="tableHeader" width="15px"><td>Submit button hit</td><td>Response received</td></tr>
+</table>
+<table border='1' id="tableRows">
+</table>
+
+
+<br /><br />
+<!-- This is wrong, doesn't follow if the page extends down -->
+<button id="reset" onclick="Reset()">Reset database</button>
+
+  <p id="values">to be filled</p>
+
+<script type="text/javascript">
+var i = 0;
+var str = "";
+function Submit() {
+	// This should submit the query to the server
+	i++;
+	var e = document.getElementById("txt1");
+	str = str + "<tr><td>"+i+"</td><td>"+e.value+"</td></tr>";
+  document.getElementById("tableRows").innerHTML=str;
+  Clear();
+  }
+  function Clear() {
+  // This should clear the input text
+  var e = document.getElementById("txt1");
+  //e.value = "";
+  //TESTING: create XML request and see that it behaves
+  var http;
+  if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  http=new XMLHttpRequest();
+  }
+  else
+  {// code for IE6, IE5
+  http=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  var url = "update.xml";
+  var params = ""; //"action=submit&str=testing";
+  // http = new XMLHttpRequest();
+  http.open("GET", url, true);
+  
+   //http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+   //http.setRequestHeader("Content-length", params-length);
+   //http.setRequestHeader("Connection", "close");
+   http.setRequestHeader("X_REQUESTED_WITH", "XMLHttpRequest");
+   
+   http.onreadystatechange = function() {
+      if(http.readyState == 4 && http.status == 200) {
+  //alert(http.responseText);
+  }
+  }
+
+  http.send();  //(params);
+  alert("recieved request");
+  //xmlDoc = http.responseXML;
+  if(http.responseXML == null)  {    alert("xmlDoc is null!"); } else { alert("xmldoc NOT null"); }
+  if(http.responseText == null) { alert("xmlText is null"); } else { alert("xmltext NOT null"); }
+  alert("now examining the xml");
+
+  //now I need the parser to work correctly
+
+  var xmlDoc = http.responseXML;
+  alert("retrieved XML");
+
+  x = xmlDoc.getElementsByTagName("field");
+  alert("fields length: " + x.length);
+  y = x[0].childNodes;
+  alert("y length: " + y.length);
+  z = y[0].childNodes;
+  alert("z length: " + z.length);
+  h = y[0].nodeValue;
+  alert("first value: " + h);
+  h = z[0].nodeValue;
+  alert(h);
+
+//h now contains the TESTING string in the first record.  x[1].childNodes[0].nodeValue to get the second string (hopefully this is right)
+//use code from Submit() to alter the contents of the table.  Or, you can alter the paragraph with id = "values" that I added in
+//Let's have the behavior as follows: "Submit" adds the string from the browser's text box to the table, and should not call Clear (it currently does)
+//Clear() should be renamed to AddDatabase() (including the button name), and will add the contents of the database (retrieved through this request) to the table
+//Reset() should remain unchanged.
+
+//Note: if we can get to change the server's database, we/I may tweak the behavior of this as well
+
+  }
+  function Reset() {
+  // This should reset the database and clear all entries
+  str = "";
+  i = 0;
+  document.getElementById("tableRows").innerHTML=str;
+  }
+
+</script>
+
+</body>
+</html>
+

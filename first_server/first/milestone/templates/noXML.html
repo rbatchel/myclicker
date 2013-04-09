@@ -1,0 +1,72 @@
+<html>
+<head>Test website</head>
+<title>Testing</title>
+<style type="text/css">
+body
+{
+	background-color:F0F8FF;
+}
+#tableHeader
+{
+	font-weight: bold;
+	text-align:center;
+}
+#reset
+{
+	position:absolute;
+	bottom:0;
+	margin: 10px;
+}
+</style>
+<body>
+<h1>myClicker test website to see if we can send and receive from our server</h1>
+<p>The test is simple, send a simple query to a server (by means of a text input and submit button) and list the query strings</p>
+
+<div id="input query line">
+<input type="text" id="txt1" />
+<button onclick="Submit();">Submit query</button>
+<button onclick="Clear();">Clear input</button>
+</div>
+
+<br /><br />
+
+<table border='1'>
+<tr id="tableHeader" width="15px"><td>Submit button hit</td><td>Response received</td></tr>
+</table>
+<table border='1' id="tableRows">
+</table>
+
+
+<br /><br />
+<!-- This is wrong, doesn't follow if the page extends down -->
+<button id="reset" onclick="Reset()">Reset database</button>
+
+
+<script type="text/javascript">
+var i = 0;
+var str = "";
+function Submit() {
+	// This should submit the query to the server
+	i++;
+	var e = document.getElementById("txt1");
+	str = str + "<tr><td>"+i+"</td><td>"+e.value+"</td></tr>";
+	document.getElementById("tableRows").innerHTML=str; 
+	Clear();
+}
+function Clear() {
+	// This should clear the input text
+	var e = document.getElementById("txt1");
+	e.value = "";
+}
+function Reset() {
+	// This should reset the database and clear all entries
+	str = "";
+	i = 0;
+	document.getElementById("tableRows").innerHTML=str; 
+}
+
+</script>
+
+</body>
+</html>
+

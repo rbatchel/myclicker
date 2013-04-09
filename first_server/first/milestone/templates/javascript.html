@@ -1,0 +1,41 @@
+<html>
+  <head>Does this script work?</head>
+  <style>
+    body
+    {
+    background-color:green;
+    }
+  </style>
+
+  <body>
+
+    <h1>This is my first header</h1>
+
+    <p id ="alpha">Paragraph to be changed</p>
+
+    <p id ="button"></p>
+
+    <button onclick="Function()">I'm a button</button>
+
+    <script>
+      document.write("<p>First printed statement</p>");
+      document.getElementById("alpha").innerHTML="Paragraph that has been changed";
+      var hello = "hello";
+      var two = 2;
+      document.write(hello);
+      document.write(two);
+
+
+      function Function()
+      {
+      document.getElementById("button").innerHTML="button pressed";
+      console.log("console?");
+      }
+    </script>
+    <noscript>Um, please let me use javascript</noscript>
+
+    <div style="height:200px;width:400px;float:right;background-color:#A01234">This is a spare column</div>
+    <div style="background-color:#DEADBF;height:200px;width:400px;float:left;">This is a different spare column</div>
+    <div style="background-color:#FBDAED;height:200px;width:400px;float:center;">This is a final spare column</div>
+  </body>
+</html>

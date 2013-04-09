@@ -1,0 +1,139 @@
+<html>
+<head>Test website</head>
+<title>Testing</title>
+<style type="text/css">
+body
+{
+	background-color:F0F8FF;
+}
+#tableHeader
+{
+	font-weight: bold;
+	text-align:center;
+}
+#reset
+{
+	position:absolute;
+	bottom:0;
+	margin: 10px;
+}
+</style>
+<body>
+<h1>myClicker test website to see if we can send and receive from our server</h1>
+<p>The test is simple, send a simple query to a server (by means of a text input and submit button) and list the query strings</p>
+
+<div id="input query line">
+<input type="text" id="txt1" />
+<button onclick="Submit();">Submit query</button>
+<button onclick="Clear();">Clear input</button>
+</div>
+
+<br /><br />
+
+<table border='1'>
+<tr id="tableHeader" width="15px"><td>Submit button hit</td><td>Response received</td></tr>
+</table>
+<table border='1' id="tableRows">
+</table>
+
+
+<br /><br />
+<!-- This is wrong, doesn't follow if the page extends down -->
+<button id="reset" onclick="Reset()">Reset database</button>
+
+  <p id="values">to be filled</p>
+
+<script type="text/javascript">
+var i = 0;
+var str = "";
+function Submit() {
+	// This should submit the query to the server
+
+  //XMLHttpRequest for submit here
+  //TESTING: create XML request and see that it behaves
+  var http;
+  if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  http=new XMLHttpRequest();
+  }
+  else
+  {// code for IE6, IE5
+  http=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  var url = "update.xml" + "?t=" + Math.random();
+  url = url + "&action=submit&str=" + document.getElementById("txt1").value;
+  var params = ""; //"action=submit&str=testing";
+  alert(url);
+  // http = new XMLHttpRequest();
+  http.open("GET", url, true);
+  
+   http.setRequestHeader("X_REQUESTED_WITH", "XMLHttpRequest");
+   
+   http.onreadystatechange = function() {
+      if(http.readyState == 4 && http.status == 200) {
+  alert("success");
+  }
+  }
+  alert("sending request...");
+
+  //alert("Response: " + http.response + ", responseXML: " +  http.responseXML + ", responseText: " + http.responseText);
+  http.send();  //(params);
+  
+  alert(http.responseText);
+  //if(http.responseXML != null) {
+  //now I need the parser to work correctly
+
+  var xmlDoc = http.responseXML + "";
+  alert("parsed xmlDoc");
+  //alert("retrieved XML");
+
+  //  var objects = xmlDoc.getElementsByTagName("django-objects");  objects[0].childNodres[0].childNodes[0].childeNodes[0].nodeValue = output
+
+  // x = xmlDoc.getElementsByTagName("object"); x[0].childNodes[0].childNodes[0].nodeValue = output
+
+  var string = "";
+  var x = xmlDoc.getElementsByTagName("field");
+  alert("fields length: " + x.length);
+  for (var i=0; i < x.length ; i++)
+   {
+      var out = x[i].childNodes[0].nodeValue;
+      alert(out);
+      string = string + "<tr><td>"+i+"</td><td>"+out+"</td></tr>";
+   }  
+  
+//}
+//else {alert("null response?"); string = "LISTEN"; }
+  
+	//var e = document.getElementById("txt1");
+	//str = str + "<tr><td>"+i+"</td><td>"+e.value+"</td></tr>";
+  document.getElementById("tableRows").innerHTML=string;
+  Clear();
+  }
+  
+  
+  
+  function Clear() {
+  // This should clear the input text
+  var e = document.getElementById("txt1");
+
+   
+    var e = document.getElementById("txt1");
+	e.value = "";
+
+
+  }
+  function Reset() {
+  // This should reset the database and clear all entries
+  
+  
+  //str = "";
+  //i = 0;
+ // document.getElementById("tableRows").innerHTML=str;
+  }
+
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,209 @@
+<html>
+	<head>
+		<script type="text/javascript">
+			var c_id = 2;
+			var q_id = 1;
+		</script>
+	</head>
+	
+	<title>Testing</title>
+	<style type="text/css">
+		body
+		{
+			background-color:F0F8FF;
+		}
+		#tableHeader
+		{
+			font-weight: bold;
+			text-align:center;
+		}
+		#reset
+		{
+			position:absolute;
+			bottom:0;
+			margin: 10px;
+		}
+	</style>
+		
+	<body onload="display();">
+		<h1>myClicker test website to see if we can send and receive from our server</h1>
+		<p>The test is simple, send a simple query to a server (by means of a text input and submit button) and list the query strings</p>
+
+
+		<div id="input query line">
+			Course name:<input type="text" id="txt1">Term:<input type="text" id="txt2">Year:<input type="text" id="txt3">
+			<button onclick="execute('sub_course', 'txt1', 'txt2', 'txt3');">Submit Course</button>
+			<button onclick="clear('txt1','txt2','txt3');">Clear</button>
+
+			<br>
+			<input type="text" id="txt4">
+			<button onclick="execute('sub_quest', 'txt4');">Submit Question</button>
+			<button onclick="clear('txt4');">Clear</button>
+
+			<br>
+			<input type="text" id="txt5">
+			<button onclick="execute('sub_resp', 'txt5');">Submit Response</button>
+			<button onclick="clear('txt5');">Clear</button>
+		</div>
+
+		<br><br>
+
+		<table border="1">
+			<tbody>
+				<tr id="tableHeader" width="15px"><td>Current Course:</td><td id="curr_course"></td></tr>
+			</tbody>
+		</table>
+		
+		<table border="1">
+			<tbody>
+				<tr id="tableHeader" width="15px"><td>Current Question:</td><td id="curr_question"></td>
+				<td id="open_stat"><input type="radio" name="open" onCLick="execute('set_open', 'True');" checked>Open<input type="radio" name="open" onCLick="execute('set_open', 'False');">Closed</td>
+				<td id="hide_stat"><input type="radio" name="hide" onCLick="execute('set_hidden', 'True');" checked>Hide<input type="radio" name="hide" onCLick="execute('set_hidden', 'False');">Show</td></tr>
+			</tbody>
+		</table>
+		
+		<br>
+		
+		<table border="1" id="tableRows"></table>
+
+
+		<br><br>
+		<!-- This is wrong, doesn't follow if the page extends down -->
+		<!-- doesnt really require text from field... -->
+		<button id="reset" onclick="execute('reset', 'txt1')">Reset database</button>
+
+		<script type="text/javascript">
+			function execute(action) {
+				var http;
+  				if (window.XMLHttpRequest) // code for IE7+, Firefox, Chrome, Opera, Safari
+  					http=new XMLHttpRequest();
+  				else // code for IE6, IE5
+  					http=new ActiveXObject("Microsoft.XMLHTTP");
+
+  				var url = "update.xml" + "?t=" + Math.random();
+  				url += "&c_id=" + c_id + "&q_id=" + q_id;
+  				url += "&action="+ action; 
+  				for (var i=1; i < arguments.length; i++) {
+  					if (arguments[i])
+  						url += "&str"+i+"=" + document.getElementById(arguments[i]).value;
+  				}
+  				var params = ""; //"action=submit&str=testing";
+
+  				http.open("GET", url, true);
+  				http.setRequestHeader("X_REQUESTED_WITH", "XMLHttpRequest");
+   			http.onreadystatechange = function() {
+      			if(http.readyState == 4 && http.status == 200) {
+      				if (action == "get_course")
+      					update_course(http);
+      				if (action == "get_question")
+      					update_question(http);
+      				if (action == "set_open" || action == "set_hidden") {
+      					alert("hi");
+      					update_question_status(http);
+      				}
+      				else
+  							update_responses(http);
+  					}
+  				}
+  				http.send();  //(params);
+  				for (var i=1; i < arguments.length; i++)
+					clear(arguments[i]);
+			}
+
+			function clear(field) { // variable number of fields supported 
+				//clears input box only
+				for (var i=0; i < arguments.length; i++) {
+					var e = document.getElementById(arguments[i]);
+					e.value = "";
+				}	
+			}
+			
+    		function update_course(http) {
+    			var xmlDoc = http.responseXML;
+    			var fieldArray = xmlDoc.getElementsByTagName("field");
+                                 //   alert("fields length: " + x.length);
+    			var string = "";
+    			for (var i=0; i < fieldArray.length; i++)
+    			{
+    				if (fieldArray[i].attributes.getNamedItem("name").value == "course_name") {
+      				var out = fieldArray[i].childNodes[0].nodeValue;
+	    				string = "<tr><td>"+out+"</td></tr>";
+	    			}
+    			} 
+				document.getElementById("curr_course").innerHTML=string;
+			}
+			
+			function update_question(http) {
+    			var xmlDoc = http.responseXML;
+    			var fieldArray = xmlDoc.getElementsByTagName("field");
+                                 //   alert("fields length: " + x.length);
+    			var string = "";
+    			for (var i=0; i < fieldArray.length; i++)
+    			{
+    				if (fieldArray[i].attributes.getNamedItem("name").value == "question_text") {
+      				var out = fieldArray[i].childNodes[0].nodeValue;
+	    				string = "<tr><td>"+out+"</td></tr>";
+	    			}
+    			} 
+				document.getElementById("curr_question").innerHTML=string;
+			}
+			
+			function update_question_status(http) {
+    			var xmlDoc = http.responseXML;
+    			var fieldArray = xmlDoc.getElementsByTagName("field");
+                                 //   alert("fields length: " + x.length);
+    			var string = "";
+    			for (var i=0; i < fieldArray.length; i++)
+    			{
+    				if (fieldArray[i].attributes.getNamedItem("name").value == "is_open") {
+      				var out = fieldArray[i].childNodes[0].nodeValue;
+	    				if (out == "True") {
+	    					radio = '<input type="radio" name="open" onCLick="execute(\'set_open\', \'True\');" checked>Open<input type="radio" name="open" onCLick="execute(\'set_open\', \'False\');">Closed';
+	    					document.getElementById("open_stat").innerHTML=radio;
+	    				}
+	    				else {
+	    					radio = '<input type="radio" name="open" onCLick="execute(\'set_open\', \'True\');">Open<input type="radio" name="open" onCLick="execute(\'set_open\', \'False\' checked);">Closed';
+	    					document.getElementById("open_stat").innerHTML=radio;
+	    				}
+	    			}
+	    			if (fieldArray[i].attributes.getNamedItem("name").value == "is_hidden") {
+      				var out = fieldArray[i].childNodes[0].nodeValue;
+	    				if (out == "True") {
+	    					radio = '<input type="radio" name="hide" onCLick="execute(\'set_hidden\', \'True\');" checked>Hide<input type="radio" name="hide" onCLick="execute(\'set_hidden\', \'False\');">Show';
+	    					document.getElementById("hide_stat").innerHTML=radio;
+	    				}
+	    				else {
+	    					radio = '<input type="radio" name="hide" onCLick="execute(\'set_hidden\', \'True\');">Hide<input type="radio" name="hide" onCLick="execute(\'set_hidden\', \'False\' checked);">Show';
+	    					document.getElementById("hide_stat").innerHTML=radio;
+	    				}
+	    			}
+    			} 
+			}
+			
+			function update_responses(http) {
+    			var xmlDoc = http.responseXML;
+    			var fieldArray = xmlDoc.getElementsByTagName("field");
+                                 //   alert("fields length: " + x.length);
+    			var string = "";
+    			for (var i=0; i < fieldArray.length; i++)
+    			{
+    				if (fieldArray[i].attributes.getNamedItem("name").value == "user") {
+      				var out = fieldArray[i].childNodes[0].nodeValue;
+	    				string += "<tr><td>"+out+"</td>";
+	    			}
+	    			else if (fieldArray[i].attributes.getNamedItem("name").value == "resp_text") {
+	    				var out = fieldArray[i].childNodes[0].nodeValue;
+	    				string += "<td>"+out+"</td></tr>";
+	    			}
+    			} 
+				document.getElementById("tableRows").innerHTML=string;
+			}
+			
+			function display() {
+				execute('get_course');
+				execute('get_question');
+				execute('display');
+			}
+		</script>	
+	</body>
+</html>
