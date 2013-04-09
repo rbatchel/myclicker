@@ -51,14 +51,14 @@
             <hr />
         </div>
         
-        <div id="login-button-div" class="eight columns" align=center>
+        <div id="login-button-div" class="eight columns"  align=center>
             <ul id="login-button-box">
 				<li><h2> Student Sign-in </h2></li>
-				<li id="login-button">
-					<tr>
-						<td><label for="regularInput">Regular Input</label> <form>Ue:<input type="text" id="username-input" /></td></form>
-						<td><a class="remove-bottom button" onClick="window.location.href='student.html'">Login as Student</a></td>
-					</tr>
+				<li id="login-button-table">
+					<table><tr>
+						<td id="login-button-td-1"><label for="Username">  Username: </label><input type="text" id="username-student-input" /></td>
+						<td id="login-button-td-2"><br \><a class="remove-bottom button" onClick="studentLogin();"> Login </a></td>
+					</tr></table>
 				</li>
             </ul>
         </div>
@@ -66,7 +66,12 @@
 		<div id="login-button-div" class="eight columns" align=center>
             <ul id="login-button-box">
                 <li><h2> Professor Sign-in </h2></li>
-				<li id="login-button"><button class="bigbutton" onClick="window.location.href='professor.html'">Login as Professor</a></li>
+				<li id="login-button-table">
+					<table><tr>
+						<td id="login-button-td-1"><label for="Username"> Username: </label><input type="text" id="username-professor-input" /></td>
+						<td id="login-button-td-2"><br \><a class="remove-bottom button" onClick="professorLogin();"> Login </a></td>
+					</tr></table>
+				</li>
             </ul>
         </div>
         
@@ -89,6 +94,10 @@
 <!-- Added in CSS from Max -->
 <!-- This will overwrite anything already written in that field, so we are safe -->
 <style>
+body
+{
+	/*background-image:url('Pinkie Pie disapproval.jpg');*/
+}
 
 #about
 {
@@ -126,10 +135,10 @@
 	box-shadow: rgba(0,0,0,0.2) 0px 1px 3px
 }
 
-#login-button
+#login-button-table
 {
 	padding-top: 10px;
-	padding-left: 175px;
+	/*padding-left: 175px;
 	/*width: 300px;
 	*/
 }
@@ -140,18 +149,69 @@
 	padding-bottom: 50px;
 }
 
-#username-input
+/*#login-button-td-1
 {
-	max-width: 20%;
+	padding-top: 0px;
+}*/
+
+#login-button-td-1
+{
+	padding-left: 30px;
+}
+
+#username-student-input, #username-professor-input
+{
+	max-width: 80%;
 }
 
 #page_header
 {
     margin-top: 40p;
 }
-  
-  </style>
 
+/* make the backgrounds white but transparent */
+#about, #login-button-box
+{
+	background: #fff;
+	opacity:0.7;
+}
+#about:hover, #login-button-box:hover
+{
+	opacity:1.0;
+}
+</style>
+
+<script>
+
+function studentLogin()
+{
+	var username = document.getElementById("username-student-input").value
+	if (username == "")
+	{
+		alert("You need to type in a username!");
+	}
+	else
+	{
+		alert("Hello "+username);
+		window.location.href='student.html';
+	}	
+}
+
+function professorLogin()
+{
+	var username = document.getElementById("username-professor-input").value
+	if (username == "")
+	{
+		alert("You need to type in a username!");
+	}
+	else
+	{
+		alert("Hello professor "+username);
+		window.location.href='professor.html';
+	}
+}
+
+</script>
 
 
 
