@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+	<!-- Basic Page Needs
+  ================================================== -->
+	<meta charset="utf-8">
+	<title>Login Page</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<!-- Mobile Specific Metas
+  ================================================== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<!-- CSS
+  ================================================== -->
+	<link rel="stylesheet" href="stylesheets/base.css">
+	<link rel="stylesheet" href="stylesheets/skeleton.css">
+	<link rel="stylesheet" href="stylesheets/layout.css">
+
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="images/favicon.ico">
+	<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+
+</head>
+<body>
+
+
+
+	<!-- Primary Page Layout
+	================================================== -->
+
+	<!-- Delete everything in this .container and get started on your own site! -->
+
+	<div class="container">
+	
+	    <div id="page_header" class="sixteen columns">
+            <h1 class="remove-bottom">myClicker</h1>
+            <h5>Prototype</h5>
+            <hr />
+        </div>
+        
+        <div id="login-button-div" class="eight columns" align=center>
+            <ul id="login-button-box">
+				<li><h2> Student Sign-in </h2></li>
+				<li id="login-button">
+					<tr>
+						<td><label for="regularInput">Regular Input</label> <form>Ue:<input type="text" id="username-input" /></td></form>
+						<td><a class="remove-bottom button" onClick="window.location.href='student.html'">Login as Student</a></td>
+					</tr>
+				</li>
+            </ul>
+        </div>
+		
+		<div id="login-button-div" class="eight columns" align=center>
+            <ul id="login-button-box">
+                <li><h2> Professor Sign-in </h2></li>
+				<li id="login-button"><button class="bigbutton" onClick="window.location.href='professor.html'">Login as Professor</a></li>
+            </ul>
+        </div>
+        
+		<hr />
+		
+        <div id="about" class="six columns">
+            <h3>About myClicker</h3>
+            <p>Blah.</p>
+        </div>
+        
+        <div id="about" class="six columns">
+            <h3>About programmers</h3>
+            <p>Blah.</p>
+        </div>
+	</div><!-- container -->
+
+<!-- End Document
+================================================== -->
+
+<!-- Added in CSS from Max -->
+<!-- This will overwrite anything already written in that field, so we are safe -->
+<style>
+
+#about
+{
+	padding: 50px;
+	
+	/* border-radius */
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+	
+	/* box-shadow */
+	-webkit-box-shadow: rgba(0,0,0,0.2) 0px 1px 3px;
+	-moz-box-shadow: rgba(0,0,0,0.2) 0px 1px 3px;
+	box-shadow: rgba(0,0,0,0.2) 0px 1px 3px;
+}
+ 
+#login-button-box
+{
+	padding-left: 0px;
+	padding-top: 25px;
+	padding-bottom: 5px;
+	padding-right: 0px;
+	   
+	width: 320px;
+	margin: 0 auto;
+	
+	/* border-radius */
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+	
+	/* box-shadow */
+	-webkit-box-shadow: rgba(0,0,0,0.2) 0px 1px 3px;
+	-moz-box-shadow: rgba(0,0,0,0.2) 0px 1px 3px;
+	box-shadow: rgba(0,0,0,0.2) 0px 1px 3px
+}
+
+#login-button
+{
+	padding-top: 10px;
+	padding-left: 175px;
+	/*width: 300px;
+	*/
+}
+
+#login-button-div
+{
+	text-align: center;
+	padding-bottom: 50px;
+}
+
+#username-input
+{
+	max-width: 20%;
+}
+
+#page_header
+{
+    margin-top: 40p;
+}
+  
+  </style>
+
+
+
+
+<!-- End CSS
+================================================== -->
+
+</body>
+</html>
