@@ -8,6 +8,97 @@ from django import template
 from milestone import util, models
 from django.core import serializers
 
+def login(request):
+	print "student request"
+	fp = open('./milestone/templates/login.html')
+	t = template.Template(fp.read())
+	fp.close()
+	c = template.Context()
+	html = t.render(c)
+	return HttpResponse(html)
+
+
+def student(request):
+	print "student request"
+	fp = open('./milestone/templates/student.html')
+	t = template.Template(fp.read())
+	fp.close()
+	c = template.Context()
+	html = t.render(c)
+	return HttpResponse(html)
+
+def student_base(request):
+	print file
+	fp = open('./milestone/templates/stylesheets/base.css')
+	t = template.Template(fp.read())
+	fp.close()
+	c = template.Context()
+	html = t.render(c)
+	return HttpResponse(html)
+
+def student_layout(request):
+	print file
+	fp = open('./milestone/templates/stylesheets/layout.css')
+	t = template.Template(fp.read())
+	fp.close()
+	c = template.Context()
+	html = t.render(c)
+	return HttpResponse(html)
+
+def student_skeleton(request):
+	print file
+	fp = open('./milestone/templates/stylesheets/skeleton.css')
+	t = template.Template(fp.read())
+	fp.close()
+	c = template.Context()
+	html = t.render(c)
+	return HttpResponse(html)
+
+def professor(request):
+	fp = open('./milestone/templates/professor.html')
+	t = template.Template(fp.read())
+	fp.close()
+	c = template.Context()
+	html = t.render(c)
+	return HttpResponse(html)
+
+def professor_base(request):
+	print file
+	fp = open('./milestone/templates/stylesheets/base.css')
+	t = template.Template(fp.read())
+	fp.close()
+	c = template.Context()
+	html = t.render(c)
+	#print HttpResponse(html)
+	return HttpResponse(html)
+
+def professor_layout(request):
+	print file
+	fp = open('./milestone/templates/stylesheets/layout.css')
+	t = template.Template(fp.read())
+	fp.close()
+	c = template.Context()
+	html = t.render(c)
+	return HttpResponse(html)
+
+def professor_skeleton(request):
+	print file
+	fp = open('./milestone/templates/stylesheets/skeleton.css')
+	t = template.Template(fp.read())
+	fp.close()
+	c = template.Context()
+	html = t.render(c)
+	return HttpResponse(html)
+
+def professor_icon(request):
+	print file
+	fp = open('./milestone/templates/images/favicon.ico')
+	t = template.Template(fp.read())
+	fp.close()
+	c = template.Context()
+	html = t.render(c)
+	return HttpResponse(html)
+
 def hello(request):
 	return HttpResponse("Hello world")
 

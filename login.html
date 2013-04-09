@@ -5,7 +5,7 @@
 <!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
 <head>
 
-	<!-- Basic Page Needs
+  <!-- Basic Page Needs
   ================================================== -->
 	<meta charset="utf-8">
 	<title>Login Page</title>
@@ -56,10 +56,11 @@
 				<li><h2> Student Sign-in </h2></li>
 				<li id="login-button-table">
 					<table><tr>
-						<td id="login-button-td-1"><label for="Username">  Username: </label><input type="text" id="username-input" /></td>
-						<td id="login-button-td-2"><br \><a class="remove-bottom button" onClick="window.location.href='student.html'"> Login </a></td>
+						<td id="new-student-user-drop"><a class="remove-bottom button" onClick="studentLoginMenu1();"> New User </a></td>
+						<td id="old-student-user-drop"><a class="remove-bottom button" onClick="studentLoginMenu2();"> Login </a></td>
 					</tr></table>
 				</li>
+				<li id="student-login-form"></li>
             </ul>
         </div>
 		
@@ -68,8 +69,8 @@
                 <li><h2> Professor Sign-in </h2></li>
 				<li id="login-button-table">
 					<table><tr>
-						<td id="login-button-td-1"><label for="Username"> Username: </label><input type="text" id="username-input" /></td>
-						<td id="login-button-td-2"><br \><a class="remove-bottom button" onClick="window.location.href='student.html'"> Login </a></td>
+						<td id="login-button-td-1"><label for="Username"> Username: </label><input type="text" id="username-professor-input" /></td>
+						<td id="login-button-td-2"><br \><a class="remove-bottom button" onClick="professorLogin();"> Login </a></td>
 					</tr></table>
 				</li>
             </ul>
@@ -94,6 +95,10 @@
 <!-- Added in CSS from Max -->
 <!-- This will overwrite anything already written in that field, so we are safe -->
 <style>
+body
+{
+	background-image:url('Pinkie Pie disapproval.jpg');
+}
 
 #about
 {
@@ -145,17 +150,12 @@
 	padding-bottom: 50px;
 }
 
-/*#login-button-td-1
-{
-	padding-top: 0px;
-}*/
-
-#login-button-td-1
+#login-button-td-1, #login-button-td-2, #login-button-td-3
 {
 	padding-left: 30px;
 }
 
-#username-input
+#username-student-input, #username-professor-input, #password-student-input, #con-password-student-input
 {
 	max-width: 80%;
 }
@@ -164,9 +164,83 @@
 {
     margin-top: 40p;
 }
-  
-  </style>
 
+/* make the backgrounds white but transparent */
+#about, #login-button-box
+{
+	background: #fff;
+	opacity:0.7;
+}
+#about:hover, #login-button-box:hover
+{
+	opacity:1.0;
+}
+
+#new-student-user-drop
+{
+	padding-left: 50px;
+}
+#old-student-user-drop
+{
+	padding-left: 50px;
+}
+</style>
+
+<script>
+
+function studentLogin()
+{
+	var username = document.getElementById("username-student-input").value
+	if (username == "")
+	{
+		alert("You need to type in a username!");
+	}
+	else
+	{
+		alert("Hello "+username);
+		window.location.href='login.html';
+	}	
+}
+
+function studentLoginMenu1()
+{
+	document.getElementById("student-login-form").innerHTML='<table><tr><td id="login-button-td-1"><label for="Username">  Username: </label><input type="text" id="username-student-input" /></td></tr><tr><td id="login-button-td-2"><label for="Password">  Password: </label><input type="text" id="password-student-input" /></td></tr><tr><td id="login-button-td-3"><label for="Confirm Password"> Confirm Password: </label><input type="text" id="con-password-student-input" /></td><td id="login-button-td-4"><br \><a class="remove-bottom button" onClick="studentLogin();"> Submit </a></td></tr></table>';
+	/*<table><tr>
+		<td id="login-button-td-1"><label for="Username">  Username: </label><input type="text" id="username-student-input" /></td>
+		</tr><tr>
+		<td id="login-button-td-2"><label for="Password">  Password: </label><input type="text" id="password-student-input" /></td>
+		</tr><tr>
+		<td id="login-button-td-3"><label for="Confirm Password"> Confirm Password: </label><input type="text" id="con-password-student-input" /></td>
+		<td id="login-button-td-4"><br \><a class="remove-bottom button" onClick="studentLogin();"> Submit </a></td>
+	</tr></table>*/
+}
+
+function studentLoginMenu2()
+{
+	document.getElementById("student-login-form").innerHTML='<table><tr><td id="login-button-td-1"><label for="Username">  Username: </label><input type="text" id="username-student-input" /></td></tr><tr><td id="login-button-td-2"><label for="Password">  Password: </label><input type="text" id="password-student-input" /></td><td id="login-button-td-4"><br \><a class="remove-bottom button" onClick="studentLogin();"> Submit </a></td></tr></table>';
+	/*<table><tr>
+		<td id="login-button-td-1"><label for="Username">  Username: </label><input type="text" id="username-student-input" /></td>
+		</tr><tr>
+		<td id="login-button-td-2"><label for="Password">  Password: </label><input type="text" id="password-student-input" /></td>
+		<td id="login-button-td-4"><br \><a class="remove-bottom button" onClick="studentLogin();"> Submit </a></td>
+	</tr></table>*/
+}
+
+function professorLogin()
+{
+	var username = document.getElementById("username-professor-input").value
+	if (username == "")
+	{
+		alert("You need to type in a username!");
+	}
+	else
+	{
+		alert("Hello professor "+username);
+		window.location.href='professor.html';
+	}
+}
+
+</script>
 
 
 
