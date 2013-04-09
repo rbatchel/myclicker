@@ -8,6 +8,87 @@ from django import template
 from milestone import util, models
 from django.core import serializers
 
+def student(request):
+	print "student request"
+	fp = open('./milestone/templates/student.html')
+	t = template.Template(fp.read())
+	fp.close()
+	c = template.Context()
+	html = t.render(c)
+	return HttpResponse(html)
+
+def student_base(request):
+	print file
+	fp = open('./milestone/templates/stylesheets/base.css')
+	t = template.Template(fp.read())
+	fp.close()
+	c = template.Context()
+	html = t.render(c)
+	return HttpResponse(html)
+
+def student_layout(request):
+	print file
+	fp = open('./milestone/templates/stylesheets/layout.css')
+	t = template.Template(fp.read())
+	fp.close()
+	c = template.Context()
+	html = t.render(c)
+	return HttpResponse(html)
+
+def student_skeleton(request):
+	print file
+	fp = open('./milestone/templates/stylesheets/skeleton.css')
+	t = template.Template(fp.read())
+	fp.close()
+	c = template.Context()
+	html = t.render(c)
+	return HttpResponse(html)
+
+def professor(request):
+	fp = open('./milestone/templates/professor.html')
+	t = template.Template(fp.read())
+	fp.close()
+	c = template.Context()
+	html = t.render(c)
+	return HttpResponse(html)
+
+def professor_base(request):
+	print file
+	fp = open('./milestone/templates/stylesheets/base.css')
+	t = template.Template(fp.read())
+	fp.close()
+	c = template.Context()
+	html = t.render(c)
+	#print HttpResponse(html)
+	return HttpResponse(html)
+
+def professor_layout(request):
+	print file
+	fp = open('./milestone/templates/stylesheets/layout.css')
+	t = template.Template(fp.read())
+	fp.close()
+	c = template.Context()
+	html = t.render(c)
+	return HttpResponse(html)
+
+def professor_skeleton(request):
+	print file
+	fp = open('./milestone/templates/stylesheets/skeleton.css')
+	t = template.Template(fp.read())
+	fp.close()
+	c = template.Context()
+	html = t.render(c)
+	return HttpResponse(html)
+
+def professor_icon(request):
+	print file
+	fp = open('./milestone/templates/images/favicon.ico')
+	t = template.Template(fp.read())
+	fp.close()
+	c = template.Context()
+	html = t.render(c)
+	return HttpResponse(html)
+
 def hello(request):
 	return HttpResponse("Hello world")
 
@@ -99,8 +180,6 @@ def update_xml(request):
 				data = serializers.serialize('xml', models.Course.objects.filter(pk=c_id))
 			if (action == 'get_question' or action == 'set_open' or action == 'set_hidden'):
 				data = serializers.serialize('xml', models.Question.objects.filter(c_id=c_id).filter(pk=q_id))
-			if action == 'get_all_questions':
-				data = serializers.serialize('xml', models.Question.objects.filter(c_id=c_id))
 			print data
 			
 			#send xml response
