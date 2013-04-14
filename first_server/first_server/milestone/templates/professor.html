@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+    <!-- Basic Page Needs
+  ================================================== -->
+    <meta charset="utf-8">
+    <title>Professor Page</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Mobile Specific Metas
+  ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- CSS
+  ================================================== -->
+    <link rel="stylesheet" type="text/css" href="http://www.princeton.edu/~yingxuel/base.css">
+    <link rel="stylesheet" type="text/css" href="http://www.princeton.edu/~yingxuel/skeleton.css">
+    <link rel="stylesheet" type="text/css" href="http://www.princeton.edu/~yingxuel/layout.css">
+
+    <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+
+</head>
+<body onload="display();">
+
+
+
+    <!-- Primary Page Layout
+    ================================================== -->
+
+    <!-- Delete everything in this .container and get started on your own site! -->
+
+    <div class="container">
+    
+        <div class="sixteen columns">
+            <h1 style="20px">Hello [Professor name here].</h1>
+            <h2 style="20px">You are writing questions for <b id="curr_course"></b>.</h2>
+            <hr />
+        </div>
+        
+        <div class="five columns" style="height:480px; width:240px; border:1px solid #ccc; 
+        font:16px/26px Georgia, Garamond, Serif; overflow:auto;" id="past_questions">
+            //<div style="width:240px; border-bottom:1px solid #ccc;">blahblahblah</div>
+            //<div style="width:240px; border-bottom:1px solid #ccc;">blahblahblah</div>
+        </div>        
+        
+        <div class="eleven columns">
+            New question:<br />
+            <textarea name="new_question" id="new_question"></textarea><br />
+            <button onclick="execute('sub_quest', 'new_question');">Create</button>
+            <hr />
+        </div>
+        
+        <div class="eleven columns">
+            <h3>Current question:</h3>
+            <p id="curr_question"></p>
+            <ul>
+                <button class="button">Close</button>
+                <button class="button">Hide/Reveal</button>
+                <button class="button" onclick="Refresh();">Refresh</button>
+            </ul>
+        </div>
+        
+        <div class="eleven columns">
+            <h3>Student responses:</h3>
+        </div>
+        
+        <div class="eleven columns" style="height:240px; width:480px; border:1px solid #ccc; 
+        font:16px/26px Georgia, Garamond, Serif; overflow:auto;" id="student_responses">
+            Student response 1. <br />
+            Student response 2. <br />
+            Student response 3. <br />
+            Student response 4. <br />
+        </div>  
+        
+    </div><!-- container -->
+
+		<script type="text/javascript">
+		var c_id = 2;
+		var q_id = 1;
+		
+	var q_set;
+	
+    window.onload = Main();
+
+    function Main() {
+    //alert("hello");
+    setInterval(function(){Refresh()}, 10000);
+    }
+    
+    function Refresh() {
+     //  alert("refreshing...");
+       execute("get_question");
+       execute("all_questions");
+       execute("display");
+    }
+    
+		function execute(action) {
+			var http;
+  			if (window.XMLHttpRequest) // code for IE7+, Firefox, Chrome, Opera, Safari
+  				http=new XMLHttpRequest();
+  			else // code for IE6, IE5
+  				http=new ActiveXObject("Microsoft.XMLHTTP");
+
+  			var url = "update.xml" + "?t=" + Math.random();
+  			url += "&c_id=" + c_id + "&q_id=" + q_id;
+  			url += "&action="+ action; 
+  			for (var i=1; i < arguments.length; i++) {
+  				if (arguments[i])
+  					url += "&str"+i+"=" + document.getElementById(arguments[i]).value;
+  			}
+  			var params = ""; //"action=submit&str=testing";
+
+  			http.open("GET", url, true);
+  			http.setRequestHeader("X_REQUESTED_WITH", "XMLHttpRequest");
+   			http.onreadystatechange = function() {
+      			if(http.readyState == 4 && http.status == 200) {
+      				if (action == "get_course")
+      					update_course(http);
+      				if (action == "get_question")
+      					update_question(http);
+              if (action == "display")
+                update_response(http);
+              if (action == "all_questions")
+                update_past_questions(http);
+      				//else
+  						//get_ids(http);
+  				}
+  			}
+  			http.send();  //(params);
+  			for (var i=1; i < arguments.length; i++)
+				clear(arguments[i]);
+		}
+
+		function clear(field) { // variable number of fields supported 
+			//clears input box only
+			for (var i=0; i < arguments.length; i++) {
+				var e = document.getElementById(arguments[i]);
+				e.value = "";
+			}	
+		}
+	
+		function update_course(http) {
+    		var xmlDoc = http.responseXML;
+    		var fieldArray = xmlDoc.getElementsByTagName("field");
+                             //   alert("fields length: " + x.length);
+    		var string = "";
+    		for (var i=0; i < fieldArray.length; i++)
+    		{
+    			if (fieldArray[i].attributes.getNamedItem("name").value == "course_name")
+      				string = fieldArray[i].childNodes[0].nodeValue;
+    		} 
+			document.getElementById("curr_course").innerHTML=string;
+		}
+			
+		function update_question(http) {
+    		var xmlDoc = http.responseXML;
+    		var fieldArray = xmlDoc.getElementsByTagName("field");
+                                //   alert("fields length: " + x.length);
+    		var string = "";
+    		for (var i=0; i < fieldArray.length; i++)
+    		{
+    			if (fieldArray[i].attributes.getNamedItem("name").value == "question_text")
+      				string = fieldArray[i].childNodes[0].nodeValue;
+    		} 
+			document.getElementById("curr_question").innerHTML=string;
+		}
+    
+    function update_response(http) {
+      var xmlDoc = http.responseXML;
+      var obj = xmlDoc.getElementsByTagName("object"); 
+      var str = "";
+      for(var i = 0; i < obj.length; i++) {
+           var id = obj[i].attributes.getNamedItem("pk").value;
+           var x = obj[i].getElementsByTagName("field");
+           var text = " "; var time = "never"; var user = "QWERTY";
+           for(var j = 0; j < x.length; j++) {
+                var y = x[j];
+                if (y.attributes.getNamedItem("name").value == "resp_text")
+                   { text = y.childNodes[0].nodeValue; }
+                if (y.attributes.getNamedItem("name").value == "pub_date") {
+                   time = y.childNodes[0].nodeValue;
+                }
+                if (y.attributes.getNamedItem("name").value == "user") {
+                   user = y.childNodes[0].nodeValue;
+                }      
+             }
+             str = str + "<div style=\"width:240px; border-bottom:1px solid #ccc;\"> <p>" + text + "</p> <p>User: " + user + "</p> </div>";
+         }
+         document.getElementById("student_responses").innerHTML = str;
+    }
+    
+	function change_question(id) {
+		q_id = q_set[id];
+		Refresh();
+	}
+    
+        function update_past_questions(http) {
+    // alert(http.responseText);
+    var xmlDoc = http.responseXML;
+    var obj = xmlDoc.getElementsByTagName("object");
+    var str = "";
+    q_set = new Array();
+    for(var i = 0; i < obj.length; i++) {
+           var id = obj[i].attributes.getNamedItem("pk").value;
+           q_set[i] = id;
+           var x = obj[i].getElementsByTagName("field");
+           var text = " "; var time = "never";
+           for(var j = 0; j < x.length; j++) {
+                var y = x[j];
+                if (y.attributes.getNamedItem("name").value == "question_text")
+                   { text = y.childNodes[0].nodeValue; }
+                if (y.attributes.getNamedItem("name").value == "pub_date") {
+                   time = y.childNodes[0].nodeValue;
+                }
+             }
+             str = str + "<div onclick=\"change_question(" + i + ");\" style=\"width:240px; border-bottom:1px solid #ccc;\"><p>" + text + "</p></div>";
+          // alert(id + "," + text + "," + time);
+         }   
+         document.getElementById("past_questions").innerHTML = str;
+    }
+		
+		function display() {
+			execute('get_course');
+			execute('get_question');
+			execute('display');
+		}
+		
+		function get_ids(http) {
+			var xmlDoc = http.responseXML;
+			var objArray = xmlDoc.getElementsByTagName("object");
+			
+			var string = "";
+			for (var i=0; i < objArray.length; i++)
+			{
+				string += objArray[i].attributes.getNamedItem("pk").value;
+				string += " ";
+			}
+			//alert(string);
+		}
+		
+		function set_past_questions(http) {
+			//var string = ""
+			//var all = ""
+			//for loop as usual
+			//	store current i question/date/ in var string
+			//	all += '<div style="width:240px; border-bottom:1px solid #ccc;">'string'</div>';
+			
+			//document.getElementById("past_questions").innerHTML=all;
+		}
+		
+	</script>
+
+<!-- End Document
+================================================== -->
+</body>
+</html>

@@ -1,0 +1,315 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+
+<!-- Basic Page Needs
+  ================================================== -->
+<meta charset="utf-8">
+<title>Registration Page</title>
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- Mobile Specific Metas
+  ================================================== -->
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<!-- CSS
+  ================================================== -->
+<link rel="stylesheet" href="stylesheets/base.css">
+<link rel="stylesheet" href="stylesheets/skeleton.css">
+<link rel="stylesheet" href="stylesheets/layout.css">
+
+<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+<!-- Favicons
+	================================================== -->
+<link rel="shortcut icon" href="images/favicon.ico">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72"
+	href="images/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114"
+	href="images/apple-touch-icon-114x114.png">
+
+</head>
+<body>
+
+
+
+	<!-- Primary Page Layout
+	================================================== -->
+
+	<!-- Delete everything in this .container and get started on your own site! -->
+
+	<div class="container">
+
+		<div id="page_header" class="sixteen columns">
+			<h1 class="remove-bottom">myClicker</h1>
+			<h5>Prototype</h5>
+			<hr />
+		</div>
+
+		<div id="login-button-div" class="eight columns" align=center>
+			<ul id="login-button-box">
+				<li><h2>Register New User</h2></li>
+				<li id="login-button-table">
+
+					<form action="" method="post">
+						{% csrf_token %} {{ form.as_p }} <input type="submit"
+							value="Create the account">
+					</form> <!-- 					<td id="new-student-user-drop"><a class="remove-bottom button" onClick="studentLoginMenu1();"> New User </a></td> -->
+					<!-- 						<td id="old-student-user-drop"><a class="remove-bottom button" onClick="studentLoginMenu2();"> Existing User </a></td> -->
+				</li>
+				<li id="student-login-form"></li>
+			</ul>
+		</div>
+
+	</div>
+	<!-- container -->
+
+	<!-- End Document
+================================================== -->
+
+	<!-- Added in CSS from Max -->
+	<!-- This will overwrite anything already written in that field, so we are safe -->
+	<style>
+
+/*---------------------------------------------------------------------------*/
+
+/**
+  * The background (add pictures of ponies!)
+  **/
+body {
+	background-image: url('Pinkie Pie disapproval.jpg');
+}
+
+/*---------------------------------------------------------------------------*/
+
+/**
+  * Format the about boxes
+  **/
+#about {
+	padding: 50px;
+	/* border-radius */
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	/* box-shadow */
+	-webkit-box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px;
+	-moz-box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px;
+	box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px;
+}
+
+/*---------------------------------------------------------------------------*/
+
+/**
+  * Format the login boxes
+  **/
+#login-button-box {
+	padding-left: 0px;
+	padding-top: 25px;
+	padding-bottom: 5px;
+	padding-right: 0px;
+	width: 320px;
+	margin: 0 auto;
+	/* border-radius */
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	/* box-shadow */
+	-webkit-box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px;
+	-moz-box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px;
+	box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px
+}
+
+#login-button-table {
+	padding-top: 10px;
+	/*padding-left: 175px;
+	/*width: 300px;
+	*/
+}
+
+#login-button-div {
+	text-align: center;
+	padding-bottom: 50px;
+}
+
+#login-button-td-input {
+	padding-left: 30px;
+}
+
+/*---------------------------------------------------------------------------*/
+
+/**
+  * Make input fields not extend through the full box
+  **/
+#username-student-input,#username-professor-input,#password-professor-input,#password-student-input,#con-password-student-input
+	{
+	max-width: 80%;
+}
+
+/*---------------------------------------------------------------------------*/
+
+/**
+  * Format the header of the page
+  **/
+#page_header {
+	margin-top: 40p;
+}
+
+/*---------------------------------------------------------------------------*/
+
+/**
+  * Make the backgrounds white but transparent
+  **/
+#about,#login-button-box {
+	background: #fff;
+	opacity: 0.7;
+}
+
+#about:hover,#login-button-box:hover {
+	opacity: 1.0;
+}
+
+/*---------------------------------------------------------------------------*/
+
+/**
+  * Adjust the fields in the dropdown lists
+  **/
+#new-student-user-drop {
+	padding-left: 50px;
+}
+
+#old-student-user-drop {
+	padding-left: 50px;
+}
+
+/*---------------------------------------------------------------------------*/
+</style>
+
+	<script>
+		/*---------------------------------------------------------------------------*/
+
+		/**
+		 * Processes the existing student's login credentials.
+		 **/
+
+		function studentLogin() {
+			var username = document.getElementById("username-student-input").value;
+			var password = document.getElementById("password-student-input").value;
+			if (username == "") {
+				alert("You need to type in a username!");
+			} else if (password == "") {
+				alert("You need to type in a password!");
+			} else {
+				alert("Log-in check.  For now, skip that");
+				alert("Hello " + username);
+				window.location.href = 'student.html';
+			}
+		}
+
+		/*---------------------------------------------------------------------------*/
+
+		/**
+		 * Processes the new student's login credentials.
+		 **/
+
+		function studentNewUser() {
+			var username = document.getElementById("username-student-input").value
+			var password = document.getElementById("password-student-input").value;
+			var conpassword = document
+					.getElementById("con-password-student-input").value;
+
+			if (username == "") {
+				alert("You need to type in a username!");
+			} else if (password == "") {
+				alert("You need to type in a password!");
+			} else if (conpassword == "") {
+				alert("You need to confirm your password!");
+			} else if (password != conpassword) {
+				alert("Password and Confirmed password do not match!");
+			} else {
+				alert("Log-in with server.  For now, skip that");
+				alert("Hello " + username);
+				window.location.href = 'student.html';
+			}
+		}
+
+		/*---------------------------------------------------------------------------*/
+
+		/**
+		 * Processes the professor's login credentials.
+		 **/
+
+		function professorLogin() {
+			var username = document.getElementById("username-professor-input").value;
+			var password = document.getElementById("password-professor-input").value;
+			if (username == "") {
+				alert("You need to type in a username!");
+			} else if (password == "") {
+				alert("You need to type in a password!");
+			} else {
+				alert("Log-in check.  For now, skip that");
+				alert("Hello professor " + username);
+				window.location.href = 'professor.html';
+			}
+		}
+
+		/*---------------------------------------------------------------------------*/
+
+		/**
+		 * Opens up drop-down menu for a new User
+		 **/
+
+		function studentLoginMenu1() {
+			document.getElementById("student-login-form").innerHTML = '<table><tr><td id="login-button-td-input"><label for="Username">  Username: </label><input type="text" id="username-student-input" /></td></tr><tr><td id="login-button-td-input"><label for="Password">  Password: </label><input type="text" id="password-student-input" /></td></tr><tr><td id="login-button-td-input"><label for="Confirm Password"> Confirm Password: </label><input type="text" id="con-password-student-input" /></td><td id="login-button-td-button"><br \><a class="remove-bottom button" onClick="studentNewUser();"> Submit </a></td></tr></table>';
+			/*<table><tr>
+				<td id="login-button-td-input"><label for="Username">  Username: </label><input type="text" id="username-student-input" /></td>
+				</tr><tr>
+				<td id="login-button-td-input"><label for="Password">  Password: </label><input type="text" id="password-student-input" /></td>
+				</tr><tr>
+				<td id="login-button-td-input"><label for="Confirm Password"> Confirm Password: </label><input type="text" id="con-password-student-input" /></td>
+				<td id="login-button-td-button"><br \><a class="remove-bottom button" onClick="studentNewUser();"> Submit </a></td>
+			</tr></table>*/
+		}
+
+		/*---------------------------------------------------------------------------*/
+
+		/**
+		 * Opens up drop-down menu for an existing User
+		 **/
+
+		function studentLoginMenu2() {
+			document.getElementById("student-login-form").innerHTML = '<table><tr><td id="login-button-td-input"><label for="Username">  Username: </label><input type="text" id="username-student-input" /></td></tr><tr><td id="login-button-td-input"><label for="Password">  Password: </label><input type="text" id="password-student-input" /></td><td id="login-button-td-button"><br \><a class="remove-bottom button" onClick="studentLogin();"> Login </a></td></tr><tr><td><a onClick="lol();"> Forgot your password? </a></td></tr></table>';
+			/*<table><tr>
+				<td id="login-button-td-input"><label for="Username">  Username: </label><input type="text" id="username-student-input" /></td>
+				</tr><tr>
+				<td id="login-button-td-input"><label for="Password">  Password: </label><input type="text" id="password-student-input" /></td>
+				<td id="login-button-td-button"><br \><a class="remove-bottom button" onClick="studentLogin();"> Login </a></td>
+				</tr><tr>
+				<td><a onClick="lol();"> Forgot your password? </a></td>
+			</tr></table>*/
+		}
+
+		/*------------------onClick="alert("Doesn't that fucking suck?");"---------------------------------------------------------*/
+
+		function lol() {
+			alert("Doesn't that fucking suck?");
+		}
+	</script>
+
+
+
+	<!-- End CSS
+================================================== -->
+
+</body>
+</html>
