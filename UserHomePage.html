@@ -61,6 +61,11 @@
         
         <div class="eleven columns">
             <p id="class-search-label"><label for="Class">  Search for a class: </label><input type="text" id="class-search-input" /></p>
+          <ul id="enroll-button-ul">
+            <button class="button" onClick="Search();">
+              Search</a>
+            </ul>
+          <select id="class_search"></select>
             <p id="class-search-description">Class description.</p>
             <ul id="enroll-button-ul">
                 <button class="button" onClick="Enroll();">Enroll</a>
@@ -75,10 +80,12 @@
 	    	<tr id="create-tr" style="visibility:visible;"><td>
                 <button onclick=";">Create a class</button>
 				<p> blah blah create blah </p>
+          <p>Insert slots for information about creating classes here</p>
             </td></tr>
 			<tr id="edit-tr" style="visibility:collapse;"><td>
 			    <button onclick=";">Edit a class</button>
 				<p> blah edit blah blah </p>
+        <p>Insert slots for information about editing classes here</p>
 		    </td></tr>
 	    </table>
 	</div>
@@ -142,171 +149,179 @@
 
 	<script type="text/javascript">
 
-/*---------------------------------------------------------------------------*/
+    /*---------------------------------------------------------------------------*/
 
-/**
-  * Make the create a class field form visible
-  **/
-  
-function createVisible()
-{
-	document.getElementById("create-tr").style.visibility="visible";
-	document.getElementById("edit-tr").style.visibility="collapse";
-}
+    /**
+    * Make the create a class field form visible
+    **/
 
-/*---------------------------------------------------------------------------*/
-
-/**
-  * Make the create a edit field form visible
-  **/
-  
-function editVisible()
-{
-	document.getElementById("edit-tr").style.visibility="visible";
-	document.getElementById("create-tr").style.visibility="collapse";
-}
-
-/*---------------------------------------------------------------------------*/
-
-
-	/*
-    var c_id = 2;
-    var q_id = 1;
-	
-    var q_set;
-    window.onload = Main();
-
-    function Main() {
-    //alert("hello");
-    setInterval(function(){Refresh()}, 10000);
+    function createVisible()
+    {
+    document.getElementById("create-tr").style.visibility="visible";
+    document.getElementById("edit-tr").style.visibility="collapse";
     }
 
-    function Refresh() {
-      //alert("refreshing...");
-    execute("get_question");
-    execute("all_questions");
-   // execute("display");
+    /*---------------------------------------------------------------------------*/
+
+    /**
+    * Make the create a edit field form visible
+    **/
+
+    function editVisible()
+    {
+    document.getElementById("edit-tr").style.visibility="visible";
+    document.getElementById("create-tr").style.visibility="collapse";
     }
 
-    function execute(action) {
-    var http;
-    if (window.XMLHttpRequest) // code for IE7+, Firefox, Chrome, Opera, Safari
-    http=new XMLHttpRequest();
-    else // code for IE6, IE5
-    http=new ActiveXObject("Microsoft.XMLHTTP");
+    /*---------------------------------------------------------------------------*/
 
-    var url = "update.xml" + "?t=" + Math.random();
-    url += "&c_id=" + c_id + "&q_id=" + q_id;
-  			url += "&action="+ action; 
-  			for (var i=1; i < arguments.length; i++) {
-  				if (arguments[i])
-  					url += "&str"+i+"=" + document.getElementById(arguments[i]).value;
-  			}
-  			var params = ""; //"action=submit&str=testing";
-
-  			http.open("GET", url, true);
-  			http.setRequestHeader("X_REQUESTED_WITH", "XMLHttpRequest");
-   			http.onreadystatechange = function() {
-      			if(http.readyState == 4 && http.status == 200) {
-      				if (action == "get_course")
-      					update_course(http);
-      				if (action == "get_question")
-      					update_question(http);
-              if (action == "all_questions")
-                update_past_questions(http);
-      				else
-  						get_ids(http);
-  				}
-  			}
-  			http.send();  //(params);
-  			for (var i=1; i < arguments.length; i++)
-				clear(arguments[i]);
-		}
-
-		function clear(field) { // variable number of fields supported 
-			//clears input box only
-			for (var i=0; i < arguments.length; i++) {
-				var e = document.getElementById(arguments[i]);
-				e.value = "";
-			}	
-		}
-	
-		function update_course(http) {
-    		var xmlDoc = http.responseXML;
-    		var fieldArray = xmlDoc.getElementsByTagName("field");
-                             //   alert("fields length: " + x.length);
-    		var string = "";
-    		for (var i=0; i < fieldArray.length; i++)
-    		{
-    			if (fieldArray[i].attributes.getNamedItem("name").value == "course_name")
-      				string = fieldArray[i].childNodes[0].nodeValue;
-    		} 
-			document.getElementById("curr_course").innerHTML=string;
-		}
-			
-		function update_question(http) {
-    		var xmlDoc = http.responseXML;
-    		var fieldArray = xmlDoc.getElementsByTagName("field");
-                                //   alert("fields length: " + x.length);
-    		var string = "";
-    		for (var i=0; i < fieldArray.length; i++)
-    		{
-    			if (fieldArray[i].attributes.getNamedItem("name").value == "question_text")
-      				string = fieldArray[i].childNodes[0].nodeValue;
-    		} 
-			document.getElementById("curr_question").innerHTML=string;
-		}
-		
-		function display() {
-			execute('get_course');
-			execute('get_question');
-			execute('display');
-		}
-		
-		function get_ids(http) {
-			var xmlDoc = http.responseXML;
-			var objArray = xmlDoc.getElementsByTagName("object");
-			
-			var string = "";
-			for (var i=0; i < objArray.length; i++)
-			{
-				string += objArray[i].attributes.getNamedItem("pk").value;
-				string += " ";
-			}
-			//alert(string);
-		}
-		
-		function change_question(id) {
-			q_id = q_set[id];
-			Refresh();
-		}
+    //used as an array
+    var class_names;
     
-        
-		 function update_past_questions(http) {
-    // alert(http.responseText);
+    //used for editing a course
+    var c_id;
+
+    //function that performed as soon as the web page is loaded: for fetching information, enable a timer, etc.
+    window.onload = Main();
+    function Main() {
+    alert("hello");  //you can comment this out: but I left it in because it's a quick way to tell if your Javascript is broken (missing/extra quotation marks, semicolons, etc.
+    }
+
+    //generic for submitting XML (AJAX) request
+    function Submit(action) { //include additional parameters if needed, see below
+       var http;
+       if (window.XMLHttpRequest) // code for IE7+, Firefox, Chrome, Opera, Safari
+          http=new XMLHttpRequest();
+       else // code for IE6, IE5
+         http=new ActiveXObject("Microsoft.XMLHTTP");
+
+       var url = "update.xml" + "?t=" + Math.random();  //change update.xml if you're using a different url
+       url += "&action="+ action;  //now the request has a "action" entry as a GET parameter
+         //url +' "&var_name=" + var_value; //generic method for adding parameters
+         //Additional parameters are included inside an implicit arguments[] array.  These can be accessed and stored as necessary
+         //Or, you can comment out this for loop
+       for (var i=1; i < arguments.length; i++) {
+  				if (arguments[i])
+  					url += "&str"+i+"=" + arguments[i];  //this adds the argument to the GET parameters
+           //document.getElementById(arguments[i]).value;  //This adds the contents of an HTML object with id 'arguments[i]' as an argument to GET parameters
+       }
+    //Will not be used unless we're making POST requests
+    //var params = "";
+
+    http.open("GET", url, true);
+    http.setRequestHeader("X_REQUESTED_WITH", "XMLHttpRequest");
+    
+    http.onreadystatechange = function() {
+       if(http.readyState == 4 && http.status == 200) {
+          //Add function calls here to process the returned XML
+          if(action == get_course) {
+             update_courses(http);
+          //set so Enroll() will call update_courses()
+          //set so Search() will call UpdateSearch()
+          }
+       }
+    }
+    }
+    
+
+    function update_courses(http) {
+    //alert(http.responseText);  //Uncomment if you want to see the text version of the XML: if you're recieving what you think you are
+    class_names = new Array();
+    var string = "";
     var xmlDoc = http.responseXML;
     var obj = xmlDoc.getElementsByTagName("object");
-    var str = "";
-    q_set = new Array();
+    //for each object...
     for(var i = 0; i < obj.length; i++) {
-           var id = obj[i].attributes.getNamedItem("pk").value;
-           q_set[i] = id;
+           //uncomment if you want the id of a particular object
+           //var id = obj[i].attributes.getNamedItem("pk").value;
            var x = obj[i].getElementsByTagName("field");
-           var text = " "; var time = "never";
+           var name = "";  var term = ""; var year = ""; var prof = "False";
+           //for each field in the object...
            for(var j = 0; j < x.length; j++) {
                 var y = x[j];
-                if (y.attributes.getNamedItem("name").value == "question_text")
-                   { text = y.childNodes[0].nodeValue; }
-                if (y.attributes.getNamedItem("name").value == "pub_date") {
-                   time = y.childNodes[0].nodeValue;
-                }
+                if (y.attributes.getNamedItem("name").value == "XXXX")  //name for field with class name here
+                   { name = y.childNodes[0].nodeValue; }
+                if (y.attributes.getNamedItem("name").value == "YYYY")  //name for field with term here
+                   { term = y.childNodes[0].nodeValue; }
+                if (y.attributes.getNamedItem("name").value == "ZZZZ")   //name for field with year here
+                   { year = y.childNodes[0].nodeValue; }
+                if (y.attributes.getNamedItem("name").value == "ZZZZ")   //name for student/professor status here
+                   { prof = y.childNodes[0].nodeValue; } //
+                //add/change fields as needed
              }
-             str = str + "<div onclick=\"change_question(" + i + ");\" style=\"width:240px; border-bottom:1px solid #ccc;\"><p>" + text + "</p></div>";
-          // alert(id + "," + text + "," + time);
-         }   
-         document.getElementById("past_questions").innerHTML = str;
+          class_names[i] = name;  //set up for the something() function call
+          var str = "<div style=\"width:240px; border-bottom:1px solid #ccc;\"> ";  //change if you want to change the style of the components
+          str = str + name; //name of class, extracted from XML object entry
+          str = str +"<button onClick=\"something(" + i + ");\">Do Something<\button>";  //button inside the segment that has a function call
+          if (prof == "True") {
+             str = str + "<button onClick=\"edit_course(" + i + ");\">Edit Course<\button>"; 
+          }
+          str = str +"<p>Year: " + year + " Term: " + term + " </p>";
+          str = str + "</div>";
+    string = string + str;
     }
-	*/
+    //"XXX" is the id of the scrolling box area: if it doesn't have an id, you'll have to add one
+    document.getElementById("class_list").innerHTML = string;
+    //and you're done!  the box has been updated with all the classes
+    }
+
+    function something(id) {
+    var str = class_names[id];
+    alert("You noticed class: " + str);
+    }
+    
+    function edit_course(id) {
+       c_id = id;
+       editVisible();
+    }
+    
+    //---------------------------------------------------------------------------------------------------------------
+    //functions for searching through courses
+    
+    //this is the 
+    function Search() {
+      //submit query string to server through Submit()
+      var search = document.getElementById("class-search-label").value;
+    }
+    
+    function Enroll() {
+      //pass user name, class name, and correction action to Submit()
+      var name = document.getElementById("class_search").value;
+    }    
+    
+    
+    function UpdateSearch() {
+    //alert(http.responseText); 
+    var string = "";
+    var xmlDoc = http.responseXML;
+    var obj = xmlDoc.getElementsByTagName("object");
+    //for each object...
+    for(var i = 0; i < obj.length; i++) {
+        var x = obj[i].getElementsByTagName("field");
+        var name = "";  var term = ""; var year = "";
+           //for each field in the object...
+           for(var j = 0; j < x.length; j++) {
+                var y = x[j];
+                if (y.attributes.getNamedItem("name").value == "XXXX")  //name for field with class name here
+                   { name = y.childNodes[0].nodeValue; }
+                if (y.attributes.getNamedItem("name").value == "YYYY")  //name for field with term here
+                   { term = y.childNodes[0].nodeValue; }
+                if (y.attributes.getNamedItem("name").value == "ZZZZ")   //name for field with year here
+                   { year = y.childNodes[0].nodeValue; }
+                //add/change fields as needed
+             }
+          var str = "<option";
+          str = str + " value=\"" + name + "\">";
+          str = str + "Class: " + name + " Year: " + year + " Term: " + term;
+          str = str + "</option>";
+    string = string + str;
+    }
+    document.getElementById("class_search").innerHTML = string;
+    }
+
+    
+    //-----------------------------------------------------------------------------------------------------------------
+
 	</script> 
 <!-- End Document
 ================================================== -->
