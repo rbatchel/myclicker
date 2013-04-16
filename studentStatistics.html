@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+   <!-- include JQuery Tools -->
+	<script src="http://cdn.jquerytools.org/1.2.7/full/jquery.tools.min.js"></script>
+  
+    <!-- Basic Page Needs
+  ================================================== -->
+    <meta charset="utf-8">
+    <title>Professor Actions Page</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Mobile Specific Metas
+  ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- CSS
+  ================================================== -->
+    <link rel="stylesheet" type="text/css" href="http://www.princeton.edu/~yingxuel/base.css">
+    <link rel="stylesheet" type="text/css" href="http://www.princeton.edu/~yingxuel/skeleton.css">
+    <link rel="stylesheet" type="text/css" href="http://www.princeton.edu/~yingxuel/layout.css">
+
+    <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+
+</head>
+<body onload="display();">
+
+
+
+    <!-- Primary Page Layout
+    ================================================== -->
+
+    <!-- Delete everything in this .container and get started on your own site! -->
+
+    <div class="container">
+
+	
+	<div class="sixteen columns" id="header">
+        <h1 id="header-text">Hello Professor {{ user.username }}.</h1>
+		<hr />
+    </div>
+		
+		
+
+		<div id="panes">
+			<div class="five columns">
+				<input type="text" name="search-student" id="search-student-input" value="Search Student" onfocus="this.value==this.defaultValue?this.value='':null"/>
+				<h5> Class Roster </h5>
+				<div id="class-roster">
+				Replace me, I'm a scrolling box.
+				</div>  
+			</div>
+		
+			<div class="eight columns">
+				<div id="response-box-header">
+					<p id="rbh-p"> Total Responses: <b id="total-responses"></b></p>
+					<p id="rbh-p"> Total Questions: <b id="total-questions"></b></p>
+					<p id="rbh-p"> Out of: <b id="total-out-of"></b></p>
+					
+				</div>
+
+				<div id="response-list">
+				Replace me, I'm a scrolling box.
+				</div>  
+			</div>
+		</div>
+               
+    </div><!-- container -->
+	
+	
+	<style>
+	
+#rbh-p
+{
+	margin:20px;
+}
+
+#response-box-header
+{
+	border:1px solid #ccc;
+	width:240px; 
+}
+	
+	/**
+	  *  Scrolly box 
+	  **/
+	  
+#response-list, #class-roster, #question-pool
+{
+    height:480px; 
+	border:1px solid #ccc; 
+    font:16px/26px Georgia, Garamond, Serif; 
+	overflow:auto;
+}
+	
+	
+#search-student-input 
+{
+	color:#888;
+	
+}
+/*---------------------------------------------------------------------------*/
+
+	/**
+	  *  Scrolly box for past classes
+	  **/
+	
+	#class-list
+	{
+	    height:480px; 
+		width:240px; 
+		border:1px solid #ccc; 
+        font:16px/26px Georgia, Garamond, Serif; 
+		overflow:auto;
+	}
+	
+/*---------------------------------------------------------------------------*/
+	
+	/**
+	  *  Header 
+	  **/
+	
+	#header-text 
+	{
+	    font-size:25px;
+	}
+	
+/*---------------------------------------------------------------------------*/
+
+	/**
+	  * Push enroll button over to the side
+	  **/
+	  
+/*#enroll-button-ul 
+{
+	padding-left:300px;
+}*/
+	
+/*---------------------------------------------------------------------------*/
+
+	/**
+	  * Hide edit at first
+	  **
+	
+#edit-tr 
+{
+	visibility:collapse;
+}
+/*#create-tr 
+{
+	visibility:visible;
+}
+
+/*---------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+
+	/**
+	  * This is all CSS for the tabs
+	  */
+	  
+/* root element for tabs  */
+ul.tabs {
+    list-style:none;
+    margin:0 !important;
+    padding:0;
+    border-bottom:1px solid #666;
+    height:30px;
+}
+
+/* single tab */
+ul.tabs li {
+    float:left;
+    text-indent:0;
+    padding:0;
+    margin:0 !important;
+    list-style-image:none !important;
+}
+
+/* link inside the tab. uses a background image */
+ul.tabs a {
+    background: url(tabs.png) no-repeat -420px 0;
+    font-size:11px;
+    display:block;
+    height: 30px;
+    line-height:30px;
+    width: 134px;
+    text-align:center;
+    text-decoration:none;
+    color:#333;
+    padding:0px;
+    margin:0px;
+    position:relative;
+    top:1px;
+}
+
+ul.tabs a:active {
+    outline:none;
+}
+
+/* when mouse enters the tab move the background image */
+ul.tabs a:hover {
+    background-position: -420px -31px;
+    color:#fff;
+}
+
+/* active tab uses a class name "current". its highlight is also done by moving the background image. */
+ul.tabs a.current, ul.tabs a.current:hover, ul.tabs li.current a {
+    background-position: -420px -62px;
+    cursor:default !important;
+    color:#000 !important;
+}
+
+/* Different widths for tabs: use a class name: w1, w2, w3 or w2 */
+
+
+/* width 1 */
+ul.tabs a.s { background-position: -553px 0; width:81px; }
+ul.tabs a.s:hover { background-position: -553px -31px; }
+ul.tabs a.s.current  { background-position: -553px -62px; }
+
+/* width 2 */
+ul.tabs a.l { background-position: -248px -0px; width:174px; }
+ul.tabs a.l:hover { background-position: -248px -31px; }
+ul.tabs a.l.current { background-position: -248px -62px; }
+
+
+/* width 3 */
+ul.tabs a.xl { background-position: 0 -0px; width:248px; }
+ul.tabs a.xl:hover { background-position: 0 -31px; }
+ul.tabs a.xl.current { background-position: 0 -62px; }
+
+
+/* initially all panes are hidden */
+.panes .pane {
+    display:none;
+}
+
+/*--------------------------------------------------------------*/
+
+/* tab pane styling */
+/*.panes div {
+    display:none;
+    padding:15px 10px;
+    border:1px solid #999;
+    border-top:0;
+    height:100px;
+    font-size:14px;
+    background-color:#fff;
+}*/
+
+
+/*--------------------------------------------------------------*/
+/*--------------------------------------------------------------*/
+/*--------------------------------------------------------------*/
+
+
+	</style>
+	
+
+	<script type="text/javascript">
+
+/*---------------------------------------------------------------------------*/
+
+/**
+  * Make the create a class field form visible
+  **/
+  
+function createVisible()
+{
+	document.getElementById("create-tr").style.visibility="visible";
+	document.getElementById("edit-tr").style.visibility="collapse";
+}
+
+/*---------------------------------------------------------------------------*/
+
+/**
+  * Make the create a edit field form visible
+  **/
+  
+function editVisible()
+{
+	document.getElementById("edit-tr").style.visibility="visible";
+	document.getElementById("create-tr").style.visibility="collapse";
+}
+
+/*--------------------------------------------------------------------------*/
+
+
+	/*
+    var c_id = 2;
+    var q_id = 1;
+	
+    var q_set;
+    window.onload = Main();
+
+    function Main() {
+    //alert("hello");
+    setInterval(function(){Refresh()}, 10000);
+    }
+
+    function Refresh() {
+      //alert("refreshing...");
+    execute("get_question");
+    execute("all_questions");
+   // execute("display");
+    }
+
+    function execute(action) {
+    var http;
+    if (window.XMLHttpRequest) // code for IE7+, Firefox, Chrome, Opera, Safari
+    http=new XMLHttpRequest();
+    else // code for IE6, IE5
+    http=new ActiveXObject("Microsoft.XMLHTTP");
+
+    var url = "update.xml" + "?t=" + Math.random();
+    url += "&c_id=" + c_id + "&q_id=" + q_id;
+  			url += "&action="+ action; 
+  			for (var i=1; i < arguments.length; i++) {
+  				if (arguments[i])
+  					url += "&str"+i+"=" + document.getElementById(arguments[i]).value;
+  			}
+  			var params = ""; //"action=submit&str=testing";
+
+  			http.open("GET", url, true);
+  			http.setRequestHeader("X_REQUESTED_WITH", "XMLHttpRequest");
+   			http.onreadystatechange = function() {
+      			if(http.readyState == 4 && http.status == 200) {
+      				if (action == "get_course")
+      					update_course(http);
+      				if (action == "get_question")
+      					update_question(http);
+              if (action == "all_questions")
+                update_past_questions(http);
+      				else
+  						get_ids(http);
+  				}
+  			}
+  			http.send();  //(params);
+  			for (var i=1; i < arguments.length; i++)
+				clear(arguments[i]);
+		}
+
+		function clear(field) { // variable number of fields supported 
+			//clears input box only
+			for (var i=0; i < arguments.length; i++) {
+				var e = document.getElementById(arguments[i]);
+				e.value = "";
+			}	
+		}
+	
+		function update_course(http) {
+    		var xmlDoc = http.responseXML;
+    		var fieldArray = xmlDoc.getElementsByTagName("field");
+                             //   alert("fields length: " + x.length);
+    		var string = "";
+    		for (var i=0; i < fieldArray.length; i++)
+    		{
+    			if (fieldArray[i].attributes.getNamedItem("name").value == "course_name")
+      				string = fieldArray[i].childNodes[0].nodeValue;
+    		} 
+			document.getElementById("curr_course").innerHTML=string;
+		}
+			
+		function update_question(http) {
+    		var xmlDoc = http.responseXML;
+    		var fieldArray = xmlDoc.getElementsByTagName("field");
+                                //   alert("fields length: " + x.length);
+    		var string = "";
+    		for (var i=0; i < fieldArray.length; i++)
+    		{
+    			if (fieldArray[i].attributes.getNamedItem("name").value == "question_text")
+      				string = fieldArray[i].childNodes[0].nodeValue;
+    		} 
+			document.getElementById("curr_question").innerHTML=string;
+		}
+		
+		function display() {
+			execute('get_course');
+			execute('get_question');
+			execute('display');
+		}
+		
+		function get_ids(http) {
+			var xmlDoc = http.responseXML;
+			var objArray = xmlDoc.getElementsByTagName("object");
+			
+			var string = "";
+			for (var i=0; i < objArray.length; i++)
+			{
+				string += objArray[i].attributes.getNamedItem("pk").value;
+				string += " ";
+			}
+			//alert(string);
+		}
+		
+		function change_question(id) {
+			q_id = q_set[id];
+			Refresh();
+		}
+    
+        
+		 function update_past_questions(http) {
+    // alert(http.responseText);
+    var xmlDoc = http.responseXML;
+    var obj = xmlDoc.getElementsByTagName("object");
+    var str = "";
+    q_set = new Array();
+    for(var i = 0; i < obj.length; i++) {
+           var id = obj[i].attributes.getNamedItem("pk").value;
+           q_set[i] = id;
+           var x = obj[i].getElementsByTagName("field");
+           var text = " "; var time = "never";
+           for(var j = 0; j < x.length; j++) {
+                var y = x[j];
+                if (y.attributes.getNamedItem("name").value == "question_text")
+                   { text = y.childNodes[0].nodeValue; }
+                if (y.attributes.getNamedItem("name").value == "pub_date") {
+                   time = y.childNodes[0].nodeValue;
+                }
+             }
+             str = str + "<div onclick=\"change_question(" + i + ");\" style=\"width:240px; border-bottom:1px solid #ccc;\"><p>" + text + "</p></div>";
+          // alert(id + "," + text + "," + time);
+         }   
+         document.getElementById("past_questions").innerHTML = str;
+    }
+	*/
+	
+	</script> 
+<!-- End Document
+================================================== -->
+</body>
+</html>
