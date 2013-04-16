@@ -72,23 +72,57 @@
             </ul>
             <hr />
         </div>
-        
-	<div class="eleven columns">
-		<p> This is a testing button, just POC of collapsing forms </p>
-		<button onclick="createVisible();"> Make create visible </button><button onclick="editVisible();"> Make edit visible </button>
+
+      <div class="eleven columns">
+        <p> This is a testing button, just POC of collapsing forms </p>
+        <button onclick="createVisible();"> Make create visible </button>
+        <button onclick="editVisible();"> Make edit visible </button>
         <table id="create-edit-table">
-	    	<tr id="create-tr" style="visibility:visible;"><td>
-                <button onclick=";">Create a class</button>
-				<p> blah blah create blah </p>
-          <p>Insert slots for information about creating classes here</p>
-            </td></tr>
-			<tr id="edit-tr" style="visibility:collapse;"><td>
-			    <button onclick=";">Edit a class</button>
-				<p> blah edit blah blah </p>
-        <p>Insert slots for information about editing classes here</p>
-		    </td></tr>
-	    </table>
-	</div>
+          <tr id="create-tr" style="visibility:visible;">
+            <td>
+
+              <label for="Class Name">  Class Name: </label>
+              <input type="text" name="create-classname-input" id="create-classname-input" />
+              <label for="Term">  Term: </label>
+              <input type="radio" name="create-term-input" id="create-term-input-spring">
+                Spring <input type="radio" name="create-term-input" id="create-term-input-fall">
+                  Fall
+                  <label for="Year"> Year: </label>
+                  <select id="create-year-input" name="year">
+                    <option value="2014">2014</option>
+                    <option value="2013">2013</option>
+                    <option value="2012">2012</option>
+                  </select>
+
+                  <button onclick=";">Create a class</button>
+                </td>
+          </tr>
+          <tr id="edit-tr" style="visibility:collapse;">
+            <td>
+              <label for="Class Name">  Class Name: </label>
+              <input type="text" name="edit-classname-input" id="edit-classname-input" />
+              <label for="Term">  Term: </label>
+              <input type="radio" name="edit-term-input" id="edit-term-input-spring">
+                Spring <input type="radio" name="edit-term-input" id="edit-term-input-fall">
+                  Fall
+                  <label for="Year"> Year: </label>
+                  <select id="edit-year-input" name="year">
+                    <option value="2014">2014</option>
+                    <option value="2013">2013</option>
+                    <option value="2012">2012</option>
+                  </select>
+
+                  <button onclick=";">Edit a class</button>
+
+
+                  <label for="Make prof">  Make Professor: </label><input type="text" name="edit-make-input" id="edit-make-input" />
+                  <button onclick=";">Make professor</button><button onclick=";">Remove professor</button>
+
+
+                </td>
+          </tr>
+        </table>
+      </div>
 	
                
     </div><!-- container -->
