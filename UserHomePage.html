@@ -82,7 +82,7 @@
             <td>
 
               <label for="Class Name">  Class Name: </label>
-              <input type="text" name="create-classname-input" id="create-classname-input" />
+              <input type="text" name="create-classname-input" id="create-class-name-input" />
               <label for="Term">  Term: </label>
               <input type="radio" name="create-term-input" id="create-term-input-spring">
                 Spring <input type="radio" name="create-term-input" id="create-term-input-fall">
@@ -94,7 +94,7 @@
                     <option value="2012">2012</option>
                   </select>
 
-                  <button onclick=";">Create a class</button>
+                  <button onclick="NewCourse();">Create a class</button>
                 </td>
           </tr>
           <tr id="edit-tr" style="visibility:collapse;">
@@ -112,11 +112,11 @@
                     <option value="2012">2012</option>
                   </select>
 
-                  <button onclick=";">Edit a class</button>
+                  <button onclick="EditCourse();">Edit a class</button>
 
 
                   <label for="Make prof">  Make Professor: </label><input type="text" name="edit-make-input" id="edit-make-input" />
-                  <button onclick=";">Make professor</button><button onclick=";">Remove professor</button>
+                  <button onclick="AddProfessor();">Make professor</button><button onclick="RemoveProfessor();">Remove professor</button>
 
 
                 </td>
@@ -126,7 +126,9 @@
 	
                
     </div><!-- container -->
-	
+
+  <div style="visibility:collapse" id="edit-term-value">Hello</div>
+  <div style="visibility:collapse" id="create-term-value">Hello</div>
 	
 	<style>
 /*---------------------------------------------------------------------------*/
@@ -210,7 +212,8 @@
     /*---------------------------------------------------------------------------*/
 
     //used as an array
-    var class_names;
+    var prof_classes;
+    var class_ids;
     
     //used for editing a course
     var c_id;
@@ -219,7 +222,16 @@
     window.onload = Main();
     function Main() {
     alert("hello");  //you can comment this out: but I left it in because it's a quick way to tell if your Javascript is broken (missing/extra quotation marks, semicolons, etc.
+    Refresh();
+    
     }
+    
+    function Refresh() {
+       execute("user_get_course_p");
+       execute("user_get_course_s");
+       createVisible();
+    }
+
 
     //generic for submitting XML (AJAX) request
     function Submit(action) { //include additional parameters if needed, see below
@@ -248,19 +260,32 @@
     http.onreadystatechange = function() {
        if(http.readyState == 4 && http.status == 200) {
           //Add function calls here to process the returned XML
-          if(action == get_course) {
-             update_courses(http);
-          //set so Enroll() will call update_courses()
-          //set so Search() will call UpdateSearch()
+          if(action == "user_get_course_p") {
+             document.getElementById("class_list").innerHTML = "";
+             update_courses(http, "true");
           }
+          if(action == "user_get_course_s") { 
+             update_courses(http, "false");
+          }
+          if(action == "search") {
+             UpdateSearch(http);
+          }
+          if(action == "sub_course") {
+             Refresh();
+          }
+          //set so Enroll() will call update_courses()     
        }
     }
     }
     
+    //----------------------------------------------------------------------------------------------------------
+    //function used for updating courses you're participating in
 
-    function update_courses(http) {
-    //alert(http.responseText);  //Uncomment if you want to see the text version of the XML: if you're recieving what you think you are
-    class_names = new Array();
+    function update_courses(http, prof) {
+    //alert(http.responseText);  
+    if(prof == "true") {
+       prof_classes = new Array();
+    }
     var string = "";
     var xmlDoc = http.responseXML;
     var obj = xmlDoc.getElementsByTagName("object");
@@ -269,45 +294,42 @@
            //uncomment if you want the id of a particular object
            //var id = obj[i].attributes.getNamedItem("pk").value;
            var x = obj[i].getElementsByTagName("field");
-           var name = "";  var term = ""; var year = ""; var prof = "False";
+           var name = "";  var term = ""; var year = ""; 
            //for each field in the object...
            for(var j = 0; j < x.length; j++) {
                 var y = x[j];
-                if (y.attributes.getNamedItem("name").value == "XXXX")  //name for field with class name here
+                if (y.attributes.getNamedItem("name").value == "name")  //name for field with class name here
                    { name = y.childNodes[0].nodeValue; }
-                if (y.attributes.getNamedItem("name").value == "YYYY")  //name for field with term here
+                if (y.attributes.getNamedItem("name").value == "term")  //name for field with term here
                    { term = y.childNodes[0].nodeValue; }
-                if (y.attributes.getNamedItem("name").value == "ZZZZ")   //name for field with year here
+                if (y.attributes.getNamedItem("name").value == "year")   //name for field with year here
                    { year = y.childNodes[0].nodeValue; }
-                if (y.attributes.getNamedItem("name").value == "ZZZZ")   //name for student/professor status here
-                   { prof = y.childNodes[0].nodeValue; } //
                 //add/change fields as needed
              }
-          class_names[i] = name;  //set up for the something() function call
           var str = "<div style=\"width:240px; border-bottom:1px solid #ccc;\"> ";  //change if you want to change the style of the components
           str = str + name; //name of class, extracted from XML object entry
-          str = str +"<button onClick=\"something(" + i + ");\">Do Something<\button>";  //button inside the segment that has a function call
-          if (prof == "True") {
+          var goto = class_ids.length - 1;
+          class_ids[goto] = name;
+          str = str +"<button onClick=\"something(" + goto + ");\">GoTo<\button>";  //button inside the segment that has a function call
+          if (prof == "true") {
              str = str + "<button onClick=\"edit_course(" + i + ");\">Edit Course<\button>"; 
+             prof_classes[i] = obj;
           }
           str = str +"<p>Year: " + year + " Term: " + term + " </p>";
           str = str + "</div>";
     string = string + str;
     }
     //"XXX" is the id of the scrolling box area: if it doesn't have an id, you'll have to add one
-    document.getElementById("class_list").innerHTML = string;
+    document.getElementById("class_list").innerHTML += string;
     //and you're done!  the box has been updated with all the classes
     }
 
     function something(id) {
-    var str = class_names[id];
+    var str = class_ids[id];
     alert("You noticed class: " + str);
     }
     
-    function edit_course(id) {
-       c_id = id;
-       editVisible();
-    }
+
     
     //---------------------------------------------------------------------------------------------------------------
     //functions for searching through courses
@@ -315,12 +337,14 @@
     //this is the 
     function Search() {
       //submit query string to server through Submit()
-      var search = document.getElementById("class-search-label").value;
+      //var search = document.getElementById("class-search-input").value;
+      Submit("search", "class-search-input");
     }
     
     function Enroll() {
       //pass user name, class name, and correction action to Submit()
-      var name = document.getElementById("class_search").value;
+     // var name = document.getElementById("class_search").value;
+     Submit("enroll", "class_search");
     }    
     
     
@@ -331,21 +355,22 @@
     var obj = xmlDoc.getElementsByTagName("object");
     //for each object...
     for(var i = 0; i < obj.length; i++) {
+        var id = obj[i].attributes.getNamedItem("pk").value;
         var x = obj[i].getElementsByTagName("field");
         var name = "";  var term = ""; var year = "";
            //for each field in the object...
            for(var j = 0; j < x.length; j++) {
                 var y = x[j];
-                if (y.attributes.getNamedItem("name").value == "XXXX")  //name for field with class name here
+                if (y.attributes.getNamedItem("name").value == "name")  //name for field with class name here
                    { name = y.childNodes[0].nodeValue; }
-                if (y.attributes.getNamedItem("name").value == "YYYY")  //name for field with term here
+                if (y.attributes.getNamedItem("name").value == "term")  //name for field with term here
                    { term = y.childNodes[0].nodeValue; }
-                if (y.attributes.getNamedItem("name").value == "ZZZZ")   //name for field with year here
+                if (y.attributes.getNamedItem("name").value == "year")   //name for field with year here
                    { year = y.childNodes[0].nodeValue; }
                 //add/change fields as needed
              }
           var str = "<option";
-          str = str + " value=\"" + name + "\">";
+          str = str + " value=\"" + id + "\">";
           str = str + "Class: " + name + " Year: " + year + " Term: " + term;
           str = str + "</option>";
     string = string + str;
@@ -354,6 +379,94 @@
     }
 
     
+    //-----------------------------------------------------------------------------------------------------------------
+    //functions for creating a new course
+    
+    function NewCourse() {   
+      ReadCreateTerm();
+      Submit("sub_course", "create-class-name-input", "create-term-value",  "create-year-input");
+    }
+    
+    function ChangeCreateTerm(term) {
+       var radio = document.getElementsByName("create-term-input");
+       for(var i = 0; i < radio.length; i++) {
+            if(radio[i].value == term) {
+               radio[i].checked = true;
+            }
+         }
+    }
+    
+    //sets the "create-term-value" div to have the contents of the radio: a radio can't be read directly
+    function ReadCreateTerm() {
+       var radio = document.getElementsByName("create-term-input");
+       for(var i = 0; i < radio.length; i++) {
+          if(radio[i].check == true) {
+             document.getElementById("create-term-value").innerHTML = radio[i].value;
+             return;
+         }
+       }
+    }    
+    
+    //-----------------------------------------------------------------------------------------------------------------
+    //functions for editing a course you're a professor of
+    
+    function edit_course(id) {
+       var obj = prof_classes[id];
+       var id = obj[i].attributes.getNamedItem("pk").value;
+       var x = obj[i].getElementsByTagName("field");
+       //for each field in the object...
+       for(var j = 0; j < x.length; j++) {
+            var y = x[j];
+            if (y.attributes.getNamedItem("name").value == "name")  //name for field with class name here
+               { document.getElementById("edit-classname-input").innerHTML = y.childNodes[0].nodeValue; }
+            if (y.attributes.getNamedItem("name").value == "term")  //name for field with term here
+               { ChangeEditTerm(y.childNodes[0].nodeValue); }
+            if (y.attributes.getNamedItem("name").value == "year")   //name for field with year here
+               { document.getElementById("edit-year-input") = y.childNodes[0].nodeValue; }
+            //add/change fields as needed
+            }      
+       c_id = id;
+       editVisible();
+    }
+    
+    function EditCourse() {
+       ReadEditTerm();
+       Submit("edit_course", "edit-classname-input", "edit-term-value", "edit-year-input");
+    }
+    
+     function ChangeEditTerm(term) {
+       var radio = document.getElementsByName("edit-term-input");
+       for(var i = 0; i < radio.length; i++) {
+            if(radio[i].value == term) {
+               radio[i].checked = true;
+               return;
+            }
+         }
+    }
+    
+    //sets the "create-term-value" div to have the contents of the radio: a radio can't be read directly
+    function ReadEditTerm() {
+       var radio = document.getElementsByName("edit-term-input");
+       for(var i = 0; i < radio.length; i++) {
+          if(radio[i].check == true) {
+             document.getElementById("edit-term-value").innerHTML = radio[i].value;
+             return;
+         }
+       }
+    }      
+    
+    //-----------------------------------------------------------------------------------------------------------------
+    //functions for adding/removing professors
+    
+         function AddProfessor() {
+            //var prof_name = document.getElementById("edit-make-prof").value;
+            //var class_id = c_id;
+         }
+         
+         function RemoveProfessor() {
+            
+         }
+         
     //-----------------------------------------------------------------------------------------------------------------
 
 	</script> 
