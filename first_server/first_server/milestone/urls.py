@@ -8,19 +8,14 @@ urlpatterns = patterns('',
 	('^logout/$', views.logout_page),
 	
 	# Registration
-    (r'^register/', views.register),
-	
+     (r'^register/', views.register),	
+
 	('^student/$', views.student),
-#	(r'^student/stylesheets/base.css$', views.student_base),
-#	(r'^student/stylesheets/skeleton.css$', views.student_skeleton),
-#	(r'^student/stylesheets/layout.css$', views.student_layout),
+	('^student/update.xml$', views.update_xml),
+
 	('^professor/$', views.professor),
 	('^professor/update.xml$', views.update_xml),
-	('^student/update.xml$', views.update_xml),
-#	(r'^professor/stylesheets/base.css$', views.professor_base),
-#	(r'^professor/stylesheets/skeleton.css$', views.professor_skeleton),
-#	(r'^professor/stylesheets/layout.css$', views.professor_layout),
-#	(r'^professor/images/favicon.ico$', views.professor_icon),
+
 	('^hello/$', views.hello),
 	('^javascript/$', views.trial),
 	('^mile0/$', views.noxml),
@@ -28,4 +23,10 @@ urlpatterns = patterns('',
 	('^milestone/update.xml$', views.update_xml),
 	('^update$', views.update_xml),
 	('^database/$', views.database),
+
+	('^userhome/$', views.userhome),
+	('^userhome/update.xml$', views.update_xml),
+
+	('^userhome/(\w+)/$', views.redirect),
+
 )

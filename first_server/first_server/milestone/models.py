@@ -1,6 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import Group
 
 class Course(models.Model):
+    students = models.ForeignKey(Group, related_name='students')
+    professors = models.ForeignKey(Group, related_name='professors')
     course_name = models.CharField(max_length=7)
     course_term = models.CharField(max_length=6)
     year = models.IntegerField()

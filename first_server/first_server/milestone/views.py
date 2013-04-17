@@ -53,33 +53,7 @@ def student(request):
 	#===========================================================================
 	return render_to_response('student.html', {'user': request.user})
 
-def student_base(request):
-	print file
-	fp = open('./milestone/templates/stylesheets/base.css')
-	t = template.Template(fp.read())
-	fp.close()
-	c = template.Context()
-	html = t.render(c)
-	return HttpResponse(html)
-
-def student_layout(request):
-	print file
-	fp = open('./milestone/templates/stylesheets/layout.css')
-	t = template.Template(fp.read())
-	fp.close()
-	c = template.Context()
-	html = t.render(c)
-	return HttpResponse(html)
-
-def student_skeleton(request):
-	print file
-	fp = open('./milestone/templates/stylesheets/skeleton.css')
-	t = template.Template(fp.read())
-	fp.close()
-	c = template.Context()
-	html = t.render(c)
-	return HttpResponse(html)
-
+@login_required
 def professor(request):
 	fp = open('./milestone/templates/professor.html')
 	t = template.Template(fp.read())
@@ -88,42 +62,17 @@ def professor(request):
 	html = t.render(c)
 	return HttpResponse(html)
 
-def professor_base(request):
-	print file
-	fp = open('./milestone/templates/stylesheets/base.css')
-	t = template.Template(fp.read())
-	fp.close()
-	c = template.Context()
-	html = t.render(c)
-	#print HttpResponse(html)
-	return HttpResponse(html)
+@login_required	
+def userhome(request):
+	return render_to_response('userhome.html', {'user': request.user})
 
-def professor_layout(request):
-	print file
-	fp = open('./milestone/templates/stylesheets/layout.css')
-	t = template.Template(fp.read())
-	fp.close()
-	c = template.Context()
-	html = t.render(c)
-	return HttpResponse(html)
+#	fp = open('./milestone/templates/userhome.html')
+#	t = template.Template(fp.read())
+#	fp.close()
+#	c = template.Context()
+#	html = t.render(c)
+#	return HttpResponse(html)
 
-def professor_skeleton(request):
-	print file
-	fp = open('./milestone/templates/stylesheets/skeleton.css')
-	t = template.Template(fp.read())
-	fp.close()
-	c = template.Context()
-	html = t.render(c)
-	return HttpResponse(html)
-
-def professor_icon(request):
-	print file
-	fp = open('./milestone/templates/images/favicon.ico')
-	t = template.Template(fp.read())
-	fp.close()
-	c = template.Context()
-	html = t.render(c)
-	return HttpResponse(html)
 
 def hello(request):
 	return HttpResponse("Hello world")
@@ -187,16 +136,16 @@ def update_xml(request):
 			#parse input commands
 
 			inputParam = request.GET
-			c_id = inputParam.get('c_id', '')
-			q_id = inputParam.get('q_id', '')
+			c_id = inputParam.get('c_id', '1')
+			q_id = inputParam.get('q_id', '1')
 			action = inputParam.get('action', '')
 			args = []
 			for i in range(1, len(inputParam)-3):
 				args.append(inputParam.get('str'+str(i), ''))
 			user = request.user
-				
+			
 			if action == 'sub_course':
-				util.new_course(args[0], args[1], args[2])
+				util.new_course(args[0], args[1], args[2], user)
 			if action == 'sub_quest':
 				util.new_question(c_id, args[0])
 			if action == 'sub_resp':
@@ -207,6 +156,12 @@ def update_xml(request):
 				util.set_open(c_id, q_id, args[0])
 			if action == 'set_hidden':
 				util.set_hidden(c_id, q_id, args[0])
+			if action == 'edit_course':
+				util.edit_course(c_id, args[0], args[1], args[2])
+			if action == 'enroll':
+				util.enroll_student(args[0], user)
+			if action == 'make_prof':
+				util.make_prof(c_id, user)
 			
 			data = serializers.serialize('xml', models.Response.objects.filter(c_id=c_id).filter(q_id=q_id))
 			
@@ -214,8 +169,29 @@ def update_xml(request):
 				data = serializers.serialize('xml', models.Course.objects.filter(pk=c_id))
 			if (action == 'get_question' or action == 'set_open' or action == 'set_hidden'):
 				data = serializers.serialize('xml', models.Question.objects.filter(c_id=c_id).filter(pk=q_id))
-			if (action == 'all_questions'):
+			if action == 'all_questions':
 				data = serializers.serialize('xml', models.Question.objects.filter(c_id=c_id))
+			if action == 'search': # search prof? split multiple search words
+				search_name = models.Course.objects.filter(course_name__contains=args[0])
+				search_term = models.Course.objects.filter(course_term__contains=args[0])
+				search_year = models.Course.objects.none()
+				if args[0].isdigit():
+					search_year = models.Course.objects.filter(year=int(args[0]))
+				data = serializers.serialize('xml', search_name | search_term | search_year)
+			if action == 'user_get_course_p':
+				groups = user.groups.all()
+				courses = models.Course.objects.none();
+				for g in groups:
+					if g.id % 2 == 0:
+						courses = courses | models.Course.objects.filter(professors=g)
+				data = serializers.serialize('xml', courses)
+			if action == 'user_get_course_s':
+				groups = user.groups.all()
+				courses = models.Course.objects.none();
+				for g in groups:
+					if g.id % 2 == 1:
+						courses = courses | models.Course.objects.filter(students=g)
+				data = serializers.serialize('xml', courses)
 
 			print data
 			
@@ -247,5 +223,18 @@ def database(request):
 	c = template.Context()
 	html = t.render(c)
 	return HttpResponse(html)
+
+def redirect(request, course):	
+	print "redirect called"
+	values = course.split("#")
+	print values
+	name = values[0]
+	name = name.replace("_", " ")
+	print name
+	data = search_name = models.Course.objects.filter(course_name__contains=name)
+	print data[0].id
+	response = "you want course: " + name + "id = "
+	#rsponse = response + data[0].id
+	return HttpResponse("you want course: " + name)
  
 

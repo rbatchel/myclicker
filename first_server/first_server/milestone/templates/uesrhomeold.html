@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+    <!-- Basic Page Needs
+  ================================================== -->
+    <meta charset="utf-8">
+    <title>User Home Page</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Mobile Specific Metas
+  ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- CSS
+  ================================================== -->
+    <link rel="stylesheet" type="text/css" href="http://www.princeton.edu/~yingxuel/base.css">
+    <link rel="stylesheet" type="text/css" href="http://www.princeton.edu/~yingxuel/skeleton.css">
+    <link rel="stylesheet" type="text/css" href="http://www.princeton.edu/~yingxuel/layout.css">
+
+    <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+
+</head>
+<body onload="display();">
+
+
+
+    <!-- Primary Page Layout
+    ================================================== -->
+
+    <!-- Delete everything in this .container and get started on your own site! -->
+
+    <div class="container">
+    
+        <div class="sixteen columns" id="header">
+            <h1 id="header-text">Hello {{ user.username }}.</h1>
+            <h1 id="header-text">You are a student of <b id="student-num-classes">________</b> classes and a professor of <b id="professor-num-classes">________</b> classes. </h1>
+            <hr />
+        </div>
+        
+        <div class="five columns">
+  		<h5> Classes you are participating in: </h5>
+			<div id="class-list">
+            Replace me, I'm a scrolling box.
+           </div>     
+		</div>
+        
+        
+        <div class="eleven columns">
+            <p id="class-search-label"><label for="Class">  Search for a class: </label><input type="text" id="class-search-input" /></p>
+          <ul id="enroll-button-ul">
+            <button class="button" onClick="Search();">
+              Search</a>
+            </ul>
+          <select id="class_search"></select>
+            <p id="class-search-description">Class description.</p>
+            <ul id="enroll-button-ul">
+                <button class="button" onClick="Enroll();">Enroll</a>
+            </ul>
+            <hr />
+        </div>
+
+      <div class="eleven columns">
+        <p> This is a testing button, just POC of collapsing forms </p>
+        <button onclick="createVisible();"> Make create visible </button>
+        <button onclick="editVisible();"> Make edit visible </button>
+        <table id="create-edit-table">
+          <tr id="create-tr" style="visibility:visible;">
+            <td>
+
+              <label for="Class Name">  Class Name: </label>
+              <input type="text" name="create-classname-input" id="create-classname-input" />
+              <label for="Term">  Term: </label>
+              <input type="radio" name="create-term-input" id="create-term-input-spring">
+                Spring <input type="radio" name="create-term-input" id="create-term-input-fall">
+                  Fall
+                  <label for="Year"> Year: </label>
+                  <select id="create-year-input" name="year">
+                    <option value="2014">2014</option>
+                    <option value="2013">2013</option>
+                    <option value="2012">2012</option>
+                  </select>
+
+                  <button onclick=";">Create a class</button>
+                </td>
+          </tr>
+          <tr id="edit-tr" style="visibility:collapse;">
+            <td>
+              <label for="Class Name">  Class Name: </label>
+              <input type="text" name="edit-classname-input" id="edit-classname-input" />
+              <label for="Term">  Term: </label>
+              <input type="radio" name="edit-term-input" id="edit-term-input-spring">
+                Spring <input type="radio" name="edit-term-input" id="edit-term-input-fall">
+                  Fall
+                  <label for="Year"> Year: </label>
+                  <select id="edit-year-input" name="year">
+                    <option value="2014">2014</option>
+                    <option value="2013">2013</option>
+                    <option value="2012">2012</option>
+                  </select>
+
+                  <button onclick=";">Edit a class</button>
+
+
+                  <label for="Make prof">  Make Professor: </label><input type="text" name="edit-make-input" id="edit-make-input" />
+                  <button onclick=";">Make professor</button><button onclick=";">Remove professor</button>
+
+
+                </td>
+          </tr>
+        </table>
+      </div>
+	
+               
+    </div><!-- container -->
+	
+	
+	<style>
+/*---------------------------------------------------------------------------*/
+
+	/**
+	  *  Scrolly box for past classes
+	  **/
+	
+	#class-list {
+	    height:480px; 
+		width:240px; 
+		border:1px solid #ccc; 
+        font:16px/26px Georgia, Garamond, Serif; 
+		overflow:auto;
+	}
+	
+/*---------------------------------------------------------------------------*/
+	
+	/**
+	  *  Header 
+	  **/
+	
+	#header-text {
+	    font-size:25px;
+	}
+	
+/*---------------------------------------------------------------------------*/
+
+	/**
+	  * Push enroll button over to the side
+	  **/
+	  
+/*#enroll-button-ul {
+	padding-left:300px;
+}*/
+	
+/*---------------------------------------------------------------------------*/
+
+	/**
+	  * Hide edit at first
+	  **
+	
+#edit-tr {
+	visibility:collapse;
+}
+/*#create-tr {
+	visibility:visible;
+}
+
+/*---------------------------------------------------------------------------*/
+
+	</style>
+	
+
+	<script type="text/javascript">
+
+    /*---------------------------------------------------------------------------*/
+
+    /**
+    * Make the create a class field form visible
+    **/
+
+    function createVisible()
+    {
+    document.getElementById("create-tr").style.visibility="visible";
+    document.getElementById("edit-tr").style.visibility="collapse";
+    }
+
+    /*---------------------------------------------------------------------------*/
+
+    /**
+    * Make the create a edit field form visible
+    **/
+
+    function editVisible()
+    {
+    document.getElementById("edit-tr").style.visibility="visible";
+    document.getElementById("create-tr").style.visibility="collapse";
+    }
+
+    /*---------------------------------------------------------------------------*/
+
+    //used as an array
+    var class_names;
+    
+    //used for editing a course
+    var c_id;
+
+    //function that performed as soon as the web page is loaded: for fetching information, enable a timer, etc.
+    window.onload = Main();
+    function Main() {
+    alert("hello");  //you can comment this out: but I left it in because it's a quick way to tell if your Javascript is broken (missing/extra quotation marks, semicolons, etc.
+    execute("user_get_course_p");
+    execute("user_get_course_s");
+    }
+
+
+    //generic for submitting XML (AJAX) request
+    function Submit(action) { //include additional parameters if needed, see below
+       var http;
+       if (window.XMLHttpRequest) // code for IE7+, Firefox, Chrome, Opera, Safari
+          http=new XMLHttpRequest();
+       else // code for IE6, IE5
+         http=new ActiveXObject("Microsoft.XMLHTTP");
+
+       var url = "update.xml" + "?t=" + Math.random();  //change update.xml if you're using a different url
+       url += "&action="+ action;  //now the request has a "action" entry as a GET parameter
+         //url +' "&var_name=" + var_value; //generic method for adding parameters
+         //Additional parameters are included inside an implicit arguments[] array.  These can be accessed and stored as necessary
+         //Or, you can comment out this for loop
+       for (var i=1; i < arguments.length; i++) {
+  				if (arguments[i])
+  					url += "&str"+i+"=" + arguments[i];  //this adds the argument to the GET parameters
+           //document.getElementById(arguments[i]).value;  //This adds the contents of an HTML object with id 'arguments[i]' as an argument to GET parameters
+       }
+    //Will not be used unless we're making POST requests
+    //var params = "";
+
+    http.open("GET", url, true);
+    http.setRequestHeader("X_REQUESTED_WITH", "XMLHttpRequest");
+    
+    http.onreadystatechange = function() {
+       if(http.readyState == 4 && http.status == 200) {
+          //Add function calls here to process the returned XML
+          if(action == "user_get_course_p") {
+             document.getElementById("class_list").innerHTML = "";
+             update_courses(http, "true");
+          }
+          if(action == "user_get_course_s") { 
+             update_courses(http, "false");
+          }
+          if(action == "search") {
+             UpdateSearch(http);
+          }
+          //set so Enroll() will call update_courses()
+          //set so Search() will call UpdateSearch()          
+       }
+    }
+    }
+    
+
+    function update_courses(http, prof) {
+    //alert(http.responseText);  //Uncomment if you want to see the text version of the XML: if you're recieving what you think you are
+    class_names = new Array();
+    var string = "";
+    var xmlDoc = http.responseXML;
+    var obj = xmlDoc.getElementsByTagName("object");
+    //for each object...
+    for(var i = 0; i < obj.length; i++) {
+           //uncomment if you want the id of a particular object
+           //var id = obj[i].attributes.getNamedItem("pk").value;
+           var x = obj[i].getElementsByTagName("field");
+           var name = "";  var term = ""; var year = ""; 
+           //for each field in the object...
+           for(var j = 0; j < x.length; j++) {
+                var y = x[j];
+                if (y.attributes.getNamedItem("name").value == "name")  //name for field with class name here
+                   { name = y.childNodes[0].nodeValue; }
+                if (y.attributes.getNamedItem("name").value == "term")  //name for field with term here
+                   { term = y.childNodes[0].nodeValue; }
+                if (y.attributes.getNamedItem("name").value == "year")   //name for field with year here
+                   { year = y.childNodes[0].nodeValue; }
+                //add/change fields as needed
+             }
+          class_names[i] = name;  //set up for the something() function call
+          var str = "<div style=\"width:240px; border-bottom:1px solid #ccc;\"> ";  //change if you want to change the style of the components
+          str = str + name; //name of class, extracted from XML object entry
+          str = str +"<button onClick=\"something(" + i + ");\">Do Something<\button>";  //button inside the segment that has a function call
+          if (prof == "true") {
+             str = str + "<button onClick=\"edit_course(" + i + ");\">Edit Course<\button>"; 
+          }
+          str = str +"<p>Year: " + year + " Term: " + term + " </p>";
+          str = str + "</div>";
+    string = string + str;
+    }
+    //"XXX" is the id of the scrolling box area: if it doesn't have an id, you'll have to add one
+    document.getElementById("class_list").innerHTML += string;
+    //and you're done!  the box has been updated with all the classes
+    }
+
+    function something(id) {
+    var str = class_names[id];
+    alert("You noticed class: " + str);
+    }
+    
+    function edit_course(id) {
+       c_id = id;
+       editVisible();
+    }
+    
+    //---------------------------------------------------------------------------------------------------------------
+    //functions for searching through courses
+    
+    //this is the 
+    function Search() {
+      //submit query string to server through Submit()
+      //var search = document.getElementById("class-search-label").value;
+      execute("search", "class-search-label");
+    }
+    
+    function Enroll() {
+      //pass user name, class name, and correction action to Submit()
+     // var name = document.getElementById("class_search").value;
+     execute("enroll", "class_search");
+    }    
+    
+    
+    function UpdateSearch() {
+    //alert(http.responseText); 
+    var string = "";
+    var xmlDoc = http.responseXML;
+    var obj = xmlDoc.getElementsByTagName("object");
+    //for each object...
+    for(var i = 0; i < obj.length; i++) {
+        var id = obj[i].attributes.getNamedItem("pk").value;
+        var x = obj[i].getElementsByTagName("field");
+        var name = "";  var term = ""; var year = "";
+           //for each field in the object...
+           for(var j = 0; j < x.length; j++) {
+                var y = x[j];
+                if (y.attributes.getNamedItem("name").value == "name")  //name for field with class name here
+                   { name = y.childNodes[0].nodeValue; }
+                if (y.attributes.getNamedItem("name").value == "term")  //name for field with term here
+                   { term = y.childNodes[0].nodeValue; }
+                if (y.attributes.getNamedItem("name").value == "year")   //name for field with year here
+                   { year = y.childNodes[0].nodeValue; }
+                //add/change fields as needed
+             }
+          var str = "<option";
+          str = str + " value=\"" + id + "\">";
+          str = str + "Class: " + name + " Year: " + year + " Term: " + term;
+          str = str + "</option>";
+    string = string + str;
+    }
+    document.getElementById("class_search").innerHTML = string;
+    }
+
+    
+    //-----------------------------------------------------------------------------------------------------------------
+    //functions for 
+    
+    
+    //-----------------------------------------------------------------------------------------------------------------
+
+	</script> 
+<!-- End Document
+================================================== -->
+</body>
+</html>
