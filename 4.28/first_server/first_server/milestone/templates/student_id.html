@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+    <!-- Basic Page Needs
+  ================================================== -->
+    <meta charset="utf-8">
+    <title>Student Page</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Mobile Specific Metas
+  ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- CSS
+  ================================================== -->
+      {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'skeleton.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'layout.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'MyC_styles.css' %}">
+
+    <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+    <link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{% static 'apple-touch-icon-72x72.png' %}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{% static 'apple-touch-icon-114x114.png' %}">
+
+</head>
+<body onload="display();" class="MyC-main-bg-color">
+
+
+
+    <!-- Primary Page Layout
+    ================================================== -->
+
+    <!-- Delete everything in this .container and get started on your own site! -->
+
+    <div class="container MyC-box-rounded-corners MyC-push-down-1 MyC-box-shadow ">
+    
+        <div class="sixteen columns.alpha.omega MyC-header-bg-color MyC-box-top-rounded-corners MyC-pad-top-1 MyC-pad-left-1 MyC-pad-right-1">
+            <h1 style="20px">Hello {{ user.username }}.</h1>
+            <h2 style="20px">You are in class <b id="curr_course">{{classname}}</b></h2>
+            <hr />
+        </div>
+
+      <div class="five columns">
+      <table>
+        <tr>
+          <div style="height:480px; width:280px; border:1px solid #ccc; 
+        font:16px/26px Georgia, Garamond, Serif; overflow:auto;" id="past_questions">
+            Replace me, I'm a scrolling box.
+          </div>
+        </tr>
+        <br />
+        <tr>
+          <h4 id="student-questions-title">Student Questions: </h4>
+          <div style="height:480px; width:280px; border:1px solid #ccc; 
+        font:16px/26px Georgia, Garamond, Serif; overflow:auto;" id="student_questions">
+            Replace me, I'm a scrolling box.
+          </div>
+        </tr>
+      </table>
+         </div>
+
+
+      <div class="ten columns MyC-box-rounded-corners MyC-pad-all-2 MyC-pad-left-1">
+            <h3>Current question: <b id="curr_question"></b></h3>
+        </div>
+
+      <div class="ten columns MyC-box-rounded-corners MyC-pad-all-2 MyC-push-down-2">
+        <h3>Current Responses: </h3>
+      
+      
+      
+      <div class="ten columns" style="font:16px/26px Georgia, Garamond, Serif; overflow:auto;" 
+           id="curr_responses">
+      </div>
+      </div>
+      <div class="eleven columns">
+      <button class="button" onClick="Refresh();">Refresh</button>
+      </div>
+      <div class="ten columns MyC-box-rounded-corners MyC-pad-all-2 MyC-push-down-2">
+        Write a Response to a question:<br />
+            <textarea style="width:500px; height:100px"; class="nine columns" name="response" id="response"></textarea><br />
+            <button disabled onclick="execute('sub_resp', 'response');" id="submit_button" >Submit</button>
+          <p id="submit_text" style="visibility:collapse;">This question is currently closed for submission</p>
+      Ask a question:<br />
+
+      <textarea name="student_question" id="student_question" style="width:500px; height:100px;"></textarea><br />
+
+      <input id="anonymous_checkbox" type="checkbox">
+        Anonymous<br>
+      <div id="anonymous_status" style="visibility:collapse;"></div>
+          <button onclick="submit_student_question();">Submit</button>
+
+        </div>
+
+
+
+          <div class="eleven columns">
+            <button onclick="window.location.href='/logout/'">Logout</button>
+            <button onclick="window.location.href='/userhome/'">Go To Home Page</button>
+        </div>
+
+      <div id="student_question_id" style="display:none;"></div>
+      
+    </div><!-- container -->
+
+	<script type="text/javascript">
+    var c_id = {{c_id}};
+    var q_id = 1;
+    var is_hidden = "-1";
+
+    var q_set;
+    var q_hidden;
+    var q_open;
+
+    var outlined_star_url =  "{% static 'outlined_star.bmp' %}";
+    var full_star_url = "{% static 'full_star.bmp' %}";
+
+    window.onload = Main();
+
+    function Main() {
+    // alert("hello");
+    Refresh();
+    setInterval(function(){Refresh()}, 3000);
+    }
+
+    function Refresh() {
+    //alert("refreshing...");
+    execute("get_question");
+    execute("all_questions");
+    execute("display");
+    execute("student_questions");
+    }
+
+    function execute(action) {
+    //check to see if values are null/empty
+    if (action == "sub_resp") {
+        if (document.getElementById(arguments[1]).value == "") {
+        alert("No response");
+        return false;
+        }
+    }
+    if (action == "sub_student_quest") {
+        if (document.getElementById(arguments[1]).value == "") {
+        alert("No question");
+        return false;
+        }
+    }
+
+    var http;
+    if (window.XMLHttpRequest) // code for IE7+, Firefox, Chrome, Opera, Safari
+    http=new XMLHttpRequest();
+    else // code for IE6, IE5
+    http=new ActiveXObject("Microsoft.XMLHTTP");
+
+    var url = "update.xml" + "?t=" + Math.random();
+    url += "&c_id=" + c_id + "&q_id=" + q_id;
+  			url += "&action="+ action; 
+  			for (var i=1; i < arguments.length; i++) {
+  				if (arguments[i])
+  					url += "&str"+i+"=" + document.getElementById(arguments[i]).value;
+  			}
+  			var params = ""; //"action=submit&str=testing";
+
+  			http.open("GET", url, true);
+  			http.setRequestHeader("X_REQUESTED_WITH", "XMLHttpRequest");
+   			http.onreadystatechange = function() {
+      			if(http.readyState == 4 && http.status == 200) {
+      				if (action == "get_course")
+      					update_course(http);
+      				else if (action == "get_question")
+      					update_question(http);
+              else if (action == "all_questions")
+                update_past_questions(http);
+      				else if (action == "display")
+                update_curr_responses(http);
+              else if (action == "student_questions")
+                 load_student_questions(http);
+                 //alert(http.responseText);
+              else if (action == 'upvote')
+                 execute('student_questions');
+              else
+                 Refresh();
+  				}
+  			}
+  			http.send();  //(params);
+  			for (var i=1; i < arguments.length; i++)
+				clear(arguments[i]);
+		}
+
+		function clear(field) { // variable number of fields supported 
+			//clears input box only
+			for (var i=0; i < arguments.length; i++) {
+				var e = document.getElementById(arguments[i]);
+				e.value = "";
+			}	
+		}
+	
+		function update_course(http) {
+    		var xmlDoc = http.responseXML;
+    		var fieldArray = xmlDoc.getElementsByTagName("field");
+                             //   alert("fields length: " + x.length);
+    		var string = "";
+    		for (var i=0; i < fieldArray.length; i++)
+    		{
+    			if (fieldArray[i].attributes.getNamedItem("name").value == "course_name")
+      				string = fieldArray[i].childNodes[0].nodeValue;
+    		} 
+			document.getElementById("curr_course").innerHTML=string;
+		}
+			
+		function update_question(http) {
+    		var xmlDoc = http.responseXML;
+    		var fieldArray = xmlDoc.getElementsByTagName("field");
+                                //   alert("fields length: " + x.length);
+    		var string = "";
+    		for (var i=0; i < fieldArray.length; i++)
+    		{
+    			if (fieldArray[i].attributes.getNamedItem("name").value == "question_text")
+      				string = fieldArray[i].childNodes[0].nodeValue;
+          if (fieldArray[i].attributes.getNamedItem("name").value == "is_open")
+          {
+             var open = fieldArray[i].childNodes[0].nodeValue;
+             if(open == 'True') 
+             {
+                document.getElementById("submit_button").disabled = false;
+                document.getElementById("submit_text").style.visibility = "collapse";
+             }
+             else
+             {
+                document.getElementById("submit_button").disabled = true;
+                document.getElementById("submit_text").style.visibility = "visible";
+             }
+          }
+    		} 
+			document.getElementById("curr_question").innerHTML=string;
+		}
+		
+		function display() {
+			execute('get_course');
+			execute('get_question');
+			execute('display');
+		}
+		
+		function get_ids(http) {
+			var xmlDoc = http.responseXML;
+			var objArray = xmlDoc.getElementsByTagName("object");
+			
+			var string = "";
+			for (var i=0; i < objArray.length; i++)
+			{
+				string += objArray[i].attributes.getNamedItem("pk").value;
+				string += " ";
+			}
+			//alert(string);
+		}
+		
+		function change_question(id) {
+			q_id = q_set[id];
+      if(q_open[id] == "True") 
+         { document.getElementById("submit_button").disabled = false; }
+      else 
+         { document.getElementById("submit_button").disabled = true; }
+      is_hidden = q_hidden[id];
+			Refresh();
+		}
+    
+        
+		 function update_past_questions(http) {
+     //alert(http.responseText);
+    var xmlDoc = http.responseXML;
+    var obj = xmlDoc.getElementsByTagName("object");
+    var str = "";
+    q_set = new Array();
+    q_hidden = new Array();
+    q_open = new Array();
+    for(var i = 0; i < obj.length; i++) {
+           var id = obj[i].attributes.getNamedItem("pk").value;
+           q_set[i] = id;
+           var x = obj[i].getElementsByTagName("field");
+           var text = " "; var time = "never";
+           var open = false; var hidden = false;
+           for(var j = 0; j < x.length; j++) {
+                var y = x[j];
+                //alert(y.attributes.getNamedItem("name").value);
+                if (y.attributes.getNamedItem("name").value == "question_text")
+                   { text = y.childNodes[0].nodeValue; }
+                if (y.attributes.getNamedItem("name").value == "pub_date") 
+                   { time = y.childNodes[0].nodeValue; }
+                if (y.attributes.getNamedItem("name").value == "is_hidden") 
+                   { hidden = y.childNodes[0].nodeValue; }
+                if (y.attributes.getNamedItem("name").value == "is_open") 
+                  { open = y.childNodes[0].nodeValue; }
+             }
+             q_hidden[i] = hidden;
+             q_open[i] = open;
+             var color = "#FFFFFF";
+             if(hidden == "True") { color = "#808080"; }
+             if(open == "False") {color = "#4B0082"; }
+             //alert(color);
+             str = str + "<div onclick=\"change_question(" + i + ");\" style=\"width:280px; background-color:" + color + "; border-bottom:1px solid #ccc;\"><p>" + text + "</p></div>";
+          // alert(id + "," + text + "," + time);
+         }   
+         document.getElementById("past_questions").innerHTML = str;
+    }
+    
+    function update_curr_responses(http) {
+       //"display" action leads here
+       if (is_hidden == "-1")
+       {
+         //no question is chosen yet
+         document.getElementById("curr_responses").innerHTML = "<h4>No question currently selected</h4>";
+       }
+       if (is_hidden == "True")
+       {
+          document.getElementById("curr_responses").innerHTML = "<h4>Responses are currently not visible to students</h4>";
+       }
+       if (is_hidden == "False")
+       {
+          var xmlDoc = http.responseXML;
+          var obj = xmlDoc.getElementsByTagName("object"); 
+          var str = "";
+          for(var i = 0; i < obj.length; i++) {
+              var id = obj[i].attributes.getNamedItem("pk").value;
+              var x = obj[i].getElementsByTagName("field");
+              var text = " "; var time = "never"; 
+              for(var j = 0; j < x.length; j++) {
+                   var y = x[j];
+                   if (y.attributes.getNamedItem("name").value == "resp_text")
+                      { text = y.childNodes[0].nodeValue; }
+                   if (y.attributes.getNamedItem("name").value == "pub_date") {
+                      time = y.childNodes[0].nodeValue;
+                   }    
+                }
+                str = str + "<div style=\"width:480px; border-bottom:1px solid #ccc;\"> <p>" + text + "</p></div>";
+            }
+         document.getElementById("curr_responses").innerHTML = str;
+       }
+    
+    }
+    
+    //-------------------------------------------------------------------------------------------
+    //student question functions
+    function submit_student_question()
+    {
+    //set hidden div to contain value of anonymous checkbox
+    var noname = document.getElementById("anonymous_checkbox").checked
+    if(noname == true)
+       noname = 'True';
+    else
+       noname = 'False';
+    document.getElementById("anonymous_status").value = noname;
+    //make the execute function call
+    execute('sub_student_quest', 'student_question', 'anonymous_status');
+    }
+    
+    function Upvote(id)
+    {
+       document.getElementById("student_question_id").value = id;
+    execute('upvote', 'student_question_id');
+    }
+    
+    function load_student_questions(http)
+    {
+       //document.getElementById("student_questions").innerHTML = http.responseText;
+       //alert(http.responseText);
+       var xmlDoc = http.responseXML;
+       var obj = xmlDoc.getElementsByTagName("object"); 
+       var str = "";
+       for(var i = 0; i < obj.length; i++) {
+          var id = obj[i].attributes.getNamedItem("pk").value;
+          var x = obj[i].getElementsByTagName("field");
+          var text = " "; var time = "";  var star = false
+          var user = "";  var votes = 0;
+          var answered = false;
+          for(var j = 0; j < x.length; j++) {
+             var y = x[j];
+             if (y.attributes.getNamedItem("name").value == "question_text")
+                { text = y.childNodes[0].nodeValue; }
+             if (y.attributes.getNamedItem("name").value == "pub_date") {
+                //set to the time if it was published today, set to the date if it was published earlier
+                var date = new Date(y.childNodes[0].nodeValue);
+                var today = new Date();
+                today.setDate(today.getDate()-1);
+                //alert("next line broken?");
+                if(date > today) {
+                //alert("can compare dates" + time);
+                   var minutes = date.getMinutes();
+                   if(minutes < 10) minuts = "0" + minutes;
+                   time = date.getHours() + ":" + minutes;
+                  // alert(time);
+                }
+                else {
+                   var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                   time = months[date.getMonth()] + " " + date.getDate();
+                }                
+                //alert("done on time");
+             }    
+             if (y.attributes.getNamedItem("name").value == "user")
+                { if (user != "Anonymous") user = y.childNodes[0].nodeValue; }
+             if (y.attributes.getNamedItem("name").value == "upvotes")
+                { votes = y.childNodes[0].nodeValue; }
+             if (y.attributes.getNamedItem("name").value == "anonymous")
+                { if (y.childNodes[0].nodeValue == 'True') user = "Anonymous"; }
+             if (y.attributes.getNamedItem("name").value == "is_starred")
+                { star = y.childNodes[0].nodeValue; }
+             if (y.attributes.getNamedItem("name").value == "is_answered")
+                { answered = y.childNodes[0].nodeValue; }
+          }
+          
+          var div = '<table style="width:260px; border-bottom:1px solid #ccc;"><tr>';
+          //alert(div);
+          if(star == 'True')
+          {
+             //alert(full_star_url);
+             div = div + '<td rowspan="3"><img src="' + full_star_url + '"></img></td>';
+          }
+          else
+          {
+             //alert(outlined_star_url);
+             div = div + '<td rowspan="3"><img src="' + outlined_star_url + '"></img></td>';
+          }
+          //alert(div);
+          div = div + '<td colspan="2"><p>'+ text + '</p></td>';
+          var vote_color = "#40FF00";
+          if(votes == 0) vote_color = "#000000";
+          div = div + '<td align="center"><p><font color="' + vote_color + '">' + votes + '</font></p></td>';
+          
+          div = div + '</tr><tr><td>' + user + '</td>';
+          div = div + '<td>' + time + '</td>';
+          div = div + '<td><button onClick="Upvote(' + id + ');">Like</button></td>';
+          div = div + '</tr><tr><td colspan="2"><p>';
+          if(answered == 'True')
+             div = div + 'This question has been answered';
+          div = div + '</p></td><td></td></tr></table>';
+        //  div = div + '</p></td><td></tr></table><hr/>';
+          str = str + div;
+       //   alert("!");
+      /*    var div = '<div style="width:280px; border-bottom:1px solid #ccc;">';
+          var text_color = '#000';
+          if (star == 'True') text_color = '#DBA901'; //still need to add in
+          div = div + '<font color="' + text_color + '">' + text  + '</font><br />';
+          div = div + votes + '<br />' + time + '<br />' + user;
+          if (answered == 'True') 
+          { div = div + '<br />This question has been answered'; }
+          div = div + '<button onClick="Upvote(' + id + ');">Like</button>' + '</div>';          
+          //str = str + "<div style=\"width:280px; border-bottom:1px solid #ccc;\"> <p>" + text + "</p></div>";
+          str = str + div;*/
+      }
+      document.getElementById("student_questions").innerHTML = str;
+    }
+	</script>
+<!-- End Document
+================================================== -->
+</body>
+</html>

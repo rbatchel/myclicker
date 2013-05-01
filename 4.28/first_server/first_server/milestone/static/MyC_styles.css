@@ -1,0 +1,181 @@
+/*
+* Our style sheet
+*/
+
+
+/* Table of Content
+==================================================
+==================================================
+	#Background
+	#Items on Page
+	#Margins and Paddings
+	*/
+
+
+/* #Background
+==================================================
+================================================== */
+
+/**
+  *  A main background color for each page
+  **/
+  
+.MyC-main-bg-color 
+{
+	/* Possible colors EC633F, E44D2E, EC6C3F ff6f00*/
+	background-color:#EC6C3F;
+
+}
+/*---------------------------------------------------------------------------*/
+/**
+  *  This is the header color for each page.
+  */
+  
+.MyC-header-bg-color
+{
+	background-color:#ff6f00;
+}
+/*---------------------------------------------------------------------------*/
+
+
+/* #Items on Page
+==================================================
+================================================== */
+
+/**
+  * Format boxes with a border and curved corners
+  **/
+
+.MyC-box-rounded-corners
+{
+	/* border */
+	border:1px solid #ccc;
+		
+	/* border-radius */
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+	
+	background-color:#fff;
+}
+/*---------------------------------------------------------------------------*/
+
+/**
+  * Format boxes with a shadow
+  **/
+
+.MyC-box-shadow
+{	
+	/* box-shadow */
+	-webkit-box-shadow: rgba(0,0,0,0.2) 5px 5px 10px;
+	-moz-box-shadow: rgba(0,0,0,0.2) 5px 5px 10px;
+	box-shadow: rgba(0,0,0,0.2) 5px 5px 10px;
+}
+/*---------------------------------------------------------------------------*/
+
+/**
+  * Format boxes with top border and curved corners
+  **/
+
+.MyC-box-top-rounded-corners
+{
+	/* border-radius */
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 5px 5px 0px 0px;
+	border-radius: 5px 5px 0px 0px; 
+}
+/*---------------------------------------------------------------------------*/
+
+/**
+  * Format database updated list items
+  **/
+  
+.MyC-list-item-even
+{
+	background-color:#EC633F;
+}
+
+.MyC-list-item-odd
+{
+	background-color:#E44D2E;
+}
+/*---------------------------------------------------------------------------*/
+
+/* #Margins and Paddings
+==================================================
+================================================== */
+
+/**
+  *  Create 10, 20, and 30 px margin on top, bottom, right, and left
+  **/
+  
+/* top */
+.MyC-push-down-1 { margin-top:10px; }
+.MyC-push-down-2 { margin-top:20px; }
+.MyC-push-down-3 { margin-top:30px; }
+
+/* bottom */  
+.MyC-push-up-1 { margin-bottom:10px; }
+.MyC-push-up-2 { margin-bottom:20px; }
+.MyC-push-up-3 { margin-bottom:30px; }
+
+/* right */
+.MyC-push-left-1 { margin-right:10px; }
+.MyC-push-left-2 { margin-right:20px; }
+.MyC-push-left-3 { margin-right:30px; }
+
+/* left */
+.MyC-push-right-1 { margin-left:10px; }
+.MyC-push-right-2 { margin-left:20px; }
+.MyC-push-right-3 { margin-left:30px; }
+
+/* down left right */
+.MyC-push-ulr-1 { margin-left:10px;  margin-right:10px; margin-bottom:10px; }
+.MyC-push-ulr-2 { margin-left:20px;  margin-right:20px; margin-bottom:20px; }
+.MyC-push-ulr-3 { margin-left:30px;  margin-right:30px; margin-bottom:30px; }
+
+/*---------------------------------------------------------------------------*/
+
+/**
+  *  Create 10, 20, and 30 px padding on top, bottom, right, left, and all-around
+  **/
+  
+/* top */
+.MyC-pad-top-1 { padding-top:10px; }
+.MyC-pad-top-2 { padding-top:20px; }
+.MyC-pad-top-3 { padding-top:30px; }
+
+/* bottom */  
+.MyC-pad-bottom-1 { padding-bottom:10px; }
+.MyC-pad-bottom-2 { padding-bottom:20px; }
+.MyC-pad-bottom-3 { padding-bottom:30px; }
+
+/* right */
+.MyC-pad-left-1 { padding-left:10px; }
+.MyC-pad-left-2 { padding-left:20px; }
+.MyC-pad-left-3 { padding-left:30px; }
+
+/* left */
+.MyC-pad-right-1 { padding-right:10px; }
+.MyC-pad-right-2 { padding-right:20px; }
+.MyC-pad-right-3 { padding-right:30px; }
+
+/* all */
+.MyC-pad-all-1 { padding:10px; }
+.MyC-pad-all-2 { padding:20px; }
+.MyC-pad-all-3 { padding:30px; }
+
+/*---------------------------------------------------------------------------*/
+  
+.MyC-transparency {
+	opacity: 0.7;
+}
+
+.MyC-transparency:hover {
+	opacity: 1.0;
+}
+
+
+
+/*	opacity:0.4;
+	filter:alpha(opacity=40); /* For IE8 and earlier */  

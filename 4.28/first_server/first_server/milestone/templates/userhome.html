@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+    <!-- Basic Page Needs
+  ================================================== -->
+    <meta charset="utf-8">
+    <title>User Home Page</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Mobile Specific Metas
+  ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- CSS
+  ================================================== -->
+      {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'skeleton.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'layout.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'MyC_styles.css' %}">
+
+    <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+    <link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{% static 'apple-touch-icon-72x72.png' %}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{% static 'apple-touch-icon-114x114.png' %}">
+
+</head>
+<body onload="display();" class="MyC-main-bg-color">
+
+
+
+    <!-- Primary Page Layout
+    ================================================== -->
+
+    <!-- Delete everything in this .container and get started on your own site! -->
+
+    <div class="container MyC-box-rounded-corners MyC-push-down-1 MyC-box-shadow">
+    
+        <div class="sixteen columns.alpha.omega MyC-header-bg-color MyC-box-top-rounded-corners MyC-pad-top-1 MyC-pad-left-1 MyC-pad-right-1" id="header">
+            <h1 id="header-text">Hello {{ user.username }}.</h1>
+            <hr />
+        </div>
+        
+        <div class="seven columns">
+  		<h5> Classes you are participating in: </h5>
+			<div div="" class="seven columns" style="height:600px; width:335px; border:1px solid #ccc; 
+        font:16px/26px Georgia, Garamond, Serif; overflow:auto;" id="class-list">
+            Replace me, I'm a scrolling box.
+           </div>     
+		</div>
+
+
+      <div class="eight columns MyC-box-rounded-corners MyC-pad-all-1">
+        <h3 id="search-class-header"> Find a Class </h3>
+            <p id="class-search-label"><label for="Class">  Search for a class: </label><input type="text" id="class-search-input" /></p>
+          <ul id="enroll-button-ul">
+            <button class="button" onClick="Search();">
+              Search</a>
+            </ul>
+          <select id="class_search"></select>
+            <p id="class-search-description">Class description.</p>
+            <ul id="enroll-button-ul">
+                <button class="button" onClick="Enroll();">Enroll</a>
+            </ul>
+            <hr />
+        </div>
+
+      <div class="eight columns MyC-box-rounded-corners MyC-push-down-1 MyC-pad-all-1">
+        
+
+        <table id="create-edit-table">
+          <tr id="create-tr" style="visibility:visible;">
+            <td>
+              <h3 id="create-class-header"> Create a Class </h3><!-- WHY IS THIS NOT CENTERED??? -->
+              <label for="Class Name">  Class Name: </label>
+              <input type="text" name="create-classname-input" id="create-classname-input" />
+              <label for="Term">  Term: </label>
+              <input type="radio" name="create-term-input" id="create-term-input-spring" value="Spring">Spring 
+				<input type="radio" name="create-term-input" id="create-term-input-fall" value="Fall">Fall
+                  <label for="Year"> Year: </label>
+                  <select id="create-year-input" name="year">
+                    <option value="2014">2014</option>
+                    <option value="2013">2013</option>
+                    <option value="2012">2012</option>
+                  </select>
+
+                  <button onclick="NewCourse();">Create a class</button>
+                </td>
+          </tr>
+          <tr id="edit-tr" style="visibility:collapse;">
+            <td>
+              <h3 id="edit-class-header"> Edit a Class <button onclick="createVisible();"> Create a class </button>  </h3>
+              <label for="Class Name">  Class Name: </label>
+              <input type="text" name="edit-classname-input" id="edit-classname-input" />
+              <label for="Term">  Term: </label>
+              <input type="radio" name="edit-term-input" id="edit-term-input-spring" value="Spring">
+                Spring <input type="radio" name="edit-term-input" id="edit-term-input-fall" value="Fall">
+                  Fall
+                  <label for="Year"> Year: </label>
+                  <select id="edit-year-input" name="year">
+                    <option value="2014">2014</option>
+                    <option value="2013">2013</option>
+                    <option value="2012">2012</option>
+                  </select>
+
+                  <button onclick="EditCourse();">Edit a class</button>
+
+
+                  <label for="Edit prof">  Professor to Add/Remove </label><input type="text" name="edit-prof-input" id="edit-prof-input" />
+                  <button onclick="AddProfessor();">Make professor</button><button onclick="RemoveProfessor();">Remove professor</button>
+                  <br />
+
+                </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="eleven columns">
+        <button onclick="window.location.href='/logout/'">Logout</button>
+      </div>	
+               
+    </div><!-- container -->
+
+  <p style="visibility:collapse" id="edit-term-value">Hello</p>
+  <div style="display:none" id="create-term-value">Hello</div>
+	
+	<style>
+/*---------------------------------------------------------------------------*/
+
+	/**
+	  *  Scrolly box for past classes
+	  **/
+	
+	#class-list {
+	    height:480px; 
+		width:240px; 
+		border:1px solid #ccc; 
+        font:16px/26px Georgia, Garamond, Serif; 
+		overflow:auto;
+	}
+	
+/*---------------------------------------------------------------------------*/
+	
+	/**
+	  *  Header 
+	  **/
+	
+	#header-text {
+	    font-size:25px;
+	}
+	
+/*---------------------------------------------------------------------------*/
+
+	/**
+	  * Push enroll button over to the side
+	  **/
+	  
+/*#enroll-button-ul {
+	padding-left:300px;
+}*/
+	
+/*---------------------------------------------------------------------------*/
+
+	/**
+	  * Hide edit at first
+	  **
+	
+#edit-tr {
+	visibility:collapse;
+}
+/*#create-tr {
+	visibility:visible;
+}
+
+/*---------------------------------------------------------------------------*/
+
+	</style>
+	
+
+	<script type="text/javascript">
+
+    /*---------------------------------------------------------------------------*/
+
+    /**
+    * Make the create a class field form visible
+    **/
+
+    function createVisible()
+    {
+    document.getElementById("create-tr").style.visibility="visible";
+    document.getElementById("edit-tr").style.visibility="collapse";
+    }
+
+    /*---------------------------------------------------------------------------*/
+
+    /**
+    * Make the create a edit field form visible
+    **/
+
+    function editVisible()
+    {
+    document.getElementById("edit-tr").style.visibility="visible";
+    document.getElementById("create-tr").style.visibility="collapse";
+    }
+
+    /*---------------------------------------------------------------------------*/
+
+    //used as an array
+    var prof_classes;
+    var student_classes;
+    var class_ids;
+    var class_list
+    
+    //used for editing a course
+    var c_id=1;
+    var q_id=1;
+    
+    //used for sorting and merging the two class lists
+    var recieved_prof = false;
+    var recieved_student = false;
+
+    //function that performed as soon as the web page is loaded: for fetching information, enable a timer, etc.
+    window.onload = Main();
+    function Main() {
+    //alert("hello");  
+    Refresh();
+    
+    }
+    
+    function Refresh() {
+       class_ids = new Array();
+       class_list = new Array();
+       class_ids[0] = 0;
+       class_list[0] = 0;
+       recieved_prof = false;
+       recieved_student = false;
+       document.getElementById("class-list").innerHTML = "";
+       Submit("user_get_course_p");
+       Submit("user_get_course_s");
+       createVisible();
+    }
+
+
+    //generic for submitting XML (AJAX) request
+    function Submit(action) { 
+       //check to see if values are null/empty
+       if ((action == "sub_course") || (action == "edit_course")) {
+          var testname = document.getElementById(arguments[1]).value;
+          if (testname == "" || document.getElementById(arguments[2]).value == null) {
+             alert("Please complete all fields");
+             return false;
+          }
+          var regexp = new RegExp(/^[0-9a-zA-Z ]+$/);
+          if (regexp.test(testname) == false) {
+              alert("Please only use alphanumeric characters and spaces.");
+              return false;
+          }
+       }
+       var http;
+       if (window.XMLHttpRequest) // code for IE7+, Firefox, Chrome, Opera, Safari
+          http=new XMLHttpRequest();
+       else // code for IE6, IE5
+         http=new ActiveXObject("Microsoft.XMLHTTP");
+
+       var url = "update.xml" + "?t=" + Math.random();  //change update.xml if you're using a different url
+       url += "&c_id=" + c_id + "&q_id=" + q_id;
+       url += "&action="+ action;  //now the request has a "action" entry as a GET parameter
+         //url +' "&var_name=" + var_value; //generic method for adding parameters
+         //Additional parameters are included inside an implicit arguments[] array.  These can be accessed and stored as necessary
+         //Or, you can comment out this for loop
+       for (var i=1; i < arguments.length; i++) {
+  				if (arguments[i])
+  					url += "&str"+i+"=" + document.getElementById(arguments[i]).value;  //this adds the argument to the GET parameters
+           //document.getElementById(arguments[i]).value;  //This adds the contents of an HTML object with id 'arguments[i]' as an argument to GET parameters
+       }
+    //Will not be used unless we're making POST requests
+    //var params = "";
+
+    http.open("GET", url, true);
+    http.setRequestHeader("X_REQUESTED_WITH", "XMLHttpRequest");
+    
+    http.onreadystatechange = function() {
+       if(http.readyState == 4 && http.status == 200) {
+        //  alert(action);
+          //alert(http.responseText);
+          //Add function calls here to process the returned XML
+          if(action == "user_get_course_p") {
+
+             update_courses(http, "true");
+          }
+          else if(action == "user_get_course_s") { 
+             update_courses(http, "false");
+          }
+          else if(action == "search") {
+             UpdateSearch(http);
+          }
+          else if(action == "search_duplicate") {
+           //alert("I'm here");
+            UpdateSearchDuplicate(http);
+         }
+         else if(action == "search_duplicate_edit") {
+            UpdateEditCourse(http);
+         }
+          else {
+             Refresh();
+          }
+          //set so Enroll() will call update_courses()     
+       }
+    }
+    http.send();
+    }
+    
+    //----------------------------------------------------------------------------------------------------------
+    //function used for updating courses you're participating in
+
+
+    function update_courses(http, prof) {
+    
+   // alert(prof + " " + http.responseText);  
+    if(prof == "true") {
+       prof_classes = new Array();
+    }
+    else {
+       student_classes = new Array();
+    }
+   // var string = "";
+    var xmlDoc = http.responseXML;
+    var obj = xmlDoc.getElementsByTagName("object");
+    //for each object...
+   // alert("update courses");
+
+    for(var i = 0; i < obj.length; i++) {
+       //   alert("in loop for " + prof);
+          //alert(i);
+           //uncomment if you want the id of a particular object
+           //var id = obj[i].attributes.getNamedItem("pk").value;
+           var x = obj[i].getElementsByTagName("field");
+           var name = "";  var term = ""; var year = ""; 
+           //for each field in the object...
+           for(var j = 0; j < x.length; j++) {
+                var y = x[j];
+                if (y.attributes.getNamedItem("name").value == "course_name")  //name for field with class name here
+                   { name = y.childNodes[0].nodeValue; }
+                if (y.attributes.getNamedItem("name").value == "course_term")  //name for field with term here
+                   { term = y.childNodes[0].nodeValue; }
+                if (y.attributes.getNamedItem("name").value == "year")   //name for field with year here
+                   { year = y.childNodes[0].nodeValue; }
+                //add/change fields as needed
+             }
+         // var display_name = name.replace("_", " ");
+          //alert("making str");
+          
+          var str = "<div style=\"width:310px; border-bottom:1px solid #ccc;\"> ";  //change if you want to change the style of the components
+         //var str = "<div> ";
+          str = str + name; //name of class, extracted from XML object entry
+          var goto = class_ids.length;
+          var loc = name + "/" + term + "/" + year;
+          loc = loc.replace(" ", "_");
+          class_ids[goto] = loc;
+          //alert("doesn't crash after goto");
+          str = str +"<button onClick=\"something(" + goto + ");\">GoTo</button>";  //button inside the segment that has a function call
+        //  alert("crash inside prof?");
+          
+          str = str +"<p>Year: " + year + " Term: " + term + " </p>";
+        //  alert(" prof = " + prof);
+          if (prof == 'true') {
+        //  alert("prof");
+             prof_classes[i] = obj[i];
+             str = str + "<button onClick=\"edit_course(" + i + ");\">Edit Course</button>";              
+             str = str + "<button onClick=\"history(" + goto + ");\">View Records</button></div>";
+             class_list[goto] = str;
+        //     recieved_prof = true;
+        
+          }         
+          else
+          { 
+         //   alert(prof);
+            str = str + "<button onClick=\"unenroll_course(" + i + ");\">Un-enroll</button></div>"; 
+            student_classes[i] = obj[i];
+            class_list[goto] = str;
+         //   recieved_student = true; 
+      //   alert("student");
+          }
+          
+      //    alert(str);
+    //string = string + str;
+    }
+    if (prof == 'true') { recieved_prof = true; }
+    else { recieved_student = true; }
+  //  alert(recieved_prof + ' ' + recieved_student);
+    if((recieved_prof == true) && (recieved_student == true))
+    {
+    //alert('update courses...' + prof);
+       class_list.sort();
+       var string = '';
+       for (var i = 1; i < class_list.length; i++)
+       {
+          string = string + class_list[i];
+       }
+       
+       document.getElementById("class-list").innerHTML += string;
+    }
+  }
+    
+    //-------------------------------------------------------------------------------------------------------------
+    //functions for handling web page redirection (besides logging out)
+
+    function something(id) {
+    var str = class_ids[id];
+    window.location.href='/' + str;
+    }
+    
+    function history(id) {
+       var str = class_ids[id];
+    window.location.href='/records/' + str;
+    }
+    
+
+    
+    //---------------------------------------------------------------------------------------------------------------
+    //functions for searching through courses
+    
+    //this is the 
+    function Search() {
+      //submit query string to server through Submit()
+      //var search = document.getElementById("class-search-input").value;
+      Submit("search", "class-search-input");
+    }
+    
+    function Enroll() {
+      //pass user name, class name, and correction action to Submit()
+     // var name = document.getElementById("class_search").value;
+     Submit("enroll", "class_search");
+    }    
+    
+    function UpdateSearch(http) {
+    //alert(http.responseText); 
+    var string = "";
+    var xmlDoc = http.responseXML;
+    var obj = xmlDoc.getElementsByTagName("object");
+    //for each object...
+    for(var i = 0; i < obj.length; i++) {
+        var id = obj[i].attributes.getNamedItem("pk").value;
+        var x = obj[i].getElementsByTagName("field");
+        var name = "";  var term = ""; var year = "";
+           //for each field in the object...
+           for(var j = 0; j < x.length; j++) {
+                var y = x[j];
+                //alert(y.attributes.getNamedItem("name").value);
+                if (y.attributes.getNamedItem("name").value == "course_name")  //name for field with class name here
+                   { name = y.childNodes[0].nodeValue; }
+                if (y.attributes.getNamedItem("name").value == "course_term")  //name for field with term here
+                   { term = y.childNodes[0].nodeValue; }
+                if (y.attributes.getNamedItem("name").value == "year")   //name for field with year here
+                   { year = y.childNodes[0].nodeValue; }
+                //add/change fields as needed
+             }
+          var str = "<option";
+          str = str + " value=\"" + id + "\">";
+          str = str + "Class: " + name  + " Term: " + term + " Year: " + year;
+          str = str + "</option>";
+    string = string + str;
+    }
+    document.getElementById("class_search").innerHTML = string;
+    }
+
+    
+    //-----------------------------------------------------------------------------------------------------------------
+    //functions for creating a new course
+    
+    function NewCourse() {   
+      ReadCreateTerm();
+      Submit("search_duplicate", "create-classname-input", "create-term-value", "create-year-input");
+    }
+    
+    function UpdateSearchDuplicate(http) {
+       var xmlDoc = http.responseXML;
+       var obj = xmlDoc.getElementsByTagName("object");
+       if (obj[0] == null) {
+        //alert("new course created");
+           Submit("sub_course", "create-classname-input", "create-term-value",  "create-year-input");
+       }
+       else {
+         alert("Course with that name already exists!");
+          return false;
+        }        
+    }
+
+    
+    function setFallCreateTerm() {
+		//name =  + name;
+		//alert(name);
+		document.getElementById("create-term-input-fall").checked=true;
+
+	}
+
+	function setSpringCreateTerm() {
+		document.getElementById("create-term-input-spring").checked=true;
+	}
+
+	function ReadCreateTerm() {
+		var radio = document.getElementsByName("create-term-input");
+		for(var i = 0; i < radio.length; i++) {
+			if(radio[i].checked) {
+				document.getElementById("create-term-value").value = radio[i].value;
+				//document.write(radio[i].value);
+			}
+		}
+		//alert(document.getElementById("create-term-value").value);
+	}
+
+	function ChangeCreateTerm(term) {
+		if(term == "Fall") {
+			setFallCreateTerm();
+		}
+		if(term == "Spring") {
+			setSpringCreateTerm();
+		}
+	}  
+    
+    //-----------------------------------------------------------------------------------------------------------------
+    //functions for editing a course you're a professor of
+    
+    function edit_course(id) {
+     //  alert("edit course called");
+       var obj = prof_classes[id];
+       var id = obj.attributes.getNamedItem("pk").value;
+       //alert(id);
+       var x = obj.getElementsByTagName("field");
+       //alert(x.length);
+       //for each field in the object...
+       for(var j = 0; j < x.length; j++) {
+            var y = x[j];
+            if (y.attributes.getNamedItem("name").value == "course_name")  //name for field with class name here
+               { document.getElementById("edit-classname-input").value = y.childNodes[0].nodeValue; }
+            if (y.attributes.getNamedItem("name").value == "course_term")  //name for field with term here
+               { ChangeEditTerm(y.childNodes[0].nodeValue); }
+            if (y.attributes.getNamedItem("name").value == "year")   //name for field with year here
+               { document.getElementById("edit-year-input").value = y.childNodes[0].nodeValue; }
+            //add/change fields as needed
+           // alert("x1");
+            }    
+          //  alert("survived the attributes");
+       c_id = id;
+       editVisible();
+    }
+    
+  function EditCourse() {
+   // alert(document.getElementById("edit-classname-input").value);
+     ReadEditTerm();
+    //alert(document.getElementById("edit-year-input").value);
+     Submit("search_duplicate_edit", "create-classname-input", "create-term-value", "create-year-input");
+      Refresh();
+   }
+
+    function UpdateEditCourse(http) {
+       alert(http.responseText);
+       var xmlDoc = http.responseXML;
+       var obj = xmlDoc.getElementsByTagName("object");
+       if (obj[0] == null) {
+           //alert("Course edited");
+           Submit("edit_course", "edit-classname-input", "edit-term-value", "edit-year-input");
+       }
+       else {
+           alert("Course with that name already exists!");
+           return false;
+       }     
+    }
+
+
+    
+
+    //sets the "edit-term-value" div to have the contents of the radio: a radio can't be read directly
+    function ReadEditTerm() {
+       var radio = document.getElementsByName("edit-term-input");
+       for(var i = 0; i < radio.length; i++) {
+          if(radio[i].checked) {
+             document.getElementById("edit-term-value").value = radio[i].value;
+             //alert(radio[i].value);
+             return;
+         }
+       }
+    }  
+    
+	function ChangeEditTerm(term) {
+		if(term == "Fall") {
+			setFallEditTerm();
+		}
+		if(term == "Spring") {
+			setSpringEditTerm();
+		}
+	}      
+  
+  function setFallEditTerm() {
+		//name =  + name;
+		//alert(name);
+		document.getElementById("edit-term-input-fall").checked=true;
+
+	}
+
+	function setSpringEditTerm() {
+		document.getElementById("edit-term-input-spring").checked=true;
+	}
+    
+    //-----------------------------------------------------------------------------------------------------------------
+    //functions for adding/removing professors
+    
+         function AddProfessor() {
+            //var prof_name = document.getElementById("edit-make-prof").value;
+            //var class_id = c_id;
+            Submit("make_prof", "edit-prof-input")
+            Refresh();
+         }
+
+         
+         function RemoveProfessor() {
+            Submit("remove_prof", "edit-prof-input")
+            Refresh();
+         }
+         
+    //-----------------------------------------------------------------------------------------------------------------
+   //***function for unenrolling from a class
+    function unenroll_course(id) {
+        var obj = student_classes[id];
+        var id = obj.attributes.getNamedItem("pk").value;
+        c_id = id;
+        var r=confirm("Are you sure you want to unenroll?");
+        if (r==true) {
+            Submit("unenroll");
+        }
+     }
+
+         
+         
+	</script> 
+<!-- End Document
+================================================== -->
+</body>
+</html>
