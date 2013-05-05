@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+   <!-- include JQuery Tools -->
+	<script src="http://cdn.jquerytools.org/1.2.7/full/jquery.tools.min.js"></script>
+  
+    <!-- Basic Page Needs
+  ================================================== -->
+    <meta charset="utf-8">
+    <title>Professor Actions Page</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Mobile Specific Metas
+  ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- CSS
+  ================================================== -->
+      {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'skeleton.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'layout.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'MyC_styles.css' %}">
+        
+    <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+    <link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{% static 'apple-touch-icon-72x72.png' %}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{% static 'apple-touch-icon-114x114.png' %}">
+
+</head>
+<body class="MyC-main-bg-color">
+
+
+
+    <!-- Primary Page Layout
+    ================================================== -->
+
+    <!-- Delete everything in this .container and get started on your own site! -->
+
+    <div class="container MyC-box-rounded-corners MyC-push-down-1 MyC-box-shadow">
+
+	
+	<div class="sixteen columns.alpha.omega MyC-header-bg-color MyC-box-top-rounded-corners MyC-pad-top-1 MyC-pad-left-1 MyC-pad-right-1" id="header">
+        <h1 id="header-text">Hello Professor {{ user.username }}.</h1>
+		<hr />
+    </div>
+		
+		
+
+		<div id="panes">
+			<div class="five columns">
+				<input type="text" style="width:260px;" name="search-student" id="search-student-input" value="Search Student" onkeyup="searchStudents();" onfocus="this.value==this.defaultValue?this.value='':null" maxlength="30"/>
+				<h5> Class Roster </h5>
+				<div id="class-roster">
+				Replace me, I'm a scrolling box.
+				</div>  
+			</div>
+		
+			<div class="ten columns MyC-box-rounded-corners MyC-pad-all-1">
+				<div >
+					<p id="rbh-p"> Student Responses: <b id="student-responses"></b></p>
+					<p id="rbh-p"> Student Questions: <b id="student-questions"></b></p>
+					<p id="rbh-p"> Total Class Questions: <b id="total-of-class"></b>{{ q_number }}</p>
+					
+				</div>
+
+				<div id="response-list">
+				Replace me, I'm a scrolling box.
+				</div>  
+			</div>
+		</div>
+
+      <div class="eleven columns">
+        <button onclick="window.location.href='/logout/'">Logout</button>
+        <button onclick="window.location.href='/userhome/'">Go To Home Page</button>
+      </div>
+               
+    </div><!-- container -->
+	
+	
+	<style>
+	
+#rbh-p
+{
+	margin:20px;
+}
+
+#response-box-header
+{
+	border:1px solid #ccc;
+	width:500px; 
+}
+	
+	/**
+	  *  Scrolly box 
+	  **/
+	  
+#response-list, #class-roster, #question-pool
+{
+    height:480px; 
+	border:1px solid #ccc; 
+    font:16px/26px Georgia, Garamond, Serif; 
+	overflow:auto;
+}
+	
+	
+#search-student-input 
+{
+	color:#888;
+	
+}
+
+
+
+/*---------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+
+	/**
+	  * This is all CSS for the tabs
+	  */
+	  
+/* root element for tabs  */
+ul.tabs {
+    list-style:none;
+    margin:0 !important;
+    padding:0;
+    border-bottom:1px solid #666;
+    height:30px;
+}
+
+/* single tab */
+ul.tabs li {
+    float:left;
+    text-indent:0;
+    padding:0;
+    margin:0 !important;
+    list-style-image:none !important;
+}
+
+/* link inside the tab. uses a background image */
+ul.tabs a {
+    background: url(tabs.png) no-repeat -420px 0;
+    font-size:11px;
+    display:block;
+    height: 30px;
+    line-height:30px;
+    width: 134px;
+    text-align:center;
+    text-decoration:none;
+    color:#333;
+    padding:0px;
+    margin:0px;
+    position:relative;
+    top:1px;
+}
+
+ul.tabs a:active {
+    outline:none;
+}
+
+/* when mouse enters the tab move the background image */
+ul.tabs a:hover {
+    background-position: -420px -31px;
+    color:#fff;
+}
+
+/* active tab uses a class name "current". its highlight is also done by moving the background image. */
+ul.tabs a.current, ul.tabs a.current:hover, ul.tabs li.current a {
+    background-position: -420px -62px;
+    cursor:default !important;
+    color:#000 !important;
+}
+
+/* Different widths for tabs: use a class name: w1, w2, w3 or w2 */
+
+
+/* width 1 */
+ul.tabs a.s { background-position: -553px 0; width:81px; }
+ul.tabs a.s:hover { background-position: -553px -31px; }
+ul.tabs a.s.current  { background-position: -553px -62px; }
+
+/* width 2 */
+ul.tabs a.l { background-position: -248px -0px; width:174px; }
+ul.tabs a.l:hover { background-position: -248px -31px; }
+ul.tabs a.l.current { background-position: -248px -62px; }
+
+
+/* width 3 */
+ul.tabs a.xl { background-position: 0 -0px; width:248px; }
+ul.tabs a.xl:hover { background-position: 0 -31px; }
+ul.tabs a.xl.current { background-position: 0 -62px; }
+
+
+/* initially all panes are hidden */
+.panes .pane {
+    display:none;
+}
+
+/*--------------------------------------------------------------*/
+
+/* tab pane styling */
+/*.panes div {
+    display:none;
+    padding:15px 10px;
+    border:1px solid #999;
+    border-top:0;
+    height:100px;
+    font-size:14px;
+    background-color:#fff;
+}*/
+
+
+/*--------------------------------------------------------------*/
+/*--------------------------------------------------------------*/
+/*--------------------------------------------------------------*/
+
+
+	</style>
+	
+
+	<script type="text/javascript">
+
+/*--------------------------------------------------------------*/
+/*--------------------------------------------------------------*/
+	
+var c_id = {{c_id}};
+	
+var q_set;
+var students;
+var student_index = -1;
+var str_students = "{{ students }}";
+    
+window.onload = Main();
+
+/*--------------------------------------------------------------*/
+
+function Main() 
+{
+    //alert("hello");
+    //execute('all_students');
+	request_info('class_questions', 'anyone');
+	parseStudents();
+}
+
+/*--------------------------------------------------------------*/
+
+function request_info(action, user)
+{
+    var http;
+    if (window.XMLHttpRequest) // code for IE7+, Firefox, Chrome, Opera, Safari
+        http=new XMLHttpRequest();
+    else // code for IE6, IE5
+        http=new ActiveXObject("Microsoft.XMLHTTP");
+
+    var url = "/records/info.xml" + "?t=" + Math.random();
+    url += "&c_id=" + c_id;
+    url += "&action="+ action; 
+    url += "&user=" + user;			
+
+    http.open("GET", url, true);
+    http.setRequestHeader("X_REQUESTED_WITH", "XMLHttpRequest");
+   	http.onreadystatechange = function() 
+	{
+        if(http.readyState == 4 && http.status == 200) 
+	    {
+            //alert(http.responseText);
+            if(action == 'student_responses')
+                update_responses(http);
+            if(action == 'class_questions')
+                course_questions(http);
+            if(action == 'student_questions')
+                update_questions(http);
+            //insert actions
+
+  	    }
+    }
+    http.send();  //(params);
+}
+    
+/*--------------------------------------------------------------*/
+    //function that parses the str_students listed passed through context 
+    //as an array for later use
+    
+function parseStudents()
+{
+    students = new Array();
+    students[0] = "0";
+    names = str_students.split(' ');
+     //  alert(names.length + " " + names[0] + ";");
+    for(var i = 0; i < names.length; i++) 
+    {
+        students[students.length] = names[i];
+         // alert(students[i]);
+    } 
+    searchStudents();
+}
+
+/*--------------------------------------------------------------*/    
+   //requests and loads the course questions to be filled later, so viewer can also see the questions the student didn't answer
+   
+function course_questions(http)
+{
+    q_set = new Array();
+    var xmlDoc = http.responseXML;
+    var obj = xmlDoc.getElementsByTagName("object");
+    var string = '<h3 style="display:none; width:550px; border-bottom:1px solid #ccc;" id="student_question_head">Questions Asked: </h3>';
+    string = string + '<div style="display:none;" id="student_question_body">blah</div>';
+    string = string + '<h3 style="display:none; width:550px; border-bottom:1px solid #ccc;" id="student_response_head">Responses Made: </h3>';
+    for(var i = 0; i < obj.length; i++) 
+    {
+        var id = obj[i].attributes.getNamedItem("pk").value;
+        q_set[i] = id;
+        var x = obj[i].getElementsByTagName("field");
+        for(var j = 0; j < x.length; j++) 
+		{
+            var y = x[j];
+            if (y.attributes.getNamedItem("name").value == "question_text")
+            {
+               var str = '<div style="width:500px; border-bottom:1px solid #ccc;" id="question' + id + '" value="' + id + '"><p>';
+               str = str + y.childNodes[0].nodeValue;
+               str = str + '</p><p id="responsefor' + id + '">N/A</p></div>';
+               string = string + str;
+            }
+        }
+    }
+    document.getElementById('response-list').innerHTML = string;
+    // alert("the qustions list currently shows a bunch of N/A as responses.  Here is a sample of how to change them without removing the question");
+    // for(var i = 0; i < q_set.length; i++)
+    // {  
+     //   var str = "I should be response to question with id " + q_set[i];
+     //   document.getElementById('responsefor' + q_set[i]).innerHTML = str;
+    // }
+}
+    
+/*--------------------------------------------------------------*/
+   
+function searchStudents()
+{
+     // alert(document.getElementById("search-student-input").value);
+    var search = document.getElementById("search-student-input").value;
+    if (search == 'Search Student') search = "";
+    var roster = ""
+    for (var i = 1; i < students.length; i++)
+    {
+        var s = students[i];
+        if(s.search(search) != -1)
+        {
+            //add student name to visible roster
+            var str = '<div onclick="student_info(' + i + ');" style="width:269px; border-bottom:1px solid #ccc; margin:3px">';
+            str = str + s + '</div>';
+            roster = roster + str;
+        }
+    }
+    if (roster == "")
+        roster = "No students match your search";
+    if (students.length == 0) 
+        roster = "No students are enrolled in the course";
+    document.getElementById("class-roster").innerHTML = roster;
+}
+
+/*--------------------------------------------------------------*/
+
+function highlightStudent(index)
+{
+	var search = document.getElementById("search-student-input").value;
+    if (search == 'Search Student') search = "";
+	var roster = ""
+    for (var i = 1; i < students.length; i++)
+    {
+        var s = students[i];
+        if(s.search(search) != -1)
+        {
+            var str = ""
+			if (i == index) str = '<div onclick="student_info(' + i + ');" style="width:269px; border:3px solid red;"> ';
+			else str = '<div onclick="student_info(' + i + ');" style="width:269px; border-bottom:1px solid #ccc; margin:3px"> ';
+			str = str + s + '</div>';
+			roster = roster + str
+        }
+    }
+    if (roster == "")
+        roster = "No students match your search";
+    if (students.length == 0) 
+        roster = "No students are enrolled in the course";
+    document.getElementById("class-roster").innerHTML = roster;	
+}
+			
+/*--------------------------------------------------------------*/  
+//updates the individual student history
+  
+function student_info(index) 
+{
+    // alert(index);
+    request_info('student_questions', students[index]);
+    request_info('student_responses', students[index]);
+	highlightStudent(index);
+}
+  
+/*--------------------------------------------------------------*/
+  
+function update_responses(http)
+{
+  //alert('update_responses');
+     //blank out all questions
+    for(var k = 0; k < q_set.length; k++)
+    {
+        document.getElementById('responsefor' + q_set[k]).innerHTML = 'N/A';
+    }
+     
+      //alert(http.responseText);
+    var xmlDoc = http.responseXML;
+     //for each response...
+    var obj = xmlDoc.getElementsByTagName("object");
+    var string = "";
+    for(var i = 0; i < obj.length; i++) 
+    {
+        var id = obj[i].attributes.getNamedItem("pk").value;
+        var x = obj[i].getElementsByTagName("field");
+        var text = "N/A"; var q_id = -1;
+        //find the response's text and corresponding question id
+        for(var j = 0; j < x.length; j++) 
+		{
+            var y = x[j];
+            if (y.attributes.getNamedItem("name").value == "resp_text")
+            {
+                text = y.childNodes[0].nodeValue;
+               //var str = '<div style="width:550px; border-bottom:1px solid #ccc;"><p>';
+              // str = str + y.childNodes[0].nodeValue;
+              // str = str + " responsed id = " + id
+             //  str = str + '</p></div>';
+              // string = string + str;
+            }
+            if (y.attributes.getNamedItem("name").value == "q")
+               q_id = y.childNodes[0].nodeValue;
+        }
+        //store answer in corresponding location
+        document.getElementById('responsefor' + q_id).innerHTML = text;
+    } 
+     //alert("no q_id?");
+    // document.getElementById('response-list').innerHTML = string;
+    document.getElementById('student-responses').innerHTML = obj.length;
+}
+  
+/*--------------------------------------------------------------*/
+  
+function update_questions(http)
+{
+    var xmlDoc = http.responseXML;
+    var obj = xmlDoc.getElementsByTagName("object");
+    var string = '<h3 style="display:none; border-bottom:1px solid #ccc;" id="student_question_head">Questions Asked: </h3>';
+    string = string + '<div style="display:none;" id="student_question_body">blah</div>';
+    for(var i = 0; i < obj.length; i++) 
+    {
+        var noname = true; var text = ""; var date = "";  
+        var x = obj[i].getElementsByTagName("field");
+        for(var j = 0; j < x.length; j++) 
+		{
+            //alert(j);
+            var y = x[j];
+            if (y.attributes.getNamedItem("name").value == "question_text")
+				{ text =  y.childNodes[0].nodeValue; }
+            if (y.attributes.getNamedItem("name").value == "pub_date")
+            {
+                var published = new Date(y.childNodes[0].nodeValue);
+                var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                date = months[published.getMonth()] + " " + published.getDate();
+            }
+            if (y.attributes.getNamedItem("name").value == "anonymous")
+            { 
+			    if (y.childNodes[0].nodeValue == 'True') noname = true;
+                else  { noname = false; }
+            }
+        }
+      
+        if(noname == true)
+        {
+            string = string + '<div style="width:550px; border-bottom:1px solid #ccc;"><font color="#ccc">Anonymous Question</font></div>';
+        }
+        else
+        {
+            var str = '<div style="width:550px; border-bottom:1px solid #ccc;">';
+            str = str + text + '<br />' + date + '</div>';
+            string = string + str;
+        }
+    }
+    string = string + '<br />';
+    document.getElementById('student_question_head').style.display = "inline"; 
+    document.getElementById('student_response_head').style.display = "inline"; 
+    document.getElementById('student_question_body').innerHTML = string;
+    document.getElementById('student_question_body').style.display = 'inline';
+    document.getElementById('student-questions').innerHTML = obj.length;
+}
+
+/*--------------------------------------------------------------*/	
+/*--------------------------------------------------------------*/
+	
+	</script> 
+<!-- End Document
+================================================== -->
+</body>
+</html>

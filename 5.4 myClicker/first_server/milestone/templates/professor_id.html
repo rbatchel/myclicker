@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+    <!-- Basic Page Needs
+  ================================================== -->
+    <meta charset="utf-8">
+    <title>Professor Page</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Mobile Specific Metas
+  ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- CSS
+  ================================================== -->
+      {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'skeleton.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'layout.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'MyC_styles.css' %}">
+        
+    <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+    <link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{% static 'apple-touch-icon-72x72.png' %}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{% static 'apple-touch-icon-114x114.png' %}">
+
+    <!-- Add jQuery library -->
+    <script type="text/javascript" src="{% static 'jquery.js' %}"></script>
+
+    <!-- Add fancyBox -->
+    <link rel="stylesheet" href="{% static 'jquery.fancybox.css' %}" type="text/css" media="screen" />
+    <script type="text/javascript" src="{% static 'jquery.fancybox.js' %}"></script>
+
+    <!-- Add raphael and pie -->
+    <script type="text/javascript" src="{% static 'raphael-min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'pie.js' %}"></script>   
+
+    <style media="screen">
+        #holder {
+            background: #333;
+        }
+        #
+    </style>
+          
+    <script type="text/javascript">
+          $(".fancybox").fancybox({
+            openEffect  : 'none',
+            closeEffect : 'none',
+            afterLoad   : function() {
+                this.content.html();
+            },
+            helpers: {
+                title    : {
+                    type: 'over'
+                },
+            }
+        });
+    </script>
+
+
+      
+</head>
+<body class="MyC-main-bg-color">
+
+
+
+    <!-- Primary Page Layout
+    ================================================== -->
+
+    <!-- Delete everything in this .container and get started on your own site! -->
+
+    <div class="container MyC-box-rounded-corners MyC-push-down-1 MyC-box-shadow">
+    
+        <div class="sixteen columns.alpha.omega MyC-header-bg-color MyC-box-top-rounded-corners MyC-pad-top-1 MyC-pad-left-1 MyC-pad-right-1">
+            <h1 style="20px">Hello Professor {{ user.username }}.</h1>
+            <h2 style="20px">You are writing questions for <b id="curr_course"></b>{{classname}}</h2>
+            <hr />
+        </div>
+      <div class="five columns">
+        <table>
+          <tr>
+            <div style="height:400px; width:280px; border:1px solid #ccc; 
+        font:16px/26px Georgia, Garamond, Serif; overflow:auto;" id="past_questions">
+            //<div style="width:280px; border-bottom:1px solid #ccc;">blahblahblah</div>
+            //<div style="width:280px; border-bottom:1px solid #ccc;">blahblahblah</div>
+            </div>
+          </tr>
+          <br />
+          <tr>
+            <h4 id="student-questions-title">Student Questions: </h4>
+            <div style="height:400px; width:280px; border:1px solid #ccc; 
+        font:16px/26px Georgia, Garamond, Serif; overflow:auto;" id="student_questions">
+              Replace me, I'm a scrolling box.
+            </div>
+          </tr>
+        </table>
+      </div>
+      
+      
+    
+        
+        <div class="ten columns MyC-box-rounded-corners MyC-pad-all-1">
+            New Question:<br />
+            <textarea class="nine columns" name="new_question" id="new_question" maxlength="200"></textarea><br />
+            <button onclick="execute('sub_quest', 'new_question');">Create</button>
+        </div>
+        
+        <div class="ten columns MyC-box-rounded-corners MyC-pad-all-1">
+            <h3>Current question:</h3>
+            <p id="curr_question"></p>
+
+        </div>
+      <div class="eleven columns">
+        <button class="button" id="open/close button" onclick="execute('set_open', 'open/close action');">Close</button>
+        <button class="button" id="hide/reveal button" onclick=" execute('set_hidden', 'hide/reveal action');">Hide/Reveal</button>
+        <button class="button" onclick="Refresh();">Refresh</button>
+        <button class="button" onclick="response_choice = 'response'; Refresh();">Show All Results</button>
+        <button class="button" onclick="response_choice = 'result'; Refresh();">Sort Results</button>
+        <button class="button" onclick="execute('make_pie');">Display Graph</button>
+
+      </div>
+      <div class="ten columns MyC-box-rounded-corners MyC-pad-all-1 MyC-push-down-2">
+            <h3>Student responses:</h3>
+        </div>
+        
+        <div class="ten columns MyC-pad-all-1" style="height:240px; border:1px solid #ccc; 
+        font:16px/26px Georgia, Garamond, Serif; overflow:auto;" id="student_responses">
+            Student response 1. <br />
+            Student response 2. <br />
+            Student response 3. <br />
+            Student response 4. <br />
+        </div>
+
+      <div class="eleven columns">
+        <button onclick="window.location.href='/logout/'">Logout</button>
+        <button onclick="window.location.href='/userhome/'">Go To Home Page</button>
+      </div>
+      
+    </div><!-- container -->
+
+  <div style="visibility:collapse" id="open/close action"></div>
+  <div style="visibility:collapse" id="hide/reveal action"></div>
+
+  <div id="student_question_id" style="visibility:collapse;"></div>
+  <div id="student_question_answered" style="visibility:collapse;"></div>
+  <div id="student_question_star" style="visibility:collapse;"></div>
+  <div id="pie" style="display:none;">
+    <a href="#pie" class="fancybox"></a>
+  </div>
+
+
+  <script type="text/javascript">
+  
+/*---------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+
+var c_id = {{c_id}};
+var q_id = 1;
+		
+var q_set;
+  
+var response_choice = "response";
+//alternative is "result";
+  
+var outlined_star_url =  "{% static 'outlined_star.bmp' %}";
+var full_star_url = "{% static 'full_star.bmp' %}";
+	
+window.onload = Main();
+
+/*---------------------------------------------------------------------------*/
+
+function Main() 
+{
+	//alert("hello");
+	Refresh();
+	setInterval(function(){Refresh()}, 3000);
+}
+    
+/*---------------------------------------------------------------------------*/
+	
+function Refresh() 
+{
+    //  alert("refreshing...");
+    execute("get_quest");
+    execute("all_quest");
+    //execute("display");
+    if(response_choice == 'response') execute("get_resp");
+    if(response_choice == 'result') { execute("get_result");}
+    execute('stu_quest');
+}
+    
+/*---------------------------------------------------------------------------*/
+	
+function execute(action) 
+{
+    //check to see if values are null/empty
+    if (action == "sub_quest") 
+	{
+       var testname = document.getElementById(arguments[1]).value;
+       if (testname == "") 
+	   {
+          alert("No question");
+          return false;
+		}
+    }
+	var http;
+  	if (window.XMLHttpRequest) // code for IE7+, Firefox, Chrome, Opera, Safari
+  		http=new XMLHttpRequest();
+  	else // code for IE6, IE5
+  		http=new ActiveXObject("Microsoft.XMLHTTP");
+
+  	var url = "update.xml" + "?t=" + Math.random();
+  	url += "&c_id=" + c_id + "&q_id=" + q_id;
+  	url += "&action="+ action; 
+  	for (var i=1; i < arguments.length; i++) 
+	{
+  		if (arguments[i])
+  			url += "&str"+i+"=" + document.getElementById(arguments[i]).value;
+  	}
+  	var params = ""; //"action=submit&str=testing";
+
+  	http.open("GET", url, true);
+  	http.setRequestHeader("X_REQUESTED_WITH", "XMLHttpRequest");
+   	http.onreadystatechange = function() 
+	{
+      	if(http.readyState == 4 && http.status == 200) 
+		{
+			if (action == "get_course")
+   				update_course(http);
+  			if (action == "get_quest")
+   				update_question(http);
+            if (action == "all_quest")
+                update_past_questions(http);
+            if (action == "stu_quest")
+                load_student_questions(http);
+            if ((action == "star") || (action == "answered"))
+                execute('stu_quest');
+            if (action == "get_resp")
+                update_response(http);
+            if (action == "get_result")
+                count_response(http);
+            if (action == "make_pie") {
+                var data = count_response(http);
+                if (data[0].length < 2)
+                    alert('There are not enough unique responses to this question to generate a chart.');
+                else 
+				{
+                    //alert("making chart?");
+                    var text = document.getElementById("curr_question").innerHTML;
+                    //alert(text);
+                    fill_chart(data, text);
+                    makePie();
+                    $('a.fancybox').trigger('click');
+                }
+            }
+            if ((action == "set_open") || (action == "set_hidden"))
+			{
+                Refresh();
+            }           
+  		}
+ 	}
+ 	http.send();  //(params);
+ 	for (var i=1; i < arguments.length; i++)
+	clear(arguments[i]);
+}
+
+/*---------------------------------------------------------------------------*/
+		
+function clear(field) // variable number of fields supported 
+{ 
+	//clears input box only
+	for (var i=0; i < arguments.length; i++) 
+	{
+		var e = document.getElementById(arguments[i]);
+		e.value = "";
+	}	
+}
+		
+/*---------------------------------------------------------------------------*/
+	
+function update_course(http) 
+{
+    var xmlDoc = http.responseXML;
+    var fieldArray = xmlDoc.getElementsByTagName("field");
+    //   alert("fields length: " + x.length);
+    var string = "";
+    for (var i=0; i < fieldArray.length; i++)
+    {
+    	if (fieldArray[i].attributes.getNamedItem("name").value == "course_name")
+    		string = fieldArray[i].childNodes[0].nodeValue;
+    } 
+	document.getElementById("curr_course").innerHTML=string;
+}
+		
+/*---------------------------------------------------------------------------*/
+		
+function update_question(http) 
+{
+    var xmlDoc = http.responseXML;
+    var fieldArray = xmlDoc.getElementsByTagName("field");
+    //   alert("fields length: " + x.length);
+    var string = "";
+    for (var i=0; i < fieldArray.length; i++)
+    {
+    	if (fieldArray[i].attributes.getNamedItem("name").value == "question_text")
+    		string = fieldArray[i].childNodes[0].nodeValue;
+        if (fieldArray[i].attributes.getNamedItem("name").value == "is_open")
+    		isOpen(fieldArray[i].childNodes[0].nodeValue);
+        if (fieldArray[i].attributes.getNamedItem("name").value == "is_hidden")
+    		isHidden(fieldArray[i].childNodes[0].nodeValue);
+    } 
+	document.getElementById("curr_question").innerHTML=string;
+}
+    
+/*---------------------------------------------------------------------------*/
+	
+function update_response(http) 
+{
+    var xmlDoc = http.responseXML;
+    var obj = xmlDoc.getElementsByTagName("object"); 
+    var str = "";
+    for(var i = 0; i < obj.length; i++) 
+	{
+        var id = obj[i].attributes.getNamedItem("pk").value;
+        var x = obj[i].getElementsByTagName("field");
+        var text = " "; var time = "never"; var user = "QWERTY";
+        for(var j = 0; j < x.length; j++) 
+		{
+            var y = x[j];
+            if (y.attributes.getNamedItem("name").value == "resp_text")
+                { text = y.childNodes[0].nodeValue; }
+            if (y.attributes.getNamedItem("name").value == "pub_date") {
+                time = y.childNodes[0].nodeValue;
+            }
+            if (y.attributes.getNamedItem("name").value == "user") {
+                user = y.childNodes[0].nodeValue;
+            }      
+        }
+        str = str + "<div style=\"width:500px; border-bottom:1px solid #ccc;\"> <p>" + text + "</p> <p>User: " + user + "</p> </div>";
+    }
+    document.getElementById("student_responses").innerHTML = str;
+}
+    
+/*---------------------------------------------------------------------------*/
+	
+function count_response(http) 
+{
+	//  alert("count_response");
+    var xmlDoc = http.responseXML;
+    var obj = xmlDoc.getElementsByTagName("object"); 
+    var str = "";
+    var aResp = [];
+    var aCount = [];
+    for(var i = 0; i < obj.length; i++) 
+	{
+        var id = obj[i].attributes.getNamedItem("pk").value;
+        var x = obj[i].getElementsByTagName("field");
+        for(var j = 0; j < x.length; j++) 
+		{
+            var y = x[j];
+            if (y.attributes.getNamedItem("name").value == "resp_text")
+                aResp[i] = y.childNodes[0].nodeValue;
+            if (y.attributes.getNamedItem("name").value == "count") 
+			{
+                aCount[i] = y.childNodes[0].nodeValue;
+			}      
+        }
+        str = str + "<div style='border-bottom: 1px solid #ccc; overflow: hidden;'><div style='width:80%; float:left;'><p>" + aResp[i] + "</p></div>";
+        str = str + "<div style='width:20%; float:left; align:right'><p>Count: " + aCount[i] + "</p></div></div>";
+    }
+    document.getElementById("student_responses").innerHTML = str;
+    return [aResp, aCount]; 
+}
+    
+/*---------------------------------------------------------------------------*/
+	
+function fill_chart(data, text) 
+{
+    str = '<a href="#pie" class="fancybox" title="' + text + '"></a><table class="pie"><tbody>';
+    for (var i = 0; i < data[0].length; i++)
+        str += "<tr class='pie'><th class='pie' scope='row'>" + data[0][i] + "</th><td class='pie'>" + data[1][i] + "</td></tr>";
+    str += '</tbody></table><div id="holder"></div>';
+    //str = '<a href="#pie" class="fancybox"></a><table class="pie"><tbody><tr class="pie"><th class="pie" scope="row">Answer 1</th><td class="pie">40</td></tr><tr class="pie">';
+    str = str + '<th class="pie" scope="row">Answer 2</th><td class="pie">26</td></tr></tbody></table><div id="holder"></div>';
+    document.getElementById("pie").innerHTML = str;
+}
+
+/*---------------------------------------------------------------------------*/
+    
+function change_question(id) 
+{		
+	q_id = q_set[id];
+	Refresh();
+}
+    
+/*---------------------------------------------------------------------------*/
+	
+function update_past_questions(http) 
+{
+    // alert(http.responseText);
+    var xmlDoc = http.responseXML;
+    var obj = xmlDoc.getElementsByTagName("object");
+    var str = "";
+    q_set = new Array();
+    for(var i = 0; i < obj.length; i++) 
+	{
+        var id = obj[i].attributes.getNamedItem("pk").value;
+        q_set[i] = id;
+        var x = obj[i].getElementsByTagName("field");
+        var text = " "; var time = "never";
+        var open = false; var hidden = false;
+        for(var j = 0; j < x.length; j++) 
+		{
+            var y = x[j];
+            if (y.attributes.getNamedItem("name").value == "question_text")
+				{ text = y.childNodes[0].nodeValue; }
+            if (y.attributes.getNamedItem("name").value == "pub_date") 
+				{ time = y.childNodes[0].nodeValue; }
+            if (y.attributes.getNamedItem("name").value == "is_hidden") 
+				{ hidden = y.childNodes[0].nodeValue; }
+            if (y.attributes.getNamedItem("name").value == "is_open") 
+				{ open = y.childNodes[0].nodeValue; }
+        }
+        var color = "#FFFFFF";
+        if(hidden == 'True') { color = "#808080"; }
+        if(open == 'False') {color = "#4B0082"; }
+		///////////////// MAX RUBIN
+
+		if (id == q_id)
+		{
+			str = str + "<div onclick=\"change_question(" + i + ");\" style=\"width:274px; background-color:" + color +"; border:solid 3px red;\"><p>" + text + "</p></div>";
+		}
+		else
+		{
+			//////////////////
+			str = str + "<div onclick=\"change_question(" + i + ");\" style=\"width:274px; background-color:" + color +"; border-bottom:1px solid #ccc; margin:3px\"><p>" + text + "</p></div>";
+			// alert(id + "," + text + "," + time);
+		}
+	}   
+    document.getElementById("past_questions").innerHTML = str;
+}
+		
+/*---------------------------------------------------------------------------*/
+		
+function get_ids(http) 
+{
+	var xmlDoc = http.responseXML;
+	var objArray = xmlDoc.getElementsByTagName("object");
+			
+	var string = "";
+	for (var i=0; i < objArray.length; i++)
+	{
+		string += objArray[i].attributes.getNamedItem("pk").value;
+		string += " ";
+	}
+	//alert(string);
+}
+		
+/*---------------------------------------------------------------------------*/
+// functions for the hide/reveal and close buttons
+    
+function isHidden(is_hidden) 
+{
+    //alert("hidden? " + is_hidden);
+    if(is_hidden == 'True') 
+    {
+		document.getElementById("hide/reveal button").innerHTML = "Reveal Answers";
+		document.getElementById("hide/reveal action").value = "False";
+    }
+    else 
+    {
+        document.getElementById("hide/reveal button").innerHTML = "Hide Answers";
+        document.getElementById("hide/reveal action").value = "True";
+    }
+    //  document.getElementById("hide/reveal action").value = !(is_hidden);
+}
+    
+/*---------------------------------------------------------------------------*/
+	
+function isOpen(is_open) 
+{
+    //alert("open? " + is_open);
+    if(is_open == 'True') 
+    {
+        document.getElementById("open/close button").innerHTML = "Close Question";
+        document.getElementById("open/close action").value = "False";
+    }
+    else 
+    {
+        document.getElementById("open/close button").innerHTML = "Open Question";
+        document.getElementById("open/close action").value = "True";
+    }
+    //  document.getElementById("open/close action").value = !(is_open);
+}
+    
+/*---------------------------------------------------------------------------*/
+	
+function load_student_questions(http)
+{
+    //document.getElementById("student_questions").innerHTML = http.responseText;
+    //alert(http.responseText);
+    var xmlDoc = http.responseXML;
+    var obj = xmlDoc.getElementsByTagName("object"); 
+    var str = "";
+    for(var i = 0; i < obj.length; i++) 
+	{
+        var id = obj[i].attributes.getNamedItem("pk").value;
+        var x = obj[i].getElementsByTagName("field");
+        var text = " "; var time = "";  var star = false
+        var user = "";  var votes = 0;
+        var answered = false;
+        for(var j = 0; j < x.length; j++) 
+		{
+            var y = x[j];
+            if (y.attributes.getNamedItem("name").value == "question_text")
+                { text = y.childNodes[0].nodeValue; }
+            if (y.attributes.getNamedItem("name").value == "pub_date") 
+			{
+				//set to the time if it was published today, set to the date if it was published earlier
+                var date = new Date(y.childNodes[0].nodeValue);
+                var today = new Date();
+                today.setDate(today.getDate()-1);
+                //alert("next line broken?");
+                if(date > today) 
+				{
+                    //alert("can compare dates" + time);
+					var minutes = date.getMinutes();
+					if(minutes < 10) minuts = "0" + minutes;
+					time = date.getHours() + ":" + minutes;
+					// alert(time);
+                }
+                else 
+				{
+                    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                    time = months[date.getMonth()] + " " + date.getDate();
+                }                
+                //alert("done on time");
+            }    
+            if (y.attributes.getNamedItem("name").value == "user")
+				{ if (user != "Anonymous") user = y.childNodes[0].nodeValue; }
+            if (y.attributes.getNamedItem("name").value == "upvotes")
+                { votes = y.childNodes[0].nodeValue; }
+            if (y.attributes.getNamedItem("name").value == "anonymous")
+                { if (y.childNodes[0].nodeValue == true) user = "Anonymous"; }
+            if (y.attributes.getNamedItem("name").value == "is_starred")
+                { star = y.childNodes[0].nodeValue; }
+            if (y.attributes.getNamedItem("name").value == "is_answered")
+                { answered = y.childNodes[0].nodeValue; }
+		}
+		//   alert("!");
+       
+        var div = '<table style="width:260px; border-bottom:1px solid #ccc;"><tr>';
+        //alert(div);
+          
+        if(star == 'True')
+        {
+            //alert(full_star_url);
+            div = div + '<td rowspan="3"><img src="' + full_star_url + '"></img></td>';
+        }
+        else
+        {
+			// alert(outlined_star_url);
+            div = div + '<td rowspan="3"><img src="' + outlined_star_url + '"></img></td>';
+        }
+        //alert("div");
+        div = div + '<td><p>'+ text + '</p></td>';
+        var vote_color = "#40FF00";
+        if(votes == 0) vote_color = "#000000";
+        div = div + '<td align="center"><p><font color="' + vote_color + '">' + votes + '</font></p></td>';
+        //  div = div + '<button onClick="Upvote(' + id + ');">Like</button>';
+        div = div + '</tr><tr><td>' + user + '</td>';
+        div = div + '<td>' + time + '</td>';
+        div = div + '</tr><tr><td colspan="2">';
+        if (star == 'True')
+            {  div = div + '<button onClick="star_student_question(' + id + ', false);">Un-Star</button>'; }
+        else
+            {  div = div + '<button onClick="star_student_question(' + id + ',  true);">Star</button>'; }
+        if (answered == 'True')
+            {  div = div + '<button onClick="answer_student_question(' + id + ', false);">Un-Mark as Answered</button>'; }
+        else
+            {  div = div + '<button onClick="answer_student_question(' + id + ', true);">Mark as Answered</button>'; }
+
+        div = div + '</td></tr></table>';
+        str = str + div;
+        /*   var div = '<div style="width:240px; border-bottom:1px solid #ccc;">';
+          div = div + text + '<br />' + votes + '<br />' + time + '<br />' + user;
+          //div = div + '<button onClick="Upvote(' + id + ');">Like</button>' + '</div>';
+          if (star == 'True')
+          {  div = div + '<button onClick="star_student_question(' + id + ', false);">Un-Star</button>'; }
+          else
+          {  div = div + '<button onClick="star_student_question(' + id + ',  true);">Star</button>'; }
+          if (answered == 'True')
+          {  div = div + '<button onClick="answer_student_question(' + id + ', false);">Un-Mark as Answered</button>'; }
+          else
+          {  div = div + '<button onClick="answer_student_question(' + id + ', true);">Mark as Answered</button>'; }
+          div = div + '</div>';
+          //str = str + "<div style=\"width:240px; border-bottom:1px solid #ccc;\"> <p>" + text + "</p></div>";
+          str = str + div;*/
+    }
+    document.getElementById("student_questions").innerHTML = str;
+}
+    
+/*---------------------------------------------------------------------------*/
+	
+function star_student_question(id, status)
+{
+    if (status == true)
+        status = 'True';
+    else
+        status = 'False';
+    document.getElementById("student_question_id").value = id;
+    document.getElementById("student_question_star").value = status;
+    execute('star', 'student_question_star', 'student_question_id');
+}
+    
+/*---------------------------------------------------------------------------*/
+	
+function answer_student_question(id, status)
+{
+    if (status == true)
+        status = 'True';
+    else
+		status = 'False';
+    document.getElementById("student_question_id").value = id;
+    document.getElementById("student_question_answered").value = status;
+    execute('answered', 'student_question_answered', 'student_question_id')
+}
+	</script>
+
+<!-- End Document
+================================================== -->
+</body>
+</html>

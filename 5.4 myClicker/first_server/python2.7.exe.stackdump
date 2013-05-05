@@ -1,0 +1,7 @@
+Exception: STATUS_ACCESS_VIOLATION at eip=67AF5646
+eax=00000000 ebx=00000000 ecx=806367F0 edx=805476F4 esi=805475AC edi=FFB49864
+ebp=FF64C558 esp=FF64C480 program=C:\cygwin\bin\python2.7.exe, pid 54120, thread unknown (0x2CB0)
+cs=0023 ds=002B es=002B fs=0053 gs=002B ss=002B
+Stack trace:
+Frame     Function  Args
+End of stack trace

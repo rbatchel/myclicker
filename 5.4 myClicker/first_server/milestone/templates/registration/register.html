@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+
+<!-- Basic Page Needs
+  ================================================== -->
+<meta charset="utf-8">
+<title>Registration Page</title>
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- Mobile Specific Metas
+  ================================================== -->
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<!-- CSS
+  ================================================== -->
+     {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'skeleton.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'layout.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'MyC_styles.css' %}">
+
+<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+<!-- Favicons
+	================================================== -->
+<link rel="shortcut icon" href="images/favicon.ico">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72"
+	href="images/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114"
+	href="images/apple-touch-icon-114x114.png">
+
+</head>
+<body class="MyC-main-bg-color">
+
+
+
+	<!-- Primary Page Layout
+	================================================== -->
+
+	<!-- Delete everything in this .container and get started on your own site! -->
+
+	<div class="container">
+
+		<div id="page_header" class="sixteen columns">
+			<h1 class="remove-bottom">myClicker</h1>
+			<h5>Prototype</h5>
+			<hr />
+		</div>
+
+		<div id="login-button-div" class="fifteen columns">
+			<ul id="login-button-box" class="MyC-pad-all-3">
+				<li class="MyC-push-right-1"><h2>Register New User</h2></li>
+				<li style="margin-left:90px;" ><button onClick="window.location.href='/login/'"> Login as Existing User </button></li>
+				<li id="login-button-table">
+
+					<form action="" method="post">
+						{% csrf_token %} {{ form.as_p }} 
+						<input style="margin-left:0px;" type="submit"  value="Create the account">
+					</form> 
+				</li>
+				<li id="student-login-form"></li>
+			</ul>
+		</div>
+
+	</div>
+	<!-- container -->
+
+	<!-- End Document
+================================================== -->
+
+	<!-- Added in CSS from Max -->
+	<!-- This will overwrite anything already written in that field, so we are safe -->
+	<style>
+
+/*---------------------------------------------------------------------------*/
+
+/**
+  * The background (add pictures of ponies!)
+  **/
+body {
+	background-image: url('Pinkie Pie disapproval.jpg');
+}
+
+/*---------------------------------------------------------------------------*/
+
+/**
+  * Format the login boxes
+  **/
+#login-button-box {
+	padding-left: 40px;
+	padding-top: 25px;
+	padding-bottom: 5px;
+	padding-right: 30px;
+	width: 320px;
+	margin: 0 auto;
+	background: #fff;
+	/* border-radius */
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	/* box-shadow */
+	-webkit-box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px;
+	-moz-box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px;
+	box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px
+}
+
+#login-button-div {
+	/*text-align: center;*/
+	padding-bottom: 50px;
+}
+
+#login-button-td-input {
+	padding-left: 30px;
+}
+
+/*---------------------------------------------------------------------------*/
+
+/**
+  * Format the header of the page
+  **/
+#page_header {
+	margin-top: 40p;
+}
+
+/*---------------------------------------------------------------------------*/
+
+</style>
+
+
+	<!-- End CSS
+================================================== -->
+
+</body>
+</html>

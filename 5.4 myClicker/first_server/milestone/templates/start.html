@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+
+<!-- Basic Page Needs
+  ================================================== -->
+<meta charset="utf-8">
+<title>Welcome to myClicker!</title>
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- Mobile Specific Metas
+  ================================================== -->
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<!-- CSS
+  ================================================== -->
+     {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'skeleton.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'layout.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'MyC_styles.css' %}">
+
+<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+<!-- Favicons
+	================================================== -->
+<link rel="shortcut icon" href="images/favicon.ico">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72"
+	href="images/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114"
+	href="images/apple-touch-icon-114x114.png">
+
+</head>
+<body class="MyC-main-bg-color">
+
+<!-- Redirect to user homepage if already logged in -->
+{% if user.is_authenticated %}
+	<body onload="window.location.href='/userhome/'">
+{% endif %}
+
+
+	<!-- Primary Page Layout
+	================================================== -->
+
+	<!-- Delete everything in this .container and get started on your own site! -->
+
+	<div class="container">
+
+		<div id="page_header" class="sixteen columns">
+			<h1 class="remove-bottom">Welcome to myClicker!</h1>
+			<h5>Alpha</h5>
+			
+			<hr />
+		</div>
+		<div id="about" class="six columns MyC-box-rounded-corners MyC-box-shadow">
+			<h3>About myClicker</h3>
+			<p>This web application provides a simple interface that allows professors to get feedback from students during lecture. Professors can both ask questions to students and view student responses in an organized manner, while students have the option to ask the professor questions about lecture material in real time and vote on the most relevant questions. A user can be enrolled in multiple courses at once and can either be a student or professor depending on the course.</p>
+		</div>
+
+		<div id="about" class="six columns MyC-box-rounded-corners MyC-box-shadow">
+			<h3>About programmers</h3>
+			<p>This website was created by a group of five Princeton students as the final project for COS 333. The students are: Rachael Batchelder (rbatchel@princeton.edu), Yingxue Li (yingxuel@princeton.edu), Max Rubin (merubin@princeton.edu), Margaret Tam (mtam@princeton.edu), and Timothy Trieu (ttrieu@princeton.edu).</p>
+		</div>
+		
+		
+		<table class="five columns MyC-push-down-3">
+		 <tr id="not-logged-in" style="visibility:visible;">
+		  <td class="four columns"></td>
+		  <td>
+		   <div class="five columns" align=center>
+			
+			 <button class="bigbutton" id="log-in-button" style="padding:10px; padding-bottom:10px; padding-top:10px;" onClick="window.location.href='/login/'">Log-in</button>
+			
+		   </div>
+		  </td>
+		 </tr>
+		</table>
+		
+		<!-- container -->
+
+	<!-- End Document
+================================================== -->
+
+	<!-- Added in CSS from Max -->
+	<!-- This will overwrite anything already written in that field, so we are safe -->
+	<style>
+
+/*---------------------------------------------------------------------------*/
+
+log-inbutton
+{
+	padding:50px;
+}
+
+/**
+  * The background (add pictures of ponies!)
+  **/
+body {
+	background-image: url('Pinkie Pie disapproval.jpg');
+}
+
+/*---------------------------------------------------------------------------*/
+
+/**
+  * Format the about boxes
+  **/
+#about {
+	padding: 50px;
+	/* border-radius */
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	/* box-shadow */
+	-webkit-box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px;
+	-moz-box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px;
+	box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px;
+}
+
+/*---------------------------------------------------------------------------*/
+
+/**
+  * Format the login boxes
+  **/
+#login-button-box {
+	padding-left: 10px;
+	padding-top: 25px;
+	padding-bottom: 5px;
+	padding-right: 10px;
+	width: 320px;
+	margin: 0 auto;
+	/* border-radius */
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	/* box-shadow */
+	-webkit-box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px;
+	-moz-box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px;
+	box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px
+}
+
+#login-button-table {
+	padding-top: 10px;
+	/*padding-left: 175px;
+	/*width: 300px;
+	*/
+}
+
+#login-button-div {
+	text-align: center;
+	padding-bottom: 50px;
+}
+
+#login-button-td-input {
+	padding-left: 30px;
+}
+
+/*---------------------------------------------------------------------------*/
+
+/**
+  * Make input fields not extend through the full box
+  **/
+#username-student-input,#username-professor-input,#password-professor-input,#password-student-input,#con-password-student-input
+	{
+	max-width: 80%;
+}
+
+/*---------------------------------------------------------------------------*/
+
+/**
+  * Format the header of the page
+  **/
+#page_header {
+	margin-top: 40p;
+}
+
+/*---------------------------------------------------------------------------*/
+
+/**
+  * Make the backgrounds white but transparent
+  **
+#about,#login-button-box {
+	background: #fff;
+	opacity: 0.7;
+}
+
+#about:hover,#login-button-box:hover {
+	opacity: 1.0;
+}
+
+/*---------------------------------------------------------------------------*/
+</style>
+
+	<script>
+
+/*---------------------------------------------------------------------------*/
+
+/*---------------------------------------------------------------------------*/
+
+</script>
+
+
+
+	<!-- End CSS
+================================================== -->
+
+</body>
+</html>
